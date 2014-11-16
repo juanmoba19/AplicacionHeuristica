@@ -1,13 +1,23 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui">
 
     <body>
 
         <ui:composition template="./../template.xhtml">
             <ui:define name="content">
-                content
+                   <p:panel id="basic" header="Basic" footer="Movie Details" style="margin-bottom:180px; margin-top: 15px">  
+                    <h:panelGrid columns="2" cellpadding="5" >
+                        <p:graphicImage name="./../resources/images/entradaForo.jpg" />
+                        <h:outputText 
+                            value="The story as Don Vito Corleone, the head of a New York Mafia family,                        
+                           " />
+                    </h:panelGrid>
+                   </p:panel>
             </ui:define>
         </ui:composition>
 
