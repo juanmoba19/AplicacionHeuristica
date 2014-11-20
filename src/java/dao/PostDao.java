@@ -17,4 +17,5 @@ public interface PostDao {
     
     public Post findByUsuarioPost(Post post);
     public List<Post> findAll();
+    public Post findByPost(Post post);
 }

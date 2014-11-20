@@ -56,4 +56,20 @@ public class PostDaoImpl implements PostDao{
         return listado;
     }
     
+     @Override
+     public Post findByPost(Post post) {
+        
+        Post model = null;
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        String sql =  "FROM Post WHERE id = 1";
+        try {
+            session.beginTransaction();
+            model = (Post) session.createQuery(sql).uniqueResult();
+            session.beginTransaction().commit();
+        } catch (Exception e) {
+            session.beginTransaction().rollback();
+        }
+        return model;
+    }
+    
 }
