@@ -24,12 +24,14 @@
                                   <h:outputText 
                                       value=" #{post.contenido} " />
                                   <br/>
-                                  <div align="right"> 
+                                  <div align="right">
                                       <p:commandButton value="Seguir Leyendo" actionListener="#{postBean.seguirPost(event)}"
-                                             oncomplete="handlePostRequest(xhr, status, args)" />
+                                             oncomplete="handlePostRequest(xhr, status, args)" >
+                                          
+                                          <f:setPropertyActionListener value="#{post.titulo}" target="#{postBean.eje}" />
+                                      </p:commandButton>
                                   </div>
                               </p:panel>
-                             
                               <p:separator style="width:100%;height:2px" />
                           </p:column>
                   </p:dataTable>

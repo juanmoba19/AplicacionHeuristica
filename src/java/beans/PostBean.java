@@ -26,8 +26,8 @@ import util.MyUtil;
  * @author Juan Diego
  */
 @Named(value = "postBean")
-@RequestScoped
-public class PostBean {
+@SessionScoped
+public class PostBean implements Serializable{
 
     /**
      * Creates a new instance of PostBean
@@ -35,6 +35,15 @@ public class PostBean {
     private List<Post> posts;
     private Post selectedPost;
     private PostDao postDao;
+    private String eje;
+
+    public String getEje() {
+        return eje;
+    }
+
+    public void setEje(String eje) {
+        this.eje = eje;
+    }
     
     public PostBean() {
         this.posts = new ArrayList<Post>();
@@ -67,10 +76,9 @@ public class PostBean {
         boolean isPost;
         String ruta = ""; 
         
-        this.selectedPost = this.postDao.findByPost(this.selectedPost);
-        if(this.selectedPost != null ) {
+        Post po = this.postDao.findByPost(this.selectedPost);
+        if(po != null ) {
             isPost = true;
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("seguirPost", this.selectedPost);
             ruta = MyUtil.basepathlogin()+"views/foro/post_n.xhtml";
         } else {
             isPost = false;
