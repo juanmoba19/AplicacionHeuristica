@@ -10,8 +10,17 @@
         <ui:composition template="./../template.xhtml">
 
             <ui:define name="content">
-               <h:outputText 
-                   value="#{postBean.eje}" />
+                <h:form>
+                    <p:growl id="msgs" showDetail="true" />
+
+                    <p:fieldset legend="#{postBean.selectedPost.titulo}" style="margin-bottom:20px; margin-top: 20px">
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <p:graphicImage name="/../resources/images/entradaForo.jpg" width="120px"  />
+                            <h:outputText
+                                value="#{postBean.selectedPost.contenido} " style="font-family: sans-serif" />
+                        </h:panelGrid>
+                    </p:fieldset>
+                </h:form>
             </ui:define>
         </ui:composition>
 

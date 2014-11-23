@@ -46,3 +46,8 @@ a:link:hover, a:visited:hover  {
 .entrada-foro{
     background-image: url(../images/entradaForo.jpg);
 }
+
+.ui-state-default .icon-ver-mas{
+    background-image: url(../images/verMas.jpg);
+    width: 50%;
+}

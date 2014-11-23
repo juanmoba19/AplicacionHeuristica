@@ -13,26 +13,27 @@
                   <h:form id="formDataTablePost">
                       <p:dataTable id="posts" var="post" value="#{postBean.posts}"
                      paginator="true" rows="5" paginatorPosition="bottom" 
-                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"                   
+                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                     style="border: 1px solid #848484; margin-top: 3%; margin-bottom: 2%"
                      >
                       <f:facet name="header">
                           Listado de Foros
                       </f:facet>
-                          <p:column >
+                          <p:column  >
                              
-                              <p:panel id="basic" header="#{post.titulo}" footer="#{post.dia} de #{post.mes} del #{post.anio} - Autor : #{post.usuario.usuario} " style="margin-bottom:20px; margin-top: 20px" >                                  
+                              <p:panel id="basic" header="#{post.titulo}" footer="Escrito por: #{post.usuario.usuario} el #{post.dia} de #{post.mes} de #{post.anio} a las #{post.hora}" style="margin-bottom:20px; margin-top: 20px; border: 1px solid #848484;font-family: sans-serif" >                                  
                                   <h:outputText 
                                       value=" #{post.contenido} " />
                                   <br/>
                                   <div align="right">
-                                      <p:commandButton value="Seguir Leyendo" actionListener="#{postBean.seguirPost(event)}"
-                                             oncomplete="handlePostRequest(xhr, status, args)" >
+                                      <p:commandButton  actionListener="#{postBean.seguirPost(event)}"
+                                                        oncomplete="handlePostRequest(xhr, status, args)" value="Ver" style="width: 70; height: 30px" >
                                           
-                                          <f:setPropertyActionListener value="#{post.titulo}" target="#{postBean.eje}" />
+                                          <f:setPropertyActionListener value="#{post}" target="#{postBean.selectedPost}" />
                                       </p:commandButton>
                                   </div>
                               </p:panel>
-                              <p:separator style="width:100%;height:2px" />
+                              <p:separator style="width:100%;height:2px;background:#000000;border: 0.5px solid #000000" />
                           </p:column>
                   </p:dataTable>
               </h:form>
