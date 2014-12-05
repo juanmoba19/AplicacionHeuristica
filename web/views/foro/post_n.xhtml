@@ -50,12 +50,15 @@
                 </h:form>
                 
                 <h:form id="formDejarComentario">
-                    <p:fieldset style="margin-bottom:20px; margin-top: 10px">
+                    <p:fieldset style="margin-bottom:20px; margin-top: 10px" id="comentario">
                         <h4 style="margin-top: 2px">Deja tu comentario</h4>
-                        <p:inputTextarea rows="5" cols="50" counter="display" maxlength="250" counterTemplate="{0} caracteres restantes." autoResize="true" value="#{postBean.comentario.comentario}" />
+                        <p:inputTextarea id="txtComentario" rows="5" cols="50" counter="display" maxlength="250" counterTemplate="{0} caracteres restantes." autoResize="true" value="#{postBean.comentario.comentario}" />
                         <h:outputText id="display" />
-                        <p> <p:commandButton id="btnDejarComentario" update=":formComentarios, :msgs" actionListener="#{postBean.btnDejarComentario(actionEvent)}" title="Dejar Comentario" value="Dejar Comentario"/> </p>                       
-                   
+                        <p> 
+                            <p:commandButton  id="btnDejarComentario" update=":formComentarios, :msgs" actionListener="#{postBean.btnDejarComentario(actionEvent)}" title="Dejar Comentario" value="Dejar Comentario" oncomplete="limpiarComentario()"> 
+                                
+                            </p:commandButton>
+                        </p> 
                     </p:fieldset>
                 </h:form>
                 

@@ -116,8 +116,9 @@ public class PostBean implements Serializable{
         this.comentario.setUsuario(usuario);
         if(postDao.createComentario(this.comentario)){
            msg = "Se guardo correctamente el Comentario"; 
-           FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
+           FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Comentario Exitoso", msg);
            FacesContext.getCurrentInstance().addMessage(null, message);
+           this.comentario.setComentario("");
         }else{
             msg = "Error al agregar el Comentario";
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, null);

@@ -16,10 +16,8 @@
                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                      style="border: 1px solid #848484; margin-top: 3%; margin-bottom: 2%"
                      >
-                      <f:facet name="header">
-                          Listado de Foros
-                      </f:facet>
-                          <p:column  >
+                      
+                          <p:column headerText="Lista de Foros" >
                              
                               <p:panel id="basic" header="#{post.titulo}" footer="Escrito por: #{post.usuario.usuario} el #{post.dia} de #{post.mes} de #{post.anio} a las #{post.hora}" style="margin-bottom:20px; margin-top: 20px; border: 1px solid #848484;font-family: sans-serif" >                                  
                                   <h:outputText 
