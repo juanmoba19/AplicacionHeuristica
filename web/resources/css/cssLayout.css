@@ -69,4 +69,7 @@
     margin-right: auto;
 }
 
+.ui-datascroller .ui-datascroller-header {
+    text-align: left !important;
+}
 

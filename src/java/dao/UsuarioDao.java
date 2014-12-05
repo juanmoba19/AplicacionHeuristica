@@ -20,5 +20,5 @@ public interface UsuarioDao {
     public List<Usuario> findAll();
     public boolean create(Usuario usuario);
     public boolean update (Usuario usuario);
-     public boolean delete (Integer id);
+    public boolean delete (Integer id);
 }

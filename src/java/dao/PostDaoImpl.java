@@ -8,11 +8,10 @@ package dao;
 
 import java.util.List;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSession;
+import model.Comentariopost;
 import model.Post;
 import model.Usuario;
 import org.hibernate.Session;
-import org.primefaces.context.RequestContext;
 import util.HibernateUtil;
 
 /**
@@ -70,6 +69,39 @@ public class PostDaoImpl implements PostDao{
             session.beginTransaction().rollback();
         }
         return model;
+    }
+
+    @Override
+    public List<Comentariopost> findComentariosByPost(Post post) {
+                
+        List<Comentariopost> listado = null;
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        String sql =  "FROM Comentariopost c left join fetch c.usuario WHERE post_id = '"+post.getId()+"'";
+        try {
+            session.beginTransaction();
+            listado = session.createQuery(sql).list();
+            session.beginTransaction().commit();
+        } catch (Exception e) {
+            session.beginTransaction().rollback();
+        }
+        return listado;
+    }
+
+    @Override
+    public boolean createComentario(Comentariopost comentario) {
+       
+        boolean flag;
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        try {
+            session.beginTransaction();
+            session.save(comentario);
+            session.beginTransaction().commit();
+            flag=true;
+        } catch (Exception e) {
+            flag = false;
+            session.beginTransaction().rollback();
+        }
+        return flag;
     }
     
 }

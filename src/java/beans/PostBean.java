@@ -9,15 +9,19 @@ package beans;
 import dao.PostDao;
 import dao.PostDaoImpl;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import model.Comentariopost;
 import model.Post;
+import model.Usuario;
 import org.primefaces.context.RequestContext;
 import util.MyUtil;
 
@@ -35,19 +39,20 @@ public class PostBean implements Serializable{
     private List<Post> posts;
     private Post selectedPost;
     private PostDao postDao;
-    private String eje;
+    private Comentariopost comentario;
 
-    public String getEje() {
-        return eje;
+    public Comentariopost getComentario() {
+        return comentario;
     }
 
-    public void setEje(String eje) {
-        this.eje = eje;
+    public void setComentario(Comentariopost comentario) {
+        this.comentario = comentario;
     }
-    
+            
     public PostBean() {
         this.posts = new ArrayList<Post>();
         this.postDao = new PostDaoImpl();
+        this.comentario = new Comentariopost();
         if(this.selectedPost == null){
             this.selectedPost=new Post();
         }
@@ -90,5 +95,34 @@ public class PostBean implements Serializable{
         context.addCallbackParam("ruta", ruta);
     }
     
-   
+    public List<Comentariopost> getComentariosByPost() {
+        
+        List<Comentariopost> lista = this.postDao.findComentariosByPost(this.selectedPost);
+        
+        return lista;
+    }
+    
+    public void btnDejarComentario(ActionEvent actionEvent) throws ParseException{
+        
+        PostDao postDao = new PostDaoImpl();
+        String msg;               
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+        Date date = new Date();
+        String hoy = sdf.format(date);
+        Date actual = sdf.parse(hoy);
+        this.comentario.setFecha(actual);
+        this.comentario.setPost(this.selectedPost);
+        Usuario usuario  = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioObj");
+        this.comentario.setUsuario(usuario);
+        if(postDao.createComentario(this.comentario)){
+           msg = "Se guardo correctamente el Comentario"; 
+           FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
+           FacesContext.getCurrentInstance().addMessage(null, message);
+        }else{
+            msg = "Error al agregar el Comentario";
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }         
+    } 
+          
 }

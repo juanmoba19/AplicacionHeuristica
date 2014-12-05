@@ -7,4 +7,5 @@
   <table-filter match-name="menu"/>
   <table-filter match-name="usuario"/>
   <table-filter match-name="post"/>
+  <table-filter match-name="comentariopost"/>
 </hibernate-reverse-engineering>
