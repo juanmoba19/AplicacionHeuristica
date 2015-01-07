@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 21-dic-2014 8:20:36 by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="model.Estadoprueba" table="estadoprueba" catalog="evaluacionheuristica">
+        <id name="codigo" type="java.lang.Integer">
+            <column name="codigo" />
+            <generator class="identity" />
+        </id>
+        <property name="descripcion" type="string">
+            <column name="descripcion" length="45" />
+        </property>
+        <set name="sitioevaluacions" table="sitioevaluacion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="estadoPrueba_codigo" not-null="true" />
+            </key>
+            <one-to-many class="model.Sitioevaluacion" />
+        </set>
+    </class>
+</hibernate-mapping>

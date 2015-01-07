@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 21-dic-2014 8:20:36 by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="model.Puntuacion" table="puntuacion" catalog="evaluacionheuristica">
+        <id name="escala" type="int">
+            <column name="escala" />
+            <generator class="assigned" />
+        </id>
+        <property name="descripcion" type="string">
+            <column name="descripcion" length="100" />
+        </property>
+        <set name="criteriohijoHasSitioevaluacions" table="criteriohijo_has_sitioevaluacion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="puntuacion_escala" not-null="true" />
+            </key>
+            <one-to-many class="model.CriteriohijoHasSitioevaluacion" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -2,10 +2,17 @@
 <!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
 <hibernate-reverse-engineering>
   <schema-selection match-catalog="evaluacionheuristica"/>
+  <table-filter match-name="criteriopadre"/>
   <table-filter match-name="rolmenu"/>
-  <table-filter match-name="rol"/>
   <table-filter match-name="menu"/>
+  <table-filter match-name="estadoprueba"/>
+  <table-filter match-name="criteriohijo"/>
+  <table-filter match-name="rol"/>
+  <table-filter match-name="criteriohijo_has_sitioevaluacion"/>
   <table-filter match-name="usuario"/>
   <table-filter match-name="post"/>
   <table-filter match-name="comentariopost"/>
+  <table-filter match-name="puntuacion"/>
+  <table-filter match-name="usuario_has_sitioevaluacion"/>
+  <table-filter match-name="sitioevaluacion"/>
 </hibernate-reverse-engineering>

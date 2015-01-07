@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 21-dic-2014 8:20:36 by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="model.Criteriohijo" table="criteriohijo" catalog="evaluacionheuristica">
+        <id name="codigo" type="java.lang.Integer">
+            <column name="codigo" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="criteriopadre" class="model.Criteriopadre" fetch="select">
+            <column name="criteriopadre_codigo" not-null="true" />
+        </many-to-one>
+        <property name="descripcion" type="string">
+            <column name="descripcion" />
+        </property>
+        <set name="criteriohijoHasSitioevaluacions" table="criteriohijo_has_sitioevaluacion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="criteriohijo_codigo" not-null="true" />
+            </key>
+            <one-to-many class="model.CriteriohijoHasSitioevaluacion" />
+        </set>
+    </class>
+</hibernate-mapping>

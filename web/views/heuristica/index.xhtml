@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../template.xhtml">
+
+            <ui:define name="content">
+                <h:form id="formSitios" style="margin-top: 15px">  
+                <p:dataTable id="sitios" var="sitios" value="#{heuristicaBean.sitios}"
+                     paginator="true" rows="10" paginatorPosition="bottom"
+                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                    <f:facet name="header">
+                          Listado Sitios (Evaluacion Heuristica)
+                    </f:facet>
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{sitios.nombre}" />
+                    </p:column>
+
+                    <p:column headerText="URL">
+                        <h:outputText value="#{sitios.url}" />
+                    </p:column>
+
+                    <p:column headerText="Tipo">
+                        <h:outputText value="#{sitios.tipo}" />
+                    </p:column>
+
+                    <p:column headerText="Fecha Evaluacion">
+                        <h:outputText value="#{sitios.fechaEvaluacion}" />
+                    </p:column>
+                    
+                    <p:column headerText="Estado Prueba">
+                        <h:outputText value="#{sitios.estadoprueba.descripcion}" />
+                    </p:column>
+                    
+                    <p:column  headerText="Acción" style="text-align: center">                        
+                        <p:commandButton style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD;" id="btnEjecutarHeuristica" update=":formEjecutarEval" oncomplete="PF('dialogEjecutarEval').show()" title="Ejecutar" value="Ejecutar">
+                            <f:setPropertyActionListener value="#{sitios}" target="#{heuristicaBean.selectedSitioEvaluacion}" />
+                        </p:commandButton>
+                        
+                    </p:column>
+                    
+                </p:dataTable>
+               </h:form>
+                
+                <h:form id="formEjecutarEval">
+                    <p:dialog header="Sitio: #{heuristicaBean.selectedSitioEvaluacion.nombre} - URL: #{heuristicaBean.selectedSitioEvaluacion.url}" widgetVar="dialogEjecutarEval" id="dlgEjecutarEval"  showEffect="fade" hideEffect="explode" resizable="false" modal="true">
+                        <p:dataScroller value="#{heuristicaBean.criteriosHijosSitio}" var="criteriosHijos" chunkSize="10">
+                            <p:carousel numVisible="1" itemStyle="height:200px;width:600px;" effect="easeInStrong" headerText="#{criteriosHijos.criteriohijo.descripcion}" style="margin-bottom:0">
+                                <p:tab title="Godfather Part I">
+                                    <h:panelGrid columns="2" cellpadding="10">
+                                        <h:outputText
+                                            value="#{heuristicaBean.selectedSitioEvaluacion.nombre}" />
+                                    </h:panelGrid>
+                                </p:tab>
+
+                            </p:carousel>   
+                        </p:dataScroller>
+                    </p:dialog>                    
+                </h:form>
+                                
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

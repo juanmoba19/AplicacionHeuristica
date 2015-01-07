@@ -34,14 +34,9 @@
                         <p:menuitem value="Redo" url="#" icon="ui-icon-arrowreturnthick-1-e" />
                     </p:submenu>
 
-                    <p:submenu label="Actions" icon="ui-icon-gear">
-                        <p:submenu label="Ajax" icon="ui-icon-refresh">
-                            <p:menuitem value="Save" actionListener="#{menuView.save}" icon="ui-icon-disk" update="messages"/>
-                            <p:menuitem value="Update" actionListener="#{menuView.update}" icon="ui-icon-arrowrefresh-1-w" update="messages"/>
-                        </p:submenu>
-                        <p:submenu label="Non-Ajax" icon="ui-icon-newwin">
-                            <p:menuitem value="Delete" actionListener="#{menuView.delete}" icon="ui-icon-close" update="messages" ajax="false"/>
-                        </p:submenu>
+                   <p:submenu label="Heuristica" icon="ui-icon-document">
+                        <p:menuitem value="Sitios" url="#{appBean.basePath}heuristica/index.xhtml" />
+                        <p:menuitem value="Redo" url="#" icon="ui-icon-arrowreturnthick-1-e" />
                     </p:submenu>
 
                     <p:menuitem value="Salir" actionListener="#{loginBean.logout}" icon="ui-icon-close" oncomplete="handleLoginRequest(xhr, status, args)" />

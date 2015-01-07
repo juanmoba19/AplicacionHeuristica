@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 21-dic-2014 8:20:36 by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="model.CriteriohijoHasSitioevaluacion" table="criteriohijo_has_sitioevaluacion" catalog="evaluacionheuristica">
+        <composite-id name="id" class="model.CriteriohijoHasSitioevaluacionId">
+            <key-property name="criteriohijoCodigo" type="int">
+                <column name="criteriohijo_codigo" />
+            </key-property>
+            <key-property name="sitioevaluacionCodigo" type="int">
+                <column name="sitioevaluacion_codigo" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="sitioevaluacion" class="model.Sitioevaluacion" update="false" insert="false" fetch="select">
+            <column name="sitioevaluacion_codigo" not-null="true" />
+        </many-to-one>
+        <many-to-one name="criteriohijo" class="model.Criteriohijo" update="false" insert="false" fetch="select">
+            <column name="criteriohijo_codigo" not-null="true" />
+        </many-to-one>
+        <many-to-one name="puntuacion" class="model.Puntuacion" fetch="select">
+            <column name="puntuacion_escala" not-null="true" />
+        </many-to-one>
+        <property name="fecha" type="timestamp">
+            <column name="fecha" length="19" />
+        </property>
+        <property name="comentario" type="string">
+            <column name="comentario" length="65535" />
+        </property>
+        <property name="usuario" type="string">
+            <column name="usuario" length="30" />
+        </property>
+    </class>
+</hibernate-mapping>
