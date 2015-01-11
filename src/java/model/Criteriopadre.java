@@ -1,5 +1,5 @@
 package model;
-// Generated 21-dic-2014 8:20:31 by Hibernate Tools 3.6.0
+// Generated 07-ene-2015 13:43:48 by Hibernate Tools 3.6.0
 
 
 import java.util.HashSet;
@@ -10,18 +10,21 @@ import java.util.Set;
  */
 public class Criteriopadre  implements java.io.Serializable {
 
+
      private Integer codigo;
      private String nombre;
      private String descripcion;
      private Set criteriohijos = new HashSet(0);
+     private Set criteriohijoHasSitioevaluacions = new HashSet(0);
 
     public Criteriopadre() {
     }
 
-    public Criteriopadre(String nombre, String descripcion, Set criteriohijos) {
+    public Criteriopadre(String nombre, String descripcion, Set criteriohijos, Set criteriohijoHasSitioevaluacions) {
        this.nombre = nombre;
        this.descripcion = descripcion;
        this.criteriohijos = criteriohijos;
+       this.criteriohijoHasSitioevaluacions = criteriohijoHasSitioevaluacions;
     }
    
     public Integer getCodigo() {
@@ -51,6 +54,13 @@ public class Criteriopadre  implements java.io.Serializable {
     
     public void setCriteriohijos(Set criteriohijos) {
         this.criteriohijos = criteriohijos;
+    }
+    public Set getCriteriohijoHasSitioevaluacions() {
+        return this.criteriohijoHasSitioevaluacions;
+    }
+    
+    public void setCriteriohijoHasSitioevaluacions(Set criteriohijoHasSitioevaluacions) {
+        this.criteriohijoHasSitioevaluacions = criteriohijoHasSitioevaluacions;
     }
 
 

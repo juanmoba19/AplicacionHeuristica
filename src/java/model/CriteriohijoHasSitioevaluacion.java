@@ -1,5 +1,5 @@
 package model;
-// Generated 21-dic-2014 8:20:31 by Hibernate Tools 3.6.0
+// Generated 07-ene-2015 13:43:48 by Hibernate Tools 3.6.0
 
 
 import java.util.Date;
@@ -14,6 +14,7 @@ public class CriteriohijoHasSitioevaluacion  implements java.io.Serializable {
      private Sitioevaluacion sitioevaluacion;
      private Criteriohijo criteriohijo;
      private Puntuacion puntuacion;
+     private Criteriopadre criteriopadre;
      private Date fecha;
      private String comentario;
      private String usuario;
@@ -22,17 +23,19 @@ public class CriteriohijoHasSitioevaluacion  implements java.io.Serializable {
     }
 
 	
-    public CriteriohijoHasSitioevaluacion(CriteriohijoHasSitioevaluacionId id, Sitioevaluacion sitioevaluacion, Criteriohijo criteriohijo, Puntuacion puntuacion) {
+    public CriteriohijoHasSitioevaluacion(CriteriohijoHasSitioevaluacionId id, Sitioevaluacion sitioevaluacion, Criteriohijo criteriohijo, Puntuacion puntuacion, Criteriopadre criteriopadre) {
         this.id = id;
         this.sitioevaluacion = sitioevaluacion;
         this.criteriohijo = criteriohijo;
         this.puntuacion = puntuacion;
+        this.criteriopadre = criteriopadre;
     }
-    public CriteriohijoHasSitioevaluacion(CriteriohijoHasSitioevaluacionId id, Sitioevaluacion sitioevaluacion, Criteriohijo criteriohijo, Puntuacion puntuacion, Date fecha, String comentario, String usuario) {
+    public CriteriohijoHasSitioevaluacion(CriteriohijoHasSitioevaluacionId id, Sitioevaluacion sitioevaluacion, Criteriohijo criteriohijo, Puntuacion puntuacion, Criteriopadre criteriopadre, Date fecha, String comentario, String usuario) {
        this.id = id;
        this.sitioevaluacion = sitioevaluacion;
        this.criteriohijo = criteriohijo;
        this.puntuacion = puntuacion;
+       this.criteriopadre = criteriopadre;
        this.fecha = fecha;
        this.comentario = comentario;
        this.usuario = usuario;
@@ -65,6 +68,13 @@ public class CriteriohijoHasSitioevaluacion  implements java.io.Serializable {
     
     public void setPuntuacion(Puntuacion puntuacion) {
         this.puntuacion = puntuacion;
+    }
+    public Criteriopadre getCriteriopadre() {
+        return this.criteriopadre;
+    }
+    
+    public void setCriteriopadre(Criteriopadre criteriopadre) {
+        this.criteriopadre = criteriopadre;
     }
     public Date getFecha() {
         return this.fecha;

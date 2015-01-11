@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 21-dic-2014 8:20:36 by Hibernate Tools 3.6.0 -->
+<!-- Generated 07-ene-2015 13:43:50 by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
     <class name="model.CriteriohijoHasSitioevaluacion" table="criteriohijo_has_sitioevaluacion" catalog="evaluacionheuristica">
         <composite-id name="id" class="model.CriteriohijoHasSitioevaluacionId">
@@ -20,6 +20,9 @@
         </many-to-one>
         <many-to-one name="puntuacion" class="model.Puntuacion" fetch="select">
             <column name="puntuacion_escala" not-null="true" />
+        </many-to-one>
+        <many-to-one name="criteriopadre" class="model.Criteriopadre" fetch="select">
+            <column name="criteriopadre_codigo" not-null="true" />
         </many-to-one>
         <property name="fecha" type="timestamp">
             <column name="fecha" length="19" />

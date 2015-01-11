@@ -70,7 +70,7 @@ public class HeuristicaDaoImpl implements HeuristicaDao{
     public List<CriteriohijoHasSitioevaluacion> findBySitioEvaluacion(Sitioevaluacion sitioevaluacion) {
         List<CriteriohijoHasSitioevaluacion> listado = null;
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        String sql =  "FROM CriteriohijoHasSitioevaluacion c left join fetch c.criteriohijo as h left join fetch c.id as d left join fetch  h.criteriopadre as p WHERE d.sitioevaluacionCodigo = '"+sitioevaluacion.getCodigo()+"'";
+        String sql =  "FROM CriteriohijoHasSitioevaluacion c join fetch  c.criteriopadre as p left join fetch p.criteriohijos left join fetch c.id as d left join fetch c.puntuacion pu WHERE d.sitioevaluacionCodigo = '"+sitioevaluacion.getCodigo()+"'"+" GROUP BY c.id";
         try {
             session.beginTransaction();
             listado = session.createQuery(sql).list();
