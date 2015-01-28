@@ -23,6 +23,9 @@
         <property name="fechaEvaluacion" type="timestamp">
             <column name="fechaEvaluacion" length="19" />
         </property>
+        <property name="rutaImagen" type="binary">
+            <column name="rutaImagen" />
+        </property>
         <set name="usuarioHasSitioevaluacions" table="usuario_has_sitioevaluacion" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="sitioevaluacion_codigo" not-null="true" />
