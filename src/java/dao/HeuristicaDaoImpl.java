@@ -10,7 +10,6 @@ import java.util.List;
 import model.CriteriohijoHasSitioevaluacion;
 import model.Criteriopadre;
 import model.Sitioevaluacion;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import util.HibernateUtil;
 
@@ -71,7 +70,7 @@ public class HeuristicaDaoImpl implements HeuristicaDao{
     public List<CriteriohijoHasSitioevaluacion> findBySitioEvaluacion(Sitioevaluacion sitioevaluacion) {
         List<CriteriohijoHasSitioevaluacion> listado = null;
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        String sql =  "FROM CriteriohijoHasSitioevaluacion chs left join fetch chs.criteriohijo  as ch join fetch  chs.criteriopadre as cp left join fetch chs.id as d WHERE d.sitioevaluacionCodigo = '"+sitioevaluacion.getCodigo()+"'";
+        String sql =  "FROM CriteriohijoHasSitioevaluacion c join fetch  c.criteriopadre as p left join fetch p.criteriohijos left join fetch c.id as d left join fetch c.puntuacion pu WHERE d.sitioevaluacionCodigo = '"+sitioevaluacion.getCodigo()+"'"+" GROUP BY c.id";
         try {
             session.beginTransaction();
             listado = session.createQuery(sql).list();
@@ -82,33 +81,5 @@ public class HeuristicaDaoImpl implements HeuristicaDao{
         }
         return listado;
     }
-
-    @Override
-    public boolean updateCriterioSitio(Integer puntuacion, Integer criterioHijo, Integer sitioEvaluacion) {
-        
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        String hql="";
-        
-        try {
-            
-            session.beginTransaction();
-            if (  puntuacion != null )
-            hql = "UPDATE CriteriohijoHasSitioevaluacion set puntuacion_escala = :puntuacion where criteriohijo_codigo = :criterioHijo and sitioevaluacion_codigo = :sitioEvaluacion ";
-            else
-            hql = "UPDATE CriteriohijoHasSitioevaluacion set puntuacion_escala = null where criteriohijo_codigo = :criterioHijo and sitioevaluacion_codigo = :sitioEvaluacion ";                 
-            Query query = session.createQuery(hql);
-            if ( puntuacion != null )
-            query.setInteger("puntuacion", puntuacion);
-            query.setInteger("criterioHijo", criterioHijo);
-            query.setInteger("sitioEvaluacion", sitioEvaluacion);
-            query.executeUpdate();
-            session.beginTransaction().commit();
-            
-        } catch (Exception e) {
-            session.beginTransaction().rollback();
-        }
-        return true;
-    }
-    
     
 }

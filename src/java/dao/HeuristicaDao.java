@@ -23,5 +23,4 @@ public interface HeuristicaDao {
     public boolean create (Sitioevaluacion sitio);
     public boolean update (Sitioevaluacion sitio);
     public boolean delete (Sitioevaluacion sitio);
-    public boolean updateCriterioSitio(Integer puntuacion, Integer criterioHijo, Integer sitioEvaluacion);
 }
