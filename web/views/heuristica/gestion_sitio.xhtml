@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../template.xhtml">
+            <ui:define name="content">
+              
+                <h:form id="sitiosHeuristicos" enctype="multipart/form-data" prependId="false" >
+                    
+                    <h4>Sitios - Evaluacion Heuristica</h4>
+                    <h:panelGrid columns="2" columnClasses="column" cellpadding="5">
+                        <h:outputLabel for="ajaxNombre" value="Nombre Sitio:" style="font-weight: bold" />
+                        <p:inplace id="ajaxNombre" editor="true">
+                            <p:inputText value="#{sitioBean.nombre}" required="true" label="text" />
+                        </p:inplace>
+
+                        <h:outputLabel for="ajaxUrl" value="Url:" style="font-weight: bold" />
+                        <p:inplace id="ajaxUrl" editor="true">
+                            <p:inputText value="#{sitioBean.nombre}" required="true" label="text" />
+                        </p:inplace>
+                        
+                        <h:outputLabel for="ajaxTipo" value="Tipo Sitio:" style="font-weight: bold" />
+                        <p:inplace id="ajaxTipo" editor="true">
+                            <p:inputText value="#{sitioBean.tipo}" required="true" label="text" />
+                        </p:inplace>
+                        
+                        <h:outputLabel value="Estado Prueba:" style="font-weight: bold" />
+                        <p:selectOneMenu  value="#{sitioBean.selectedUsuario.estadoprueba.codigo}">
+                            <f:selectItem itemLabel="- Seleccione -" itemValue="" />
+                            <f:selectItems value="#{estadoPruebaBean.selectOneItemEstadoPrueba}" />
+                        </p:selectOneMenu>
+                        
+                        <p:outputLabel for="datetime" value="Fecha Evaluacion:" style="font-weight: bold" />
+                        <p:calendar id="datetime" value="#{sitioBean.dateEvaluacion}" pattern="MM/dd/yyyy HH:mm:ss" />
+                        
+                        <!--<h:outputLabel for="image" value="Imagen Sitio:" style="font-weight: bold"/>
+                        <p:inplace id="image" label="Show" effect="slide">
+                            <p:graphicImage name="/images/sitios/google.png" style="width:100%;" />
+                        </p:inplace>-->
+                       
+                        <h:outputLabel value="Imagen:" style="font-weight: bold" />
+                        <h:panelGroup>
+                            <p:fileUpload fileUploadListener="#{sitioBean.subirImagen}" mode="advanced" dragDropSupport="false"
+                            update="graImageSitio" sizeLimit="100000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                            <p:graphicImage cache="false" id="graImageSitio" value="#{sitioBean.imagenProducto}" width="150" height="120"/>                       
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
