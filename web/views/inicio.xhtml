@@ -1,17 +1,20 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
 
     <body>
 
         <ui:composition template="./template.xhtml">
             <ui:define name="content">
-                <h3>Evaluacion Heuristica</h3>
-               La evaluación heurística es un análisis de experto en el cual se hace una inspección 
-               minuciosa a interfaces o sistemas con el fin de determinar si cada uno de sus elementos 
-               se adhieren o no a los principios de usabilidad, diseño o arquitectura de informaición 
-               comúnmente aceptados en sus respectivas disciplinas.
+                <p:outputPanel deferred="true">
+                    <h3>Evaluacion Heuristica</h3>
+                    <p> La evaluación heurística es un análisis de experto en el cual se hace una inspección 
+                        minuciosa a interfaces o sistemas con el fin de determinar si cada uno de sus elementos 
+                        se adhieren o no a los principios de usabilidad, diseño o arquitectura de informaición 
+                        comúnmente aceptados en sus respectivas disciplinas.</p>
+                </p:outputPanel>
             </ui:define>
         </ui:composition>
 
