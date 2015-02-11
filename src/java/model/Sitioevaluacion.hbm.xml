@@ -26,6 +26,9 @@
         <property name="rutaImagen" type="binary">
             <column name="rutaImagen" />
         </property>
+         <property name="nombreImagen" type="string">
+            <column name="nombreImagen" length="45" />
+        </property>
         <set name="usuarioHasSitioevaluacions" table="usuario_has_sitioevaluacion" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="sitioevaluacion_codigo" not-null="true" />

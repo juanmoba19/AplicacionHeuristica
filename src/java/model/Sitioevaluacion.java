@@ -23,6 +23,7 @@ public class Sitioevaluacion  implements java.io.Serializable {
      private Set criteriohijoHasSitioevaluacions = new HashSet(0);
      @Lob()
      private byte[] rutaImagen;
+     private String nombreImagen;
 
     public Sitioevaluacion() {
         this.codigo = 0;
@@ -106,6 +107,14 @@ public class Sitioevaluacion  implements java.io.Serializable {
 
     public void setRutaImagen(byte[] rutaImagen) {
         this.rutaImagen = rutaImagen;
+    }
+
+    public String getNombreImagen() {
+        return nombreImagen;
+    }
+
+    public void setNombreImagen(String nombreImagen) {
+        this.nombreImagen = nombreImagen;
     }
 
 

@@ -73,6 +73,12 @@
     function limpiarComentario() {
          document.getElementById("formDejarComentario:txtComentario").value ='';
     }
+    
+    function handleSitioRequest(xhr, status, args){
+        if(args.isRuta){
+            location.href = args.ruta;
+        }
+    }
         </script>
 
     </h:body>

@@ -51,3 +51,19 @@ a:link:hover, a:visited:hover  {
     background-image: url(../images/verMas.jpg);
     width: 50%;
 }
+
+.buttons span{
+    padding: 4px 4px 4px 4px !important;
+}
+.buttons button{
+    margin-left: 3px !important;
+    margin-right: 3px !important;
+}
+
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight{
+   background: #848484;
+}
+
+.ui-chkbox .ui-chkbox-box{
+    background: #F2F2F2;
+}

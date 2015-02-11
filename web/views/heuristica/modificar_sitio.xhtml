@@ -19,27 +19,27 @@
                                        
                                        bold" />
                         <p:inplace id="ajaxNombre" editor="true">
-                            <p:inputText value="#{sitioBean.selectedSitio.nombre}" required="true" label="text" />
+                            <p:inputText value="#{sitioModificarBean.selectedSitio.nombre}" required="true" label="text" />
                         </p:inplace>
 
                         <h:outputLabel for="ajaxUrl" value="Url:" style="font-weight: bold" />
                         <p:inplace id="ajaxUrl" editor="true">
-                            <p:inputText value="#{sitioBean.selectedSitio.url}" required="true" label="text" />
+                            <p:inputText value="#{sitioModificarBean.selectedSitio.url}" required="true" label="text" />
                         </p:inplace>
                         
                         <h:outputLabel for="ajaxTipo" value="Tipo Sitio:" style="font-weight: bold" />
                         <p:inplace id="ajaxTipo" editor="true">
-                            <p:inputText value="#{sitioBean.selectedSitio.tipo}" required="true" label="text" />
+                            <p:inputText value="#{sitioModificarBean.selectedSitio.tipo}" required="true" label="text" />
                         </p:inplace>
                         
                         <h:outputLabel value="Estado Prueba:" style="font-weight: bold" />
-                        <p:selectOneMenu  value="#{sitioBean.selectedSitio.estadoprueba.codigo}">
+                        <p:selectOneMenu  value="#{sitioModificarBean.selectedSitio.estadoprueba.codigo}">
                             <f:selectItem itemLabel="- Seleccione -" itemValue="" />
                             <f:selectItems value="#{estadoPruebaBean.selectOneItemEstadoPrueba}" />
                         </p:selectOneMenu>
                         
                         <p:outputLabel for="datetime" value="Fecha Evaluacion:" style="font-weight: bold" />
-                        <p:calendar id="datetime" value="#{sitioBean.selectedSitio.fechaEvaluacion}" pattern="MM/dd/yyyy HH:mm:ss" />
+                        <p:calendar id="datetime" value="#{sitioModificarBean.selectedSitio.fechaEvaluacion}" pattern="MM/dd/yyyy HH:mm:ss" />
                         
                         <!--<h:outputLabel for="image" value="Imagen Sitio:" style="font-weight: bold"/>
                         <p:inplace id="image" label="Show" effect="slide">
@@ -48,12 +48,12 @@
                        
                         <h:outputLabel value="Imagen:" style="font-weight: bold" />
                         <h:panelGroup>
-                            <p:fileUpload fileUploadListener="#{sitioBean.subirImagen}" mode="advanced" dragDropSupport="false"
+                            <p:fileUpload fileUploadListener="#{sitioModificarBean.subirImagen}" mode="advanced" dragDropSupport="false"
                             update="graImageSitio" sizeLimit="100000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
-                            <p:graphicImage cache="false" id="graImageSitio" value="#{sitioBean.imagenProducto}" width="150" height="120"/>                       
+                            <p:graphicImage cache="false" id="graImageSitio" value="#{sitioModificarBean.imagenProducto}" width="450" height="360"/>                       
                         </h:panelGroup>
                         <f:facet name="footer">
-                            <p:commandButton id="btnCreateAceptar" update=":msgs" actionListener="#{sitioBean.btnCreateSitio(actionEvent)}" icon="ui-icon-check" title="Guardar" value="Crear"/>                            
+                            <p:commandButton id="btnCreateAceptar" update=":msgs" actionListener="#{sitioModificarBean.btnCreateSitio(actionEvent)}" icon="ui-icon-check" title="Guardar" value="Modificar"/>                            
                         </f:facet>
                     </h:panelGrid>
                 </h:form>

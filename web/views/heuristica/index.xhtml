@@ -7,11 +7,11 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       >
-   <f:view  xmlns:c="http://java.sun.com/jsp/jstl/core"
-   xmlns:f="http://java.sun.com/jsf/core"
-   xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-   xmlns:h="http://java.sun.com/jsf/html"
-   xmlns="http://www.w3.org/1999/xhtml"></f:view>
+    <f:view  xmlns:c="http://java.sun.com/jsp/jstl/core"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns="http://www.w3.org/1999/xhtml"></f:view>
 
     <body>
 
@@ -19,94 +19,131 @@
 
             <ui:define name="content">
                 <h:form id="formSitios" style="margin-top: 15px"> 
-                    
-                <p:dataTable id="sitios" var="sitios" value="#{heuristicaBean.sitios}"
-                     paginator="true" rows="10" paginatorPosition="bottom"
-                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-                    <f:facet name="header">
-                          Listado Sitios (Evaluacion Heuristica)
-                    </f:facet>
-                    <p:column headerText="Nombre">
-                        <h:outputText value="#{sitios.nombre}" />
-                    </p:column>
 
-                    <p:column headerText="URL">
-                        <h:outputText value="#{sitios.url}" />
-                    </p:column>
+                    <p:dataTable id="sitios" var="sitios" value="#{heuristicaBean.sitios}"
+                                 paginator="true" rows="10" paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                        <f:facet name="header">
+                            Listado Sitios (Evaluacion Heuristica)
+                        </f:facet>
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{sitios.nombre}" />
+                        </p:column>
 
-                    <p:column headerText="Tipo">
-                        <h:outputText value="#{sitios.tipo}" />
-                    </p:column>
+                        <p:column headerText="URL">
+                            <h:outputText value="#{sitios.url}" />
+                        </p:column>
 
-                    <p:column headerText="Fecha Evaluacion">
-                        <h:outputText value="#{sitios.fechaEvaluacion}" />
-                    </p:column>
-                    
-                    <p:column headerText="Estado Prueba">
-                        <h:outputText value="#{sitios.estadoprueba.descripcion}" />
-                    </p:column>
-                    
-                    <p:column  headerText="Acción" style="text-align: center">                        
-                        <p:commandButton style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD;" id="btnEjecutarHeuristica" update=":formEjecutarEval" oncomplete="PF('dialogEjecutarEval').show()" title="Ejecutar" value="Ejecutar">
-                            <f:setPropertyActionListener value="#{sitios}" target="#{heuristicaBean.selectedSitioEvaluacion}" />
-                        </p:commandButton>
-                        
-                    </p:column>
-                    
-                </p:dataTable>
-               </h:form>
-                 
+                        <p:column headerText="Tipo">
+                            <h:outputText value="#{sitios.tipo}" />
+                        </p:column>
+
+                        <p:column headerText="Fecha Evaluacion">
+                            <h:outputText value="#{sitios.fechaEvaluacion}" />
+                        </p:column>
+
+                        <p:column headerText="Estado Prueba">
+                            <h:outputText value="#{sitios.estadoprueba.descripcion}" />
+                        </p:column>
+
+                        <p:column id="action"  headerText="Acción" >
+                            <div class="buttons" align="center" style="margin-top: 6px">
+                                <p:commandButton style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; margin-bottom:6px; font-size: 80%" id="btnPlanearHeuristica" update=":formPlanearEval" oncomplete="PF('dialogPlanearEval').show()" title="Planear" value="Planear" rendered="#{sitios.estadoprueba.codigo eq '1'}">
+                                    <f:setPropertyActionListener value="#{sitios}" target="#{heuristicaBean.selectedSitioEvaluacion}" />
+                                </p:commandButton>
+
+                                <p:commandButton style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; margin-bottom:6px; font-size: 80%" id="btnEjecutarHeuristica" update=":formEjecutarEval" oncomplete="PF('dialogEjecutarEval').show()" title="Ejecutar" value="Ejecutar" rendered="#{sitios.estadoprueba.codigo eq '2'}">
+                                    <f:setPropertyActionListener value="#{sitios}" target="#{heuristicaBean.selectedSitioEvaluacion}" />
+                                </p:commandButton>
+
+                                <p:commandButton  style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; font-size: 80%;"  actionListener="#{sitioModificarBean.seguirSitio(event)}"
+                                                  oncomplete="handleSitioRequest(xhr, status, args)" value="Editar" >
+
+                                    <f:setPropertyActionListener value="#{sitios}" target="#{sitioModificarBean.selectedSitio}" />
+                                </p:commandButton> 
+                            </div>
+
+                        </p:column>
+
+                    </p:dataTable>
+                </h:form>
+
                 <h:form id="formEjecutarEval">
                     <p:dialog header="Sitio: #{heuristicaBean.selectedSitioEvaluacion.nombre} - URL: #{heuristicaBean.selectedSitioEvaluacion.url}" widgetVar="dialogEjecutarEval" id="dlgEjecutarEval"  showEffect="fade" hideEffect="explode" resizable="false" modal="true">
                         <p:dataList value="#{heuristicaBean.criteriosHijosSitio}" var="criteriosHijo" type="unordered" itemType="none" paginator="true" rows="3" styleClass="paginated" paginatorPosition="bottom">
-                            
-                     <p:growl id="msgs" />
+
+                            <p:growl id="msgs" />
                             <f:facet name="header">
                                 Ejecucion Prueba Heuristica
                             </f:facet>
-                     
-                    
-                     <h:panelGrid columns="2" cellpadding="5">
+
+
+                            <h:panelGrid columns="2" cellpadding="5">
                                 <h:outputText value="Criterio Padre: " style="font-weight: bold" />
                                 <h:outputText value="#{criteriosHijo.criteriopadre.nombre}" />
 
                                 <h:outputText value="Criterio Hijo: " style="font-weight: bold" />
                                 <h:outputText value="#{criteriosHijo.criteriohijo.descripcion}" />
-                                                                
-                                 <p:outputLabel for="country" value="Puntaje " style="font-weight: bold" />
-                                 
-                                 
-                                 <p:selectOneMenu id="country" style="width:150px" value="#{empty criteriosHijo.puntuacion.escala ? heuristicaBean.puntaje : criteriosHijo.puntuacion.escala }">
-                                     <p:ajax listener="#{heuristicaBean.fijarPuntuacion}"/>
-                                     <f:selectItem itemLabel="Seleccionar Puntaje" itemValue="" noSelectionOption="true" />
-                                     <f:selectItems value="#{heuristicaBean.puntajes}" />
-                                 </p:selectOneMenu>
-                                 
-                                 <c:set value="#{criteriosHijo.puntuacion.escala}" var="puntuacion" />
-                                
-                                 
-                                
-                                 <h:outputText value="Evaluado: " style="font-weight: bold"/>
-                                 <p:selectBooleanButton value="#{empty criteriosHijo.puntuacion.escala ? heuristicaBean.value2 : true}" onLabel="Si" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px;" >                                    
-                                     <p:ajax update="msgs" listener="#{heuristicaBean.addMessage(criteriosHijo.criteriohijo.codigo,criteriosHijo.sitioevaluacion.codigo)}" />
-                                 </p:selectBooleanButton>    
-                                 
-                                </h:panelGrid>
+
+                                <p:outputLabel for="country" value="Puntaje " style="font-weight: bold" />
+
+                                <p:selectOneMenu id="country" style="width:150px" value="#{empty criteriosHijo.puntuacion.escala ? heuristicaBean.puntaje : criteriosHijo.puntuacion.escala }">
+                                    <p:ajax listener="#{heuristicaBean.fijarPuntuacion}"/>
+                                    <f:selectItem itemLabel="Seleccionar Puntaje" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{heuristicaBean.puntajes}" />
+                                </p:selectOneMenu>
+
+                                <c:set value="#{criteriosHijo.puntuacion.escala}" var="puntuacion" />
+
+                                <h:outputText value="Evaluado: " style="font-weight: bold"/>
+                                <p:selectBooleanButton id="botonBoolean" value="#{empty criteriosHijo.puntuacion.escala ? heuristicaBean.value2 : true}" onLabel="Si" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px;" disabled="#{empty criteriosHijo.puntuacion.escala ? false:true}" >                                    
+                                    <p:ajax update="msgs" listener="#{heuristicaBean.addMessage(criteriosHijo.criteriohijo.codigo,criteriosHijo.sitioevaluacion.codigo)}" />
+                                </p:selectBooleanButton>    
+
+                            </h:panelGrid>
                             <p:separator style="width: 90%" />
-                            
+
                         </p:dataList>
                     </p:dialog>                  
                 </h:form>
-                
-                                
+
+                <h:form id="formPlanearEval">                     
+                    <p:dialog header="Sitio: #{heuristicaBean.selectedSitioEvaluacion.nombre} - URL: #{heuristicaBean.selectedSitioEvaluacion.url}" widgetVar="dialogPlanearEval" id="dlgPlanearEval"  showEffect="fade" hideEffect="explode" resizable="false" modal="true">                        
+                        <h4 style="margin-top:0">Planeacion de la prueba Heuristica</h4>
+                        <p:tabView>                            
+                            <p:tab title="Agregar Heuristicas">
+                                <p:scrollPanel style="width:550px;height:300px;" >                                    
+                                    <p:dataList value="#{heuristicaBean.listaCriteriosPadre}" var="criterioPadre" type="unordered" itemType="none">
+                                        <p:growl id="msgs" />                    
+                                        <f:facet name="header">
+                                            Criterios Padre <span style="float: right">Elegir</span>
+                                        </f:facet>
+                                        <h:panelGrid columns="2" cellpadding="15">                                            
+                                            <div style="margin-left: -29px" align="justify">
+                                                <span style="font-weight:bold">${criterioPadre.nombre}:</span> ${criterioPadre.descripcion}
+                                            </div>
+                                            <p:selectBooleanCheckbox value="#{heuristicaBean.value3}">
+                                                <p:ajax update="msgs" listener="#{heuristicaBean.addMessage1(criterioPadre.codigo)}" />
+                                            </p:selectBooleanCheckbox>
+                                        </h:panelGrid>
+                                    </p:dataList>
+                                    <p:commandButton id="btnAgregarCriterioPadre" update=":formSitios" actionListener="#{heuristicaBean.agregarCriteriosPadres}" icon="ui-icon-check" title="Agregar" value="Agregar" oncomplete="PF('dialogPlanearEval').hide()"/>
+                                </p:scrollPanel>
+                            </p:tab>
+                            <p:tab title="Crear Heuristica">
+                                <h:panelGrid columns="2" cellpadding="10">
+                                    <p:graphicImage name="demo/images/godfather/godfather2.jpg" />
+                                    <h:outputText value="Francis Ford Coppola's legendary..." />
+                                </h:panelGrid>
+                            </p:tab>
+                        </p:tabView>
+                    </p:dialog>                  
+                </h:form>
+
             </ui:define>
 
         </ui:composition>
 
     </body>
-    
+
 </html>
-
-
-
-

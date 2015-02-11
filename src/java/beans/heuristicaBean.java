@@ -9,23 +9,27 @@ package beans;
 import dao.HeuristicaDao;
 import dao.HeuristicaDaoImpl;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
+import model.Criteriohijo;
 import model.CriteriohijoHasSitioevaluacion;
 import model.Criteriopadre;
 import model.Sitioevaluacion;
+import model.Usuario;
+import org.hibernate.Session;
+import util.HibernateUtil;
 
 /**
  *
@@ -39,9 +43,14 @@ public class heuristicaBean implements Serializable{
     private Sitioevaluacion selectedSitioEvaluacion;
     private List<CriteriohijoHasSitioevaluacion> criteriosHijosSitio;
     private Map<String,Integer> puntajes;
+    private List<Criteriopadre> listaCriteriosPadre;
     private Integer puntaje;
     private boolean value2;
     private boolean value1;
+    // booleano para el selectBoolean de los criterios padres
+    private boolean value3;
+    // Lista para guardar los codigos de los criterios padres que se anexaran 
+    private List<Integer> codigosCriteriopadre;
     
     public List<CriteriohijoHasSitioevaluacion> getCriteriosHijosSitio(){
         
@@ -66,6 +75,7 @@ public class heuristicaBean implements Serializable{
      */
     public heuristicaBean() {
         
+        this.codigosCriteriopadre = new ArrayList<Integer>();
         this.sitios = new ArrayList<Sitioevaluacion>();
         this.selectedSitioEvaluacion = new Sitioevaluacion();
         puntajes = new HashMap<String,Integer>();       
@@ -158,10 +168,92 @@ public class heuristicaBean implements Serializable{
         this.value1 = value1;
     }
     
-    
-    
     public void process (AjaxBehaviorEvent event){
         this.value2 = this.value1;
     }
+
+    public List<Criteriopadre> getListaCriteriosPadre() {
+       HeuristicaDao heuristicaDao = new HeuristicaDaoImpl();
+        this.listaCriteriosPadre = heuristicaDao.findAllCriteriosPadre();
+        return listaCriteriosPadre;
+    }
+
+    public void setListaCriteriosPadre(List<Criteriopadre> listaCriteriosPadre) {
+        this.listaCriteriosPadre = listaCriteriosPadre;
+    }
+
+    public boolean isValue3() {
+        return value3;
+    }
+
+    public void setValue3(boolean value3) {
+        this.value3 = value3;
+    }
+    /**
+     * Mensaje para cuadno se adicione un criterio padre a la prueba heuristica
+     */
+    public void addMessage1(Integer codigoCriterioPadre) {
+        String summary = value3 ? "Checked" : "Unchecked";
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));
+        if(value3){
+            codigosCriteriopadre.add(codigoCriterioPadre);
+        }else{
+            for(int i=0; i < codigosCriteriopadre.size();i++){
+                if(codigosCriteriopadre.get(i)==codigoCriterioPadre){
+                    codigosCriteriopadre.remove(i);
+                    break;
+                }
+                    
+            }
+        }
+    }
+
+    public List<Integer> getCodigosCriteriopadre() {
+        return codigosCriteriopadre;
+    }
+
+    public void setCodigosCriteriopadre(List<Integer> codigosCriteriopadre) {
+        this.codigosCriteriopadre = codigosCriteriopadre;
+    }
+    
+    public void agregarCriteriosPadres() throws ParseException{
+        
+        String msg;
+        HeuristicaDao heuristicaDao = new HeuristicaDaoImpl();
+        //int idSitioEvaluacion = this.selectedSitioEvaluacion.getCodigo();
+                
+       //SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+       // Date date = new Date();
+       // String hoy = sdf.format(date);
+       // Date actual = sdf.parse(hoy);
+        //this.comentario.setFecha(actual);
+       // Sitioevaluacion sitioevaluacion = (Sitioevaluacion) session.load(Sitioevaluacion.class, idSitioEvaluacion);
+        
+        // agregar los datos a la clase CriteriohijoHasSitioevaluacion
+        
+        for (Integer criterioPadre : this.codigosCriteriopadre) {
+            List<Integer> criteriosHijos = heuristicaDao.obtenerIdsCriteriosHijos(criterioPadre);
+            for (Integer criterioHijo : criteriosHijos) {
+                
+                if (heuristicaDao.insertarCriteriosSitio(criterioHijo,this.selectedSitioEvaluacion.getCodigo(),criterioPadre)) {
+                   
+                } else {
+                   msg = "Error al agregar los Criterios al Sitio";
+                   FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
+                   break;
+                }
+            }
+            
+        }
+        if (heuristicaDao.updateEstadoSitio(this.selectedSitioEvaluacion.getCodigo(), 2)){
+            msg = "Se han agregado los Criterios y cambiado el estado al Sitio exitosamente";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
+        }else{
+            msg = "Error al cambiar esl estado del Sitio";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
+        }
+       
+    }
+    
   
 }
