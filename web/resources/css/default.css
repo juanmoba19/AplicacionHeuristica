@@ -67,3 +67,7 @@ a:link:hover, a:visited:hover  {
 .ui-chkbox .ui-chkbox-box{
     background: #F2F2F2;
 }
+.ui-dialog-ejecutar {
+   width:80% !important;
+   height: 95% !important;
+}

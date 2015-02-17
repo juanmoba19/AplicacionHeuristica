@@ -24,7 +24,7 @@ public interface HeuristicaDao {
     public boolean create (Sitioevaluacion sitio);
     public boolean update (Sitioevaluacion sitio);
     public boolean delete (Sitioevaluacion sitio);
-    public boolean updateCriterioSitio(Integer puntuacion, Integer criterioHijo, Integer sitioEvaluacion);
+    public boolean updateCriterioSitio(Integer puntuacion, Integer criterioHijo, Integer sitioEvaluacion, String comentario);
     public List<Criteriopadre> findAllCriteriosPadre();
     public List<Integer> obtenerIdsCriteriosHijos(Integer idCriterioPadre);
     public boolean insertarCriteriosSitio(Integer codigoHijo, Integer codigoSitio, Integer padre);

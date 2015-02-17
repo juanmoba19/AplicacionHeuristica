@@ -7,6 +7,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       >
+    
     <f:view  xmlns:c="http://java.sun.com/jsp/jstl/core"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:fn="http://java.sun.com/jsp/jstl/functions"
@@ -52,7 +53,8 @@
                                     <f:setPropertyActionListener value="#{sitios}" target="#{heuristicaBean.selectedSitioEvaluacion}" />
                                 </p:commandButton>
 
-                                <p:commandButton style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; margin-bottom:6px; font-size: 80%" id="btnEjecutarHeuristica" update=":formEjecutarEval" oncomplete="PF('dialogEjecutarEval').show()" title="Ejecutar" value="Ejecutar" rendered="#{sitios.estadoprueba.codigo eq '2'}">
+                                <p:commandButton style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; margin-bottom:6px; font-size: 80%" id="btnEjecutarHeuristica" oncomplete="handleSitioRequest(xhr, status, args)" title="Ejecutar" value="Ejecutar" rendered="#{sitios.estadoprueba.codigo eq '2'}"
+                                                 actionListener="#{heuristicaBean.ejecutarHeuristica(event)}">
                                     <f:setPropertyActionListener value="#{sitios}" target="#{heuristicaBean.selectedSitioEvaluacion}" />
                                 </p:commandButton>
 
@@ -69,7 +71,7 @@
                 </h:form>
 
                 <h:form id="formEjecutarEval">
-                    <p:dialog header="Sitio: #{heuristicaBean.selectedSitioEvaluacion.nombre} - URL: #{heuristicaBean.selectedSitioEvaluacion.url}" widgetVar="dialogEjecutarEval" id="dlgEjecutarEval"  showEffect="fade" hideEffect="explode" resizable="false" modal="true">
+                    <p:dialog header="Sitio: #{heuristicaBean.selectedSitioEvaluacion.nombre} - URL: #{heuristicaBean.selectedSitioEvaluacion.url}" widgetVar="dialogEjecutarEval" id="dlgEjecutarEval"  showEffect="fade" hideEffect="explode" resizable="false" modal="true" >
                         <p:dataList value="#{heuristicaBean.criteriosHijosSitio}" var="criteriosHijo" type="unordered" itemType="none" paginator="true" rows="3" styleClass="paginated" paginatorPosition="bottom">
 
                             <p:growl id="msgs" />
@@ -107,10 +109,12 @@
                     </p:dialog>                  
                 </h:form>
 
-                <h:form id="formPlanearEval">                     
+                <h:form id="formPlanearEval"> 
                     <p:dialog header="Sitio: #{heuristicaBean.selectedSitioEvaluacion.nombre} - URL: #{heuristicaBean.selectedSitioEvaluacion.url}" widgetVar="dialogPlanearEval" id="dlgPlanearEval"  showEffect="fade" hideEffect="explode" resizable="false" modal="true">                        
+                        <p:ajax listener="#{heuristicaBean.inicializarProgress()}" />
                         <h4 style="margin-top:0">Planeacion de la prueba Heuristica</h4>
-                        <p:tabView>                            
+                        <p:tabView>  
+                            <p:growl id="growl" />
                             <p:tab title="Agregar Heuristicas">
                                 <p:scrollPanel style="width:550px;height:300px;" >                                    
                                     <p:dataList value="#{heuristicaBean.listaCriteriosPadre}" var="criterioPadre" type="unordered" itemType="none">
@@ -127,13 +131,19 @@
                                             </p:selectBooleanCheckbox>
                                         </h:panelGrid>
                                     </p:dataList>
-                                    <p:commandButton id="btnAgregarCriterioPadre" update=":formSitios" actionListener="#{heuristicaBean.agregarCriteriosPadres}" icon="ui-icon-check" title="Agregar" value="Agregar" oncomplete="PF('dialogPlanearEval').hide()"/>
+                                    <p:commandButton id="btnAgregarCriterioPadre" update=":formSitios" actionListener="#{heuristicaBean.agregarCriteriosPadres}" icon="ui-icon-check" title="Agregar" value="Agregar" onclick="PF('pbAjax').start();"/>
+                                    <p:progressBar widgetVar="pbAjax" ajax="true" value="#{heuristicaBean.progress}" labelTemplate="{value}%" styleClass="animated" global="false">
+                                        <p:ajax event="complete" listener="#{heuristicaBean.onComplete}" update="growl" oncomplete="PF('dialogPlanearEval').hide()"/>
+                                    </p:progressBar>
+                                    
                                 </p:scrollPanel>
                             </p:tab>
-                            <p:tab title="Crear Heuristica">
-                                <h:panelGrid columns="2" cellpadding="10">
-                                    <p:graphicImage name="demo/images/godfather/godfather2.jpg" />
-                                    <h:outputText value="Francis Ford Coppola's legendary..." />
+                            <p:tab title="Asignar Evaluadores">
+                                <h:panelGrid columns="2" style="margin-bottom:10px;" cellpadding="15">
+                                    <h:outputText value="Usuarios: " />
+                                    <p:selectManyCheckbox id="usuarios" value="#{heuristicaBean.selectedUsuario}" layout="grid" columns="3" >
+                                        <f:selectItems value="#{heuristicaBean.nomUsuarios}" var="city" itemLabel="#{city}" itemValue="#{city}" />
+                                    </p:selectManyCheckbox>
                                 </h:panelGrid>
                             </p:tab>
                         </p:tabView>

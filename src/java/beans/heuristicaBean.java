@@ -8,11 +8,11 @@ package beans;
 
 import dao.HeuristicaDao;
 import dao.HeuristicaDaoImpl;
+import dao.UsuarioDao;
+import dao.UsuarioDaoImpl;
 import java.io.Serializable;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -22,14 +22,14 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
-import model.Criteriohijo;
 import model.CriteriohijoHasSitioevaluacion;
 import model.Criteriopadre;
 import model.Sitioevaluacion;
 import model.Usuario;
-import org.hibernate.Session;
-import util.HibernateUtil;
+import org.primefaces.context.RequestContext;
+import util.MyUtil;
 
 /**
  *
@@ -51,6 +51,14 @@ public class heuristicaBean implements Serializable{
     private boolean value3;
     // Lista para guardar los codigos de los criterios padres que se anexaran 
     private List<Integer> codigosCriteriopadre;
+    private String comentarioCriterioSitio;
+    // Lista de todos los usuarios
+    private List<Usuario> usuarios;
+    // Nombre de los usuarios para mostrar en el checkbox
+    private HashMap<Integer,String> nomUsuarios;
+    // Arreglo de los nombres seleccionados
+    private String [] selectedUsuario;
+    
     
     public List<CriteriohijoHasSitioevaluacion> getCriteriosHijosSitio(){
         
@@ -97,11 +105,16 @@ public class heuristicaBean implements Serializable{
             ), arrayOrdenado[i]);
         }
         this.puntajes = mapResultado;
+        this.progress = 0;
         
     }
 
     public Sitioevaluacion getSelectedSitioEvaluacion() {
+        this.puntaje = null;
+        this.value2 = false;
+        this.progress = 15;
         return selectedSitioEvaluacion;
+        
     }
 
     public void setSelectedSitioEvaluacion(Sitioevaluacion selectedSitioEvaluacion) {
@@ -137,8 +150,8 @@ public class heuristicaBean implements Serializable{
     }
     
 
-    public void addMessage(Integer codigoHijo,Integer codigoSitio) {
-       
+    public void addMessage(Integer codigoHijo,Integer codigoSitio, String cometario) {
+       cometario = this.comentarioCriterioSitio;
        if(this.puntaje == null){
               String summary =  "Por favor elegir un puntaje valido";
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));
@@ -148,11 +161,11 @@ public class heuristicaBean implements Serializable{
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));
         HeuristicaDao heuristicaDao = new HeuristicaDaoImpl();
         if(this.value2)
-        heuristicaDao.updateCriterioSitio(this.puntaje, codigoHijo, codigoSitio);
+        heuristicaDao.updateCriterioSitio(this.puntaje, codigoHijo, codigoSitio, this.comentarioCriterioSitio);
         else
-        heuristicaDao.updateCriterioSitio(null, codigoHijo, codigoSitio);
+        heuristicaDao.updateCriterioSitio(null, codigoHijo, codigoSitio, null);
         }        
-       
+       this.comentarioCriterioSitio = null;
     }
     
     public boolean fijarValue2(boolean value2){
@@ -245,6 +258,7 @@ public class heuristicaBean implements Serializable{
             }
             
         }
+        this.value3 = false;
         if (heuristicaDao.updateEstadoSitio(this.selectedSitioEvaluacion.getCodigo(), 2)){
             msg = "Se han agregado los Criterios y cambiado el estado al Sitio exitosamente";
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
@@ -255,5 +269,104 @@ public class heuristicaBean implements Serializable{
        
     }
     
+    public void ejecutarHeuristica(ActionEvent event){
+         RequestContext context = RequestContext.getCurrentInstance();
+         boolean isRuta;
+         String ruta = "";
+         
+         Sitioevaluacion sitioevaluacion = this.selectedSitioEvaluacion;
+         if (sitioevaluacion != null){
+             isRuta = true;
+             ruta = MyUtil.basepathlogin()+"views/heuristica/ejecucion_prueba.xhtml";
+         }else{
+             isRuta = false;
+             if (this.selectedSitioEvaluacion == null ){
+                 this.selectedSitioEvaluacion = new Sitioevaluacion();
+             }
+         }
+        context.addCallbackParam("isRuta", isRuta);
+        context.addCallbackParam("ruta", ruta);   
+    }
+
+    public String getComentarioCriterioSitio() {
+        return comentarioCriterioSitio;
+    }
+
+    public void setComentarioCriterioSitio(String comentarioCriterioSitio) {
+        this.comentarioCriterioSitio = comentarioCriterioSitio;
+    }
+    
+    private Integer progress;
+ 
+    public Integer getProgress() {
+        if(progress == null) {
+            progress = 0;
+        }
+        else {
+            progress = progress + (int)(Math.random() * 40);
+             
+            if(progress > 100)
+                progress = 100;
+        }
+         
+        return progress;
+    }
+ 
+    public void setProgress(Integer progress) {
+        this.progress = progress;
+    }
+     
+    public void onComplete() {
+        this.progress= 0;
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Progress Completed"));
+    }
+    
+    public void inicializarProgress(){
+        this.progress = 5;
+    }
+    
+    public List<Usuario> getUsuarios() {
+        
+        UsuarioDao usuarioDao = new UsuarioDaoImpl();
+        this.usuarios = usuarioDao.findAll();
+        return usuarios;
+    }
+
+    public void setCriteriosHijosSitio(List<CriteriohijoHasSitioevaluacion> criteriosHijosSitio) {
+        this.criteriosHijosSitio = criteriosHijosSitio;
+    }
+
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
+    }
+
+    public HashMap<Integer,String> getNomUsuarios() {
+        llenarListaCheckbox();
+        return nomUsuarios;
+    }
+
+    public void setNomUsuarios(HashMap<Integer,String> nomUsuarios) {
+        this.nomUsuarios = nomUsuarios;
+    }
+    
+    public void llenarListaCheckbox(){
+        nomUsuarios = new HashMap<Integer,String>();
+        List<Usuario> usuarios = getUsuarios();
+        
+        for(Usuario usuario : usuarios){
+            nomUsuarios.put(usuario.getId(),usuario.getUsuario());
+        }
+        
+    }
+
+    public String[] getSelectedUsuario() {
+        return selectedUsuario;
+    }
+
+    public void setSelectedUsuario(String[] selectedUsuario) {
+        this.selectedUsuario = selectedUsuario;
+    }
+    
+    
   
-}
+} 

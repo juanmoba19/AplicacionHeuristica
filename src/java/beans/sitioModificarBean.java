@@ -124,9 +124,7 @@ public class sitioModificarBean implements Serializable{
              }
          }
         context.addCallbackParam("isRuta", isRuta);
-        context.addCallbackParam("ruta", ruta);
-         
-         
+        context.addCallbackParam("ruta", ruta);   
     }
     
     

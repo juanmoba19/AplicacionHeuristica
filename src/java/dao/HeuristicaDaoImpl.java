@@ -87,7 +87,7 @@ public class HeuristicaDaoImpl implements HeuristicaDao{
     }
 
     @Override
-    public boolean updateCriterioSitio(Integer puntuacion, Integer criterioHijo, Integer sitioEvaluacion) {
+    public boolean updateCriterioSitio(Integer puntuacion, Integer criterioHijo, Integer sitioEvaluacion, String comentario) {
         
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         String hql="";
@@ -96,14 +96,15 @@ public class HeuristicaDaoImpl implements HeuristicaDao{
             
             session.beginTransaction();
             if (  puntuacion != null )
-            hql = "UPDATE CriteriohijoHasSitioevaluacion set puntuacion_escala = :puntuacion where criteriohijo_codigo = :criterioHijo and sitioevaluacion_codigo = :sitioEvaluacion ";
+            hql = "UPDATE CriteriohijoHasSitioevaluacion set puntuacion_escala = :puntuacion, comentario = :comentario where criteriohijo_codigo = :criterioHijo and sitioevaluacion_codigo = :sitioEvaluacion ";
             else
-            hql = "UPDATE CriteriohijoHasSitioevaluacion set puntuacion_escala = null where criteriohijo_codigo = :criterioHijo and sitioevaluacion_codigo = :sitioEvaluacion ";                 
+            hql = "UPDATE CriteriohijoHasSitioevaluacion set puntuacion_escala = null, comentario = null where criteriohijo_codigo = :criterioHijo and sitioevaluacion_codigo = :sitioEvaluacion ";                 
             Query query = session.createQuery(hql);
             if ( puntuacion != null )
             query.setInteger("puntuacion", puntuacion);
             query.setInteger("criterioHijo", criterioHijo);
             query.setInteger("sitioEvaluacion", sitioEvaluacion);
+            query.setString("comentario", comentario);
             query.executeUpdate();
             session.beginTransaction().commit();
             
