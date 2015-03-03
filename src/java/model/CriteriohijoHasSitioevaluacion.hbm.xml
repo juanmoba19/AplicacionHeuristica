@@ -11,7 +11,13 @@
             <key-property name="sitioevaluacionCodigo" type="int">
                 <column name="sitioevaluacion_codigo" />
             </key-property>
+            <key-property name="usuarioId" type="int">
+                <column name="usuario_id" />
+            </key-property>
         </composite-id>
+        <many-to-one name="usuario" class="model.Usuario" update="false" insert="false" fetch="select">
+            <column name="usuario_id" not-null="true" />
+        </many-to-one>
         <many-to-one name="sitioevaluacion" class="model.Sitioevaluacion" update="false" insert="false" fetch="select">
             <column name="sitioevaluacion_codigo" not-null="true" />
         </many-to-one>
@@ -29,9 +35,6 @@
         </property>
         <property name="comentario" type="string">
             <column name="comentario" length="65535" />
-        </property>
-        <property name="usuario" type="string">
-            <column name="usuario" length="30" />
         </property>
     </class>
 </hibernate-mapping>

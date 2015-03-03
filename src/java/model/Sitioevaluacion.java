@@ -24,6 +24,7 @@ public class Sitioevaluacion  implements java.io.Serializable {
      @Lob()
      private byte[] rutaImagen;
      private String nombreImagen;
+     private Integer idUsuarioCreador;
 
     public Sitioevaluacion() {
         this.codigo = 0;
@@ -34,7 +35,7 @@ public class Sitioevaluacion  implements java.io.Serializable {
     public Sitioevaluacion(Estadoprueba estadoprueba) {
         this.estadoprueba = estadoprueba;
     }
-    public Sitioevaluacion(Estadoprueba estadoprueba, String nombre, String url, String tipo, Date fechaEvaluacion, Set usuarioHasSitioevaluacions, Set criteriohijoHasSitioevaluacions) {
+    public Sitioevaluacion(Estadoprueba estadoprueba, String nombre, String url, String tipo, Date fechaEvaluacion, Set usuarioHasSitioevaluacions, Set criteriohijoHasSitioevaluacions, Integer idUsuarioCreador) {
        this.estadoprueba = estadoprueba;
        this.nombre = nombre;
        this.url = url;
@@ -42,6 +43,7 @@ public class Sitioevaluacion  implements java.io.Serializable {
        this.fechaEvaluacion = fechaEvaluacion;
        this.usuarioHasSitioevaluacions = usuarioHasSitioevaluacions;
        this.criteriohijoHasSitioevaluacions = criteriohijoHasSitioevaluacions;
+       this.idUsuarioCreador = idUsuarioCreador;
     }
    
     public Integer getCodigo() {
@@ -117,6 +119,15 @@ public class Sitioevaluacion  implements java.io.Serializable {
         this.nombreImagen = nombreImagen;
     }
 
+    public Integer getIdUsuarioCreador() {
+        return idUsuarioCreador;
+    }
+
+    public void setIdUsuarioCreador(Integer idUsuarioCreador) {
+        this.idUsuarioCreador = idUsuarioCreador;
+    }
+
+    
 
 
 

@@ -6,8 +6,10 @@
 
 package dao;
 
+import javax.faces.context.FacesContext;
 import model.Post;
 import model.Sitioevaluacion;
+import model.Usuario;
 import org.hibernate.Session;
 import util.HibernateUtil;
 
@@ -20,6 +22,9 @@ public class SitioDaoImpl implements  SitioDao{
     @Override
     public boolean createSitio(Sitioevaluacion sitioEvaluacion) {
         boolean flag;
+        Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioObj"); 
+        Integer codigoUsuario = usuario.getId();
+        sitioEvaluacion.setIdUsuarioCreador(codigoUsuario);
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         try {
             session.beginTransaction();

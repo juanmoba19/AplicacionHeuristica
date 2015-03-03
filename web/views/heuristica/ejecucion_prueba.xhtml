@@ -12,6 +12,7 @@
         <ui:composition template="./../template.xhtml">
 
             <ui:define name="content">
+                <p:growl id="msgs" showDetail="true" /> 
                 <h:form id="formEjecutarEval">
                     
                         <p:dataList value="#{heuristicaBean.criteriosHijosSitio}" var="criteriosHijo" type="unordered" itemType="none" paginator="true" rows="6" styleClass="paginated" paginatorPosition="bottom">
@@ -52,7 +53,8 @@
                             </h:panelGrid>
                             <p:separator style="width: 90%" />
 
-                        </p:dataList>                 
+                        </p:dataList>
+                    <p:commandButton id="btnAnalisResultado" actionListener="#{heuristicaBean.ejecutarEvaluacionHeuristica}" icon="ui-icon-check" value="Analisis de Resultados" rendered="#{heuristicaBean.isDueñoSitio eq true}"/>                                                    
                 </h:form>
             </ui:define>
 

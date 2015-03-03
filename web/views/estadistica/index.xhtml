@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+       xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <body>
+
+        <ui:composition template="./../template.xhtml">
+
+            <ui:define name="content">
+                <h:form id="formSitiosEstadistica" style="margin-top: 15px"> 
+
+                    <p:dataTable id="sitios" var="sitios" value="#{heuristicaBean.getSitios(3)}"
+                                 paginator="true" rows="10" paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                        <f:facet name="header">
+                            Listado Sitios (Evaluacion Heuristica)
+                        </f:facet>
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{sitios.nombre}" />
+                        </p:column>
+
+                        <p:column headerText="URL">
+                            <h:outputText value="#{sitios.url}" />
+                        </p:column>
+
+                        <p:column headerText="Tipo">
+                            <h:outputText value="#{sitios.tipo}" />
+                        </p:column>
+
+                        <p:column headerText="Fecha Evaluacion">
+                            <h:outputText value="#{sitios.fechaEvaluacion}" />
+                        </p:column>
+
+                        <p:column headerText="Estado Prueba">
+                            <h:outputText value="#{sitios.estadoprueba.descripcion}" />
+                        </p:column>
+
+                    </p:dataTable>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

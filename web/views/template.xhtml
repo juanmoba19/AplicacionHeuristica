@@ -33,10 +33,14 @@
                         <p:menuitem value="Crear Foro" url="#{appBean.basePath}foro/index.xhtml" />
                         <p:menuitem value="Redo" url="#" icon="ui-icon-arrowreturnthick-1-e" />
                     </p:submenu>
-
+                    
                    <p:submenu label="Heuristica" icon="ui-icon-document">
                         <p:menuitem value="Lista Sitios" url="#{appBean.basePath}heuristica/index.xhtml" />
                         <p:menuitem value="Gestionar Sitios" url="#{appBean.basePath}heuristica/gestion_sitio.xhtml" />
+                    </p:submenu>
+                    
+                    <p:submenu label="Estadistica" icon="ui-icon-document">
+                        <p:menuitem value="Generar Reportes" url="#{appBean.basePath}estadistica/index.xhtml" />
                     </p:submenu>
 
                     <p:menuitem value="Salir" actionListener="#{loginBean.logout}" icon="ui-icon-close" oncomplete="handleLoginRequest(xhr, status, args)" />

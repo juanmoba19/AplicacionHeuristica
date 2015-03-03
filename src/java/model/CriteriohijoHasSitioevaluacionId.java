@@ -11,13 +11,15 @@ public class CriteriohijoHasSitioevaluacionId  implements java.io.Serializable {
 
      private int criteriohijoCodigo;
      private int sitioevaluacionCodigo;
+     private int usuarioId;
 
     public CriteriohijoHasSitioevaluacionId() {
     }
 
-    public CriteriohijoHasSitioevaluacionId(int criteriohijoCodigo, int sitioevaluacionCodigo) {
+    public CriteriohijoHasSitioevaluacionId(int criteriohijoCodigo, int sitioevaluacionCodigo, int usuarioId) {
        this.criteriohijoCodigo = criteriohijoCodigo;
        this.sitioevaluacionCodigo = sitioevaluacionCodigo;
+       this.usuarioId = usuarioId;
     }
    
     public int getCriteriohijoCodigo() {
@@ -35,6 +37,13 @@ public class CriteriohijoHasSitioevaluacionId  implements java.io.Serializable {
         this.sitioevaluacionCodigo = sitioevaluacionCodigo;
     }
 
+    public int getUsuarioId() {
+        return this.usuarioId;
+    }
+    
+    public void setUsuarioId(int usuarioId) {
+        this.usuarioId = usuarioId;
+    }
 
    public boolean equals(Object other) {
          if ( (this == other ) ) return true;
@@ -43,7 +52,8 @@ public class CriteriohijoHasSitioevaluacionId  implements java.io.Serializable {
 		 CriteriohijoHasSitioevaluacionId castOther = ( CriteriohijoHasSitioevaluacionId ) other; 
          
 		 return (this.getCriteriohijoCodigo()==castOther.getCriteriohijoCodigo())
- && (this.getSitioevaluacionCodigo()==castOther.getSitioevaluacionCodigo());
+ && (this.getSitioevaluacionCodigo()==castOther.getSitioevaluacionCodigo())
+                         && (this.getUsuarioId()==castOther.getUsuarioId());
    }
    
    public int hashCode() {
@@ -51,6 +61,7 @@ public class CriteriohijoHasSitioevaluacionId  implements java.io.Serializable {
          
          result = 37 * result + this.getCriteriohijoCodigo();
          result = 37 * result + this.getSitioevaluacionCodigo();
+         result = 37 * result + this.getUsuarioId();
          return result;
    }   
 

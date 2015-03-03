@@ -17,20 +17,21 @@ public class CriteriohijoHasSitioevaluacion  implements java.io.Serializable {
      private Criteriopadre criteriopadre;
      private Date fecha;
      private String comentario;
-     private String usuario;
+     private Usuario usuario;
 
     public CriteriohijoHasSitioevaluacion() {
     }
 
 	
-    public CriteriohijoHasSitioevaluacion(CriteriohijoHasSitioevaluacionId id, Sitioevaluacion sitioevaluacion, Criteriohijo criteriohijo, Puntuacion puntuacion, Criteriopadre criteriopadre) {
+    public CriteriohijoHasSitioevaluacion(CriteriohijoHasSitioevaluacionId id, Sitioevaluacion sitioevaluacion, Criteriohijo criteriohijo, Puntuacion puntuacion, Criteriopadre criteriopadre,Usuario usuario) {
         this.id = id;
         this.sitioevaluacion = sitioevaluacion;
         this.criteriohijo = criteriohijo;
         this.puntuacion = puntuacion;
         this.criteriopadre = criteriopadre;
+        this.usuario = usuario;
     }
-    public CriteriohijoHasSitioevaluacion(CriteriohijoHasSitioevaluacionId id, Sitioevaluacion sitioevaluacion, Criteriohijo criteriohijo, Puntuacion puntuacion, Criteriopadre criteriopadre, Date fecha, String comentario, String usuario) {
+    public CriteriohijoHasSitioevaluacion(CriteriohijoHasSitioevaluacionId id, Sitioevaluacion sitioevaluacion, Criteriohijo criteriohijo, Puntuacion puntuacion, Criteriopadre criteriopadre, Date fecha, String comentario, Usuario usuario) {
        this.id = id;
        this.sitioevaluacion = sitioevaluacion;
        this.criteriohijo = criteriohijo;
@@ -90,11 +91,11 @@ public class CriteriohijoHasSitioevaluacion  implements java.io.Serializable {
     public void setComentario(String comentario) {
         this.comentario = comentario;
     }
-    public String getUsuario() {
+    public Usuario getUsuario() {
         return this.usuario;
     }
     
-    public void setUsuario(String usuario) {
+    public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
 

@@ -12,11 +12,14 @@ import dao.UsuarioDao;
 import dao.UsuarioDaoImpl;
 import java.io.Serializable;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -58,6 +61,12 @@ public class heuristicaBean implements Serializable{
     private HashMap<Integer,String> nomUsuarios;
     // Arreglo de los nombres seleccionados
     private String [] selectedUsuario;
+    // ids de Integer para agregar los evaluadores a prueba
+    private List<Integer> idsColaboradores;    
+    // Variable para saber si es dueño de la prueba del sitio
+    private boolean isDueñoSitio;
+    // dao de heuristica dao
+    private HeuristicaDao heuristicaDao;
     
     
     public List<CriteriohijoHasSitioevaluacion> getCriteriosHijosSitio(){
@@ -68,9 +77,9 @@ public class heuristicaBean implements Serializable{
         return this.criteriosHijosSitio;        
     } 
 
-    public List<Sitioevaluacion> getSitios() { 
+    public List<Sitioevaluacion> getSitios(Integer estadoPrueba) { 
         HeuristicaDao heuristicaDao = new HeuristicaDaoImpl();
-        this.sitios = heuristicaDao.findAll();
+        this.sitios = heuristicaDao.findAll(estadoPrueba);
         return sitios;
     }
 
@@ -83,9 +92,11 @@ public class heuristicaBean implements Serializable{
      */
     public heuristicaBean() {
         
+        this.heuristicaDao = new HeuristicaDaoImpl();
         this.codigosCriteriopadre = new ArrayList<Integer>();
         this.sitios = new ArrayList<Sitioevaluacion>();
         this.selectedSitioEvaluacion = new Sitioevaluacion();
+        this.idsColaboradores = new ArrayList<Integer>();
         puntajes = new HashMap<String,Integer>();       
         puntajes.put("0 - No es un problema",0);
         puntajes.put("1 - Problema sin importancia",1);
@@ -152,6 +163,16 @@ public class heuristicaBean implements Serializable{
 
     public void addMessage(Integer codigoHijo,Integer codigoSitio, String cometario) {
        cometario = this.comentarioCriterioSitio;
+       SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+       Date actual = null;
+        try {
+          Date date = new Date();
+          String hoy = sdf.format(date);
+          actual = sdf.parse(hoy);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }     
+       
        if(this.puntaje == null){
               String summary =  "Por favor elegir un puntaje valido";
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));
@@ -161,9 +182,9 @@ public class heuristicaBean implements Serializable{
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));
         HeuristicaDao heuristicaDao = new HeuristicaDaoImpl();
         if(this.value2)
-        heuristicaDao.updateCriterioSitio(this.puntaje, codigoHijo, codigoSitio, this.comentarioCriterioSitio);
+        heuristicaDao.updateCriterioSitio(this.puntaje, codigoHijo, codigoSitio, this.comentarioCriterioSitio,actual);
         else
-        heuristicaDao.updateCriterioSitio(null, codigoHijo, codigoSitio, null);
+        heuristicaDao.updateCriterioSitio(null, codigoHijo, codigoSitio, null, null);
         }        
        this.comentarioCriterioSitio = null;
     }
@@ -233,17 +254,7 @@ public class heuristicaBean implements Serializable{
         
         String msg;
         HeuristicaDao heuristicaDao = new HeuristicaDaoImpl();
-        //int idSitioEvaluacion = this.selectedSitioEvaluacion.getCodigo();
                 
-       //SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-       // Date date = new Date();
-       // String hoy = sdf.format(date);
-       // Date actual = sdf.parse(hoy);
-        //this.comentario.setFecha(actual);
-       // Sitioevaluacion sitioevaluacion = (Sitioevaluacion) session.load(Sitioevaluacion.class, idSitioEvaluacion);
-        
-        // agregar los datos a la clase CriteriohijoHasSitioevaluacion
-        
         for (Integer criterioPadre : this.codigosCriteriopadre) {
             List<Integer> criteriosHijos = heuristicaDao.obtenerIdsCriteriosHijos(criterioPadre);
             for (Integer criterioHijo : criteriosHijos) {
@@ -367,6 +378,90 @@ public class heuristicaBean implements Serializable{
         this.selectedUsuario = selectedUsuario;
     }
     
-    
+   public void agregarEvaluadoresParticipantes(){
+       String msg;
+        HeuristicaDao heuristicaDao = new HeuristicaDaoImpl();
+        //int idSitioEvaluacion = this.selectedSitioEvaluacion.getCodigo();
+                
+       //SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+       // Date date = new Date();
+       // String hoy = sdf.format(date);
+       // Date actual = sdf.parse(hoy);
+        //this.comentario.setFecha(actual);
+       // Sitioevaluacion sitioevaluacion = (Sitioevaluacion) session.load(Sitioevaluacion.class, idSitioEvaluacion);
+        
+        // agregar los datos a la clase CriteriohijoHasSitioevaluacion
+        Set<Integer> idsUsuario = this.nomUsuarios.keySet();
+       String[] selectedUsuarios = this.selectedUsuario;
+       for (String su : selectedUsuarios) {
+           for (Integer o : this.nomUsuarios.keySet()) {
+               if (this.nomUsuarios.get(o).equals(su)) {
+                   this.idsColaboradores.add(o);
+                   break;
+               }
+           }
+       }
+        for(Integer idUsuario: this.idsColaboradores){
+            for (Integer criterioPadre : this.codigosCriteriopadre) {
+            List<Integer> criteriosHijos = heuristicaDao.obtenerIdsCriteriosHijos(criterioPadre);
+            for (Integer criterioHijo : criteriosHijos) {
+                
+                if (heuristicaDao.InsertarEvaluadoresColaboradores(criterioHijo,this.selectedSitioEvaluacion.getCodigo(),criterioPadre,idUsuario)) {
+                   
+                } else {
+                   msg = "Error al agregar los Criterios al Sitio";
+                   FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
+                   break;
+                }
+            }
+            
+        }
+        }
+        
+        this.value3 = false;
+        if (heuristicaDao.updateEstadoSitio(this.selectedSitioEvaluacion.getCodigo(), 2)){
+            msg = "Se han agregado los Criterios y cambiado el estado al Sitio exitosamente";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
+        }else{
+            msg = "Error al cambiar esl estado del Sitio";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
+        }
+   }
+
+    public boolean isIsDueñoSitio() {
+        
+        this.isDueñoSitio = this.heuristicaDao.isDueñoSitio(this.selectedSitioEvaluacion.getCodigo());
+        return isDueñoSitio;
+    }
+
+    public void setIsDueñoSitio(boolean isDueñoSitio) {
+        this.isDueñoSitio = isDueñoSitio;
+    }
+         
+   public void ejecutarEvaluacionHeuristica(){
+       
+       boolean isDueño = this.isDueñoSitio;
+       String ruta = "";
+       if (isDueño){
+           try {
+            this.heuristicaDao.cambiarEstadoPrueba(3, this.selectedSitioEvaluacion.getCodigo()); 
+            FacesContext context = FacesContext.getCurrentInstance();
+             ruta = MyUtil.basepathlogin()+"views/heuristica/index.xhtml";
+            context.getExternalContext().redirect(ruta);
+           } catch (Exception e) {
+               e.printStackTrace();
+           }           
+       }
+   }
+   
+   public void seguirAnalizarHeuristica(){
+       String ruta = "";
+       try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            ruta = MyUtil.basepathlogin()+"views/estadistica/index.xhtml";
+       } catch (Exception e) {
+            e.printStackTrace();
+       }
+   }
   
 } 

@@ -21,7 +21,7 @@
             <ui:define name="content">
                 <h:form id="formSitios" style="margin-top: 15px"> 
 
-                    <p:dataTable id="sitios" var="sitios" value="#{heuristicaBean.sitios}"
+                    <p:dataTable id="sitios" var="sitios" value="#{heuristicaBean.getSitios(0)}"
                                  paginator="true" rows="10" paginatorPosition="bottom"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
                         <f:facet name="header">
@@ -57,7 +57,11 @@
                                                  actionListener="#{heuristicaBean.ejecutarHeuristica(event)}">
                                     <f:setPropertyActionListener value="#{sitios}" target="#{heuristicaBean.selectedSitioEvaluacion}" />
                                 </p:commandButton>
-
+                                
+                                <p:commandButton style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; margin-bottom:6px; font-size: 80%" id="btnAnalizarHeuristica" title="Analizar" value="Analizar" rendered="#{sitios.estadoprueba.codigo eq '3'}"
+                                                 actionListener="#{heuristicaBean.ejecutarHeuristica(event)}">                                    
+                                </p:commandButton>
+                                
                                 <p:commandButton  style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; font-size: 80%;"  actionListener="#{sitioModificarBean.seguirSitio(event)}"
                                                   oncomplete="handleSitioRequest(xhr, status, args)" value="Editar" >
 
@@ -133,7 +137,7 @@
                                     </p:dataList>
                                     <p:commandButton id="btnAgregarCriterioPadre" update=":formSitios" actionListener="#{heuristicaBean.agregarCriteriosPadres}" icon="ui-icon-check" title="Agregar" value="Agregar" onclick="PF('pbAjax').start();"/>
                                     <p:progressBar widgetVar="pbAjax" ajax="true" value="#{heuristicaBean.progress}" labelTemplate="{value}%" styleClass="animated" global="false">
-                                        <p:ajax event="complete" listener="#{heuristicaBean.onComplete}" update="growl" oncomplete="PF('dialogPlanearEval').hide()"/>
+                                        <p:ajax event="complete" listener="#{heuristicaBean.onComplete}" update="growl" />
                                     </p:progressBar>
                                     
                                 </p:scrollPanel>
@@ -145,6 +149,7 @@
                                         <f:selectItems value="#{heuristicaBean.nomUsuarios}" var="city" itemLabel="#{city}" itemValue="#{city}" />
                                     </p:selectManyCheckbox>
                                 </h:panelGrid>
+                                <p:commandButton value="Agregar Evaluadores"  icon="ui-icon-check" actionListener="#{heuristicaBean.agregarEvaluadoresParticipantes}" oncomplete="PF('dialogPlanearEval').hide()" />
                             </p:tab>
                         </p:tabView>
                     </p:dialog>                  

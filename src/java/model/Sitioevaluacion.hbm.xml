@@ -29,6 +29,9 @@
          <property name="nombreImagen" type="string">
             <column name="nombreImagen" length="45" />
         </property>
+        <property name="idUsuarioCreador" type="java.lang.Integer">
+            <column name="idUsuarioCreador" />
+        </property>
         <set name="usuarioHasSitioevaluacions" table="usuario_has_sitioevaluacion" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="sitioevaluacion_codigo" not-null="true" />

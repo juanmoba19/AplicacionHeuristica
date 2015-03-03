@@ -6,6 +6,7 @@
 
 package dao;
 
+import java.util.Date;
 import java.util.List;
 import javax.faces.context.FacesContext;
 import model.Criteriohijo;
@@ -22,7 +23,11 @@ import util.HibernateUtil;
  * @author Juan Diego
  */
 public class HeuristicaDaoImpl implements HeuristicaDao{
-
+    
+    // Usuario en sesion 
+    Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioObj"); 
+    
+    
     @Override
     public Sitioevaluacion findBySitio(Sitioevaluacion sitio) {
        
@@ -40,14 +45,31 @@ public class HeuristicaDaoImpl implements HeuristicaDao{
     }
 
     @Override
-    public List<Sitioevaluacion> findAll() {
-       
+    public List<Sitioevaluacion> findAll(Integer estadoPrueba) { 
+        
         List<Sitioevaluacion> listado = null;
+        List<Integer> sitiosPermitidos = sitiosPermitidos();
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        String sql =  "FROM Sitioevaluacion s left join fetch s.estadoprueba";
+        Integer idUsuario = this.usuario.getId();
+        String sql = "";
+        if ( estadoPrueba != null && estadoPrueba == 3){
+            sql =  "FROM Sitioevaluacion s left join fetch s.estadoprueba e  WHERE (s.codigo IN (:ids) OR s.idUsuarioCreador = :idUsuario) AND e.codigo = :estadoPrueba";
+        }else if (sitiosPermitidos != null && sitiosPermitidos.size() >= 1){
+            sql =  "FROM Sitioevaluacion s left join fetch s.estadoprueba WHERE s.codigo IN (:ids) OR s.idUsuarioCreador = :idUsuario";
+        }else{
+            sql =  "FROM Sitioevaluacion s left join fetch s.estadoprueba WHERE s.idUsuarioCreador = :idUsuario";
+        }        
         try {
             session.beginTransaction();
-            listado = session.createQuery(sql).list();
+             Query query = session.createQuery(sql);
+             if (sitiosPermitidos != null && sitiosPermitidos.size() >= 1){
+              query.setParameterList("ids",sitiosPermitidos);   
+             }
+             if ( estadoPrueba != null && estadoPrueba == 3){
+                 query.setInteger("estadoPrueba", estadoPrueba);
+             }
+             query.setInteger("idUsuario", idUsuario);
+            listado = query.list();
             session.beginTransaction().commit();
         } catch (Exception e) {
             session.beginTransaction().rollback();
@@ -74,7 +96,8 @@ public class HeuristicaDaoImpl implements HeuristicaDao{
     public List<CriteriohijoHasSitioevaluacion> findBySitioEvaluacion(Sitioevaluacion sitioevaluacion) {
         List<CriteriohijoHasSitioevaluacion> listado = null;
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        String sql =  "FROM CriteriohijoHasSitioevaluacion chs left join fetch chs.criteriohijo  as ch join fetch  chs.criteriopadre as cp left join fetch chs.id as d WHERE d.sitioevaluacionCodigo = '"+sitioevaluacion.getCodigo()+"'";
+        Integer idUsuario = this.usuario.getId();
+        String sql =  "FROM CriteriohijoHasSitioevaluacion chs left join fetch chs.criteriohijo  as ch join fetch  chs.criteriopadre as cp left join fetch chs.id as d WHERE d.sitioevaluacionCodigo = '"+sitioevaluacion.getCodigo()+"' AND chs.usuario.id = '"+idUsuario+"'";
         try {
             session.beginTransaction();
             listado = session.createQuery(sql).list();
@@ -87,24 +110,27 @@ public class HeuristicaDaoImpl implements HeuristicaDao{
     }
 
     @Override
-    public boolean updateCriterioSitio(Integer puntuacion, Integer criterioHijo, Integer sitioEvaluacion, String comentario) {
+    public boolean updateCriterioSitio(Integer puntuacion, Integer criterioHijo, Integer sitioEvaluacion, String comentario, Date fechaActual) {
         
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         String hql="";
+        Integer idUsuario = this.usuario.getId();
         
         try {
             
             session.beginTransaction();
             if (  puntuacion != null )
-            hql = "UPDATE CriteriohijoHasSitioevaluacion set puntuacion_escala = :puntuacion, comentario = :comentario where criteriohijo_codigo = :criterioHijo and sitioevaluacion_codigo = :sitioEvaluacion ";
+            hql = "UPDATE CriteriohijoHasSitioevaluacion set puntuacion_escala = :puntuacion, comentario = :comentario, fecha = :fechaActual where criteriohijo_codigo = :criterioHijo and sitioevaluacion_codigo = :sitioEvaluacion and usuario.id = :idUsuario";
             else
-            hql = "UPDATE CriteriohijoHasSitioevaluacion set puntuacion_escala = null, comentario = null where criteriohijo_codigo = :criterioHijo and sitioevaluacion_codigo = :sitioEvaluacion ";                 
+            hql = "UPDATE CriteriohijoHasSitioevaluacion set puntuacion_escala = null, comentario = null where criteriohijo_codigo = :criterioHijo and sitioevaluacion_codigo = :sitioEvaluacion and usuario.id = :idUsuario";                 
             Query query = session.createQuery(hql);
             if ( puntuacion != null )
             query.setInteger("puntuacion", puntuacion);
             query.setInteger("criterioHijo", criterioHijo);
             query.setInteger("sitioEvaluacion", sitioEvaluacion);
             query.setString("comentario", comentario);
+            query.setInteger("idUsuario", idUsuario);
+            query.setDate("fechaActual", fechaActual);
             query.executeUpdate();
             session.beginTransaction().commit();
             
@@ -158,7 +184,7 @@ public class HeuristicaDaoImpl implements HeuristicaDao{
         
         try {
             session.beginTransaction();
-            Query query = session.createSQLQuery("INSERT INTO criteriohijo_has_sitioevaluacion (criteriohijo_codigo, sitioevaluacion_codigo, usuario, criteriopadre_codigo) values (:codigoHijo, :codigoSitio, :codigoUsuario, :padre)");
+            Query query = session.createSQLQuery("INSERT INTO criteriohijo_has_sitioevaluacion (criteriohijo_codigo, sitioevaluacion_codigo, usuario_id, criteriopadre_codigo) values (:codigoHijo, :codigoSitio, :codigoUsuario, :padre)");
             query.setInteger("codigoHijo", codigoHijo);
             query.setInteger("codigoSitio", codigoSitio);
             query.setInteger("codigoUsuario", codigoUsuario);
@@ -236,6 +262,98 @@ public class HeuristicaDaoImpl implements HeuristicaDao{
         }
         return flag;
     }
+
+    @Override
+    public boolean InsertarEvaluadoresColaboradores(Integer codigoHijo, Integer codigoSitio, Integer padre, Integer usuario) {
+         
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        boolean flag;
+        
+        try {
+            session.beginTransaction();
+            Query query = session.createSQLQuery("INSERT INTO criteriohijo_has_sitioevaluacion (criteriohijo_codigo, sitioevaluacion_codigo, usuario_id, criteriopadre_codigo) values (:codigoHijo, :codigoSitio, :codigoUsuario, :padre)");
+            query.setInteger("codigoHijo", codigoHijo);
+            query.setInteger("codigoSitio", codigoSitio);
+            query.setInteger("codigoUsuario", usuario);
+            query.setInteger("padre", padre);
+            query.executeUpdate();
+            session.beginTransaction().commit();
+            flag = true;            
+        } catch (Exception e) {
+            flag = false;
+            session.beginTransaction().rollback();
+        }
+        
+        return flag;
+    }
+
+    @Override
+    public List<Integer> sitiosPermitidos() {
+        
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();         
+        Integer codigoUsuario = this.usuario.getId();
+        List<Integer> listado = null;
+        String sql =  "SELECT distinct sitioevaluacion.codigo FROM CriteriohijoHasSitioevaluacion WHERE usuario_id = '"+codigoUsuario+"'";  
+              
+        try {
+            session.beginTransaction();
+            listado = session.createQuery(sql).list();
+            session.beginTransaction().commit();
+        } catch (Exception e) {
+            session.beginTransaction().rollback();
+        }
+        return listado;
+       
+    }
     
+    public boolean cambiarEstadoPrueba(Integer estado, Integer idSitio){
+        
+       Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+       String hql="";
+       Integer idUsuario = this.usuario.getId();
+
+       try {
+
+           session.beginTransaction();
+           hql = "UPDATE Sitioevaluacion set estadoPrueba_codigo = :estado where codigo = :sitioEvaluacion";          
+           Query query = session.createQuery(hql);
+           query.setInteger("estado", estado);
+           query.setInteger("sitioEvaluacion", idSitio);          
+           query.executeUpdate();
+           session.beginTransaction().commit();
+
+       } catch (Exception e) {
+           session.beginTransaction().rollback();
+       }
+       return true;
+    }
+    
+    public boolean isDueñoSitio(Integer idSitio){
+        
+        Integer idUsuario = this.usuario.getId();
+        boolean flag=false;
+        Sitioevaluacion model = null;
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        String sql =  "FROM Sitioevaluacion WHERE codigo = :idSitio and idUsuarioCreador = :idUsuario";
+        try {
+            session.beginTransaction();
+            Query query = session.createQuery(sql);
+            query.setInteger("idSitio", idSitio);
+            query.setInteger("idUsuario", idUsuario);
+            model = (Sitioevaluacion)query.uniqueResult();
+            session.beginTransaction().commit();
+            if( model != null ){
+                flag=true;
+            }else{
+                flag=false;
+            }
+           
+        } catch (Exception e) {
+            session.beginTransaction().rollback();
+        }
+        
+        return flag;
+        
+    }
     
 }
