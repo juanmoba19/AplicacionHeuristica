@@ -63,9 +63,9 @@
                                 </p:commandButton>
                                 
                                 <p:commandButton  style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; font-size: 80%;"  actionListener="#{sitioModificarBean.seguirSitio(event)}"
-                                                  oncomplete="handleSitioRequest(xhr, status, args)" value="Editar" >
+                                                  oncomplete="handleAnalizarPruebaRequest(xhr, status, args)" value="Editar" >
 
-                                    <f:setPropertyActionListener value="#{sitios}" target="#{sitioModificarBean.selectedSitio}" />
+                                    <f:setPropertyActionListener value="#{sitios}" target="#{sitioAnalizarBean.selectedSitio}" />
                                 </p:commandButton> 
                             </div>
 

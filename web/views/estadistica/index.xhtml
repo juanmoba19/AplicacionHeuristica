@@ -36,8 +36,12 @@
                             <h:outputText value="#{sitios.fechaEvaluacion}" />
                         </p:column>
 
-                        <p:column headerText="Estado Prueba">
-                            <h:outputText value="#{sitios.estadoprueba.descripcion}" />
+                        <p:column headerText="Accion">
+                            <p:commandButton  style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; font-size: 80%;"  actionListener="#{sitioAnalizarBean.seguirSitio(event)}"
+                                              oncomplete="handleAnalizarPruebaRequest(xhr, status, args)" value="Analizar" >
+
+                                <f:setPropertyActionListener value="#{sitios}" target="#{sitioAnalizarBean.selectedSitio}" />
+                            </p:commandButton> 
                         </p:column>
 
                     </p:dataTable>
