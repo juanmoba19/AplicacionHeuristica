@@ -25,6 +25,13 @@
   <bean id="menuBean" class="beans" scope="request"/>
   <bean id="rolBean" class="beans" scope="request"/>
   <bean id="usuarioBean" class="beans" scope="request"/>
+  <bean id="estadoPruebaBean" class="beans" scope="request"/>
+  <bean id="PostBean" class="beans" scope="session"/>
+  <bean id="heuristicaBean" class="beans" scope="session"/>
+  <bean id="sitioAnalizarBean" class="beans" scope="session"/>
+  <bean id="sitioCrearBean" class="beans" scope="session"/>
+  <bean id="sitioModificarBean" class="beans" scope="session"/>
+  
 
 
 </beans>

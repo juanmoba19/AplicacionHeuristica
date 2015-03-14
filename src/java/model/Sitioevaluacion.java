@@ -25,6 +25,7 @@ public class Sitioevaluacion  implements java.io.Serializable {
      private byte[] rutaImagen;
      private String nombreImagen;
      private Integer idUsuarioCreador;
+     private Set estadisticaprompuntajes = new HashSet(0);
 
     public Sitioevaluacion() {
         this.codigo = 0;
@@ -44,6 +45,7 @@ public class Sitioevaluacion  implements java.io.Serializable {
        this.usuarioHasSitioevaluacions = usuarioHasSitioevaluacions;
        this.criteriohijoHasSitioevaluacions = criteriohijoHasSitioevaluacions;
        this.idUsuarioCreador = idUsuarioCreador;
+       this.estadisticaprompuntajes = estadisticaprompuntajes;
     }
    
     public Integer getCodigo() {
@@ -127,7 +129,13 @@ public class Sitioevaluacion  implements java.io.Serializable {
         this.idUsuarioCreador = idUsuarioCreador;
     }
 
+    public Set getEstadisticaprompuntajes() {
+        return this.estadisticaprompuntajes;
+    }
     
+    public void setEstadisticaprompuntajes(Set estadisticaprompuntajes) {
+        this.estadisticaprompuntajes = estadisticaprompuntajes;
+    }
 
 
 

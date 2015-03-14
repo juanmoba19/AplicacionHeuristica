@@ -15,4 +15,5 @@
   <table-filter match-name="puntuacion"/>
   <table-filter match-name="usuario_has_sitioevaluacion"/>
   <table-filter match-name="sitioevaluacion"/>
+  <table-filter match-name="estadisticaprompuntaje"/>
 </hibernate-reverse-engineering>

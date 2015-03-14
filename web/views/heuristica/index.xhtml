@@ -53,19 +53,20 @@
                                     <f:setPropertyActionListener value="#{sitios}" target="#{heuristicaBean.selectedSitioEvaluacion}" />
                                 </p:commandButton>
 
-                                <p:commandButton style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; margin-bottom:6px; font-size: 80%" id="btnEjecutarHeuristica" oncomplete="handleSitioRequest(xhr, status, args)" title="Ejecutar" value="Ejecutar" rendered="#{sitios.estadoprueba.codigo eq '2'}"
-                                                 actionListener="#{heuristicaBean.ejecutarHeuristica(event)}">
+                                <p:commandButton style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; margin-bottom:6px; font-size: 80%" id="btnEjecutarHeuristica"  title="Ejecutar" value="Ejecutar" rendered="#{sitios.estadoprueba.codigo eq '2'}"
+                                                 actionListener="#{heuristicaBean.ejecutarHeuristica}">
                                     <f:setPropertyActionListener value="#{sitios}" target="#{heuristicaBean.selectedSitioEvaluacion}" />
                                 </p:commandButton>
                                 
                                 <p:commandButton style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; margin-bottom:6px; font-size: 80%" id="btnAnalizarHeuristica" title="Analizar" value="Analizar" rendered="#{sitios.estadoprueba.codigo eq '3'}"
-                                                 actionListener="#{heuristicaBean.ejecutarHeuristica(event)}">                                    
+                                                 actionListener="#{sitioAnalizarBean.seguirSitio}" oncomplete="handleAnalizarPruebaRequest(xhr, status, args)">                                    
+                                    <f:setPropertyActionListener value="#{sitios}" target="#{sitioAnalizarBean.selectedSitio}" />
                                 </p:commandButton>
                                 
                                 <p:commandButton  style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; font-size: 80%;"  actionListener="#{sitioModificarBean.seguirSitio(event)}"
-                                                  oncomplete="handleAnalizarPruebaRequest(xhr, status, args)" value="Editar" >
+                                                  oncomplete="handleSitioRequest(xhr, status, args)" value="Editar" >
 
-                                    <f:setPropertyActionListener value="#{sitios}" target="#{sitioAnalizarBean.selectedSitio}" />
+                                    <f:setPropertyActionListener value="#{sitios}" target="#{sitioModificarBean.selectedSitio}" />
                                 </p:commandButton> 
                             </div>
 

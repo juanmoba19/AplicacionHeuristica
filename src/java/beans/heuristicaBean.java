@@ -10,6 +10,7 @@ import dao.HeuristicaDao;
 import dao.HeuristicaDaoImpl;
 import dao.UsuarioDao;
 import dao.UsuarioDaoImpl;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -71,15 +74,14 @@ public class heuristicaBean implements Serializable{
     
     public List<CriteriohijoHasSitioevaluacion> getCriteriosHijosSitio(){
         
-        HeuristicaDao heuristicaDao = new HeuristicaDaoImpl();
-        this.criteriosHijosSitio = heuristicaDao.findBySitioEvaluacion(this.selectedSitioEvaluacion);
+        this.criteriosHijosSitio = this.heuristicaDao.findBySitioEvaluacion(this.selectedSitioEvaluacion);
                
         return this.criteriosHijosSitio;        
     } 
 
     public List<Sitioevaluacion> getSitios(Integer estadoPrueba) { 
-        HeuristicaDao heuristicaDao = new HeuristicaDaoImpl();
-        this.sitios = heuristicaDao.findAll(estadoPrueba);
+        
+        this.sitios = this.heuristicaDao.findAll(estadoPrueba);
         return sitios;
     }
 
@@ -281,22 +283,24 @@ public class heuristicaBean implements Serializable{
     }
     
     public void ejecutarHeuristica(ActionEvent event){
-         RequestContext context = RequestContext.getCurrentInstance();
-         boolean isRuta;
+         
          String ruta = "";
          
          Sitioevaluacion sitioevaluacion = this.selectedSitioEvaluacion;
          if (sitioevaluacion != null){
-             isRuta = true;
              ruta = MyUtil.basepathlogin()+"views/heuristica/ejecucion_prueba.xhtml";
+             FacesContext contex = FacesContext.getCurrentInstance();
+             try {
+                 contex.getExternalContext().redirect(ruta);
+             } catch (IOException ex) {
+                 Logger.getLogger(heuristicaBean.class.getName()).log(Level.SEVERE, null, ex);
+             }
          }else{
-             isRuta = false;
              if (this.selectedSitioEvaluacion == null ){
                  this.selectedSitioEvaluacion = new Sitioevaluacion();
              }
          }
-        context.addCallbackParam("isRuta", isRuta);
-        context.addCallbackParam("ruta", ruta);   
+          
     }
 
     public String getComentarioCriterioSitio() {

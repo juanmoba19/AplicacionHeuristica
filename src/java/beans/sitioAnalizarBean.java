@@ -6,18 +6,20 @@
 
 package beans;
 
+import dao.AnalisisHeuristicaDao;
+import dao.AnalisisHeuristicaDaoImpl;
 import dao.SitioDao;
 import dao.SitioDaoImpl;
+import enumerator.promCriteriosPadre;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
-import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
+import java.util.List;
 import javax.faces.event.ActionEvent;
+import model.Estadisticaprompuntaje;
 import model.Sitioevaluacion;
+import model.Usuario;
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.ItemSelectEvent;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
@@ -34,19 +36,21 @@ public class sitioAnalizarBean implements Serializable {
 
     private Sitioevaluacion selectedSitio;
     private SitioDao sitioDao;
+    private AnalisisHeuristicaDao analisisHeuristicaDao;
     // Model que nos permite crear las graficas de estadistica 
     private BarChartModel barModel;
+    // Lista de los usuarios implicados en al evaluacion
+    private List<Usuario> listaUsuario;
+    // usuario seleccionado del grid
+    private Usuario selectedUsuario;
     /**
      * Creates a new instance of sitioAnalizarBean
      */
     
-    @PostConstruct
-    public void init() {
-        createBarModels();
-    }
     
     public sitioAnalizarBean() {
         this.sitioDao = new SitioDaoImpl();
+        this.analisisHeuristicaDao = new AnalisisHeuristicaDaoImpl();
         this.selectedSitio = new Sitioevaluacion();
     }
 
@@ -66,6 +70,7 @@ public class sitioAnalizarBean implements Serializable {
       Sitioevaluacion sitioevaluacion = this.sitioDao.findBySitio(this.selectedSitio);
       if (sitioevaluacion != null){
           isRuta = true;
+          createBarModels();
           ruta = MyUtil.basepathlogin()+"views/estadistica/analisis_sitio.xhtml";
       }else{
           isRuta = false;
@@ -92,47 +97,63 @@ public class sitioAnalizarBean implements Serializable {
      private void createBarModel() {
         barModel = initBarModel();
          
-        barModel.setTitle("Bar Chart");
+        barModel.setTitle("Promedio Puntajes Evaluacion Heuristica");
         barModel.setLegendPosition("ne");
          
         Axis xAxis = barModel.getAxis(AxisType.X);
-        xAxis.setLabel("Gender");
+        xAxis.setLabel("Criterios Heuristicos");
          
         Axis yAxis = barModel.getAxis(AxisType.Y);
-        yAxis.setLabel("Births");
+        yAxis.setLabel("Puntaje");
         yAxis.setMin(0);
-        yAxis.setMax(200);
+        yAxis.setMax(5);
     }
      
      private BarChartModel initBarModel() {
+        
+        Integer idSitio = this.selectedSitio.getCodigo();
+        Estadisticaprompuntaje estadisticaprompuntaje = null; 
+        boolean existeAnalisis = analisisHeuristicaDao.isSitioEstadisticaPromPuntaje(idSitio);
+        if(existeAnalisis == false){
+          analisisHeuristicaDao.agregarPromHeuristicos(idSitio);
+        }        
+        estadisticaprompuntaje = analisisHeuristicaDao.buscarEstadisticaPromPuntaje(idSitio);
+                
         BarChartModel model = new BarChartModel();
- 
-        ChartSeries boys = new ChartSeries();
-        boys.setLabel("Boys");
-        boys.set("2004", 120);
-        boys.set("2005", 100);
-        boys.set("2006", 44);
-        boys.set("2007", 150);
-        boys.set("2008", 25);
- 
-        ChartSeries girls = new ChartSeries();
-        girls.setLabel("Girls");
-        girls.set("2004", 52);
-        girls.set("2005", 60);
-        girls.set("2006", 110);
-        girls.set("2007", 135);
-        girls.set("2008", 120);
- 
-        model.addSeries(boys);
-        model.addSeries(girls);
+        ChartSeries criterios = new ChartSeries();
+        criterios.setLabel("Criterio Padre");
+        criterios.set(promCriteriosPadre.CRITERIO1.getCriterioPadre(), estadisticaprompuntaje.getCriterio1());
+        criterios.set(promCriteriosPadre.CRITERIO2.getCriterioPadre(), estadisticaprompuntaje.getCriterio2());
+        criterios.set(promCriteriosPadre.CRITERIO3.getCriterioPadre(), estadisticaprompuntaje.getCriterio3());
+        criterios.set(promCriteriosPadre.CRITERIO4.getCriterioPadre(), estadisticaprompuntaje.getCriterio4());
+        criterios.set(promCriteriosPadre.CRITERIO5.getCriterioPadre(), estadisticaprompuntaje.getCriterio5());
+        criterios.set(promCriteriosPadre.CRITERIO6.getCriterioPadre(), estadisticaprompuntaje.getCriterio6());
+        criterios.set(promCriteriosPadre.CRITERIO7.getCriterioPadre(), estadisticaprompuntaje.getCriterio7());
+        criterios.set(promCriteriosPadre.CRITERIO8.getCriterioPadre(), estadisticaprompuntaje.getCriterio8());
+        criterios.set(promCriteriosPadre.CRITERIO9.getCriterioPadre(), estadisticaprompuntaje.getCriterio9());
+        criterios.set(promCriteriosPadre.CRITERIO10.getCriterioPadre(),estadisticaprompuntaje.getCriterio10());
+        model.addSeries(criterios);
          
         return model;
     }
-    
-     public void itemSelect(ItemSelectEvent event) {
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Item selected",
-                        "Item Index: " + event.getItemIndex() + ", Series Index:" + event.getSeriesIndex());
-         
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+
+    public List<Usuario> getListaUsuario() {
+        this.listaUsuario = analisisHeuristicaDao.devolverUsuariosEvaluadores(this.selectedSitio.getCodigo());
+        return listaUsuario;
     }
+
+    public void setListaUsuario(List<Usuario> listaUsuario) {
+        this.listaUsuario = listaUsuario;
+    }
+
+    public Usuario getSelectedUsuario() {
+        return selectedUsuario;
+    }
+
+    public void setSelectedUsuario(Usuario selectedUsuario) {
+        this.selectedUsuario = selectedUsuario;
+    }
+    
+    
+     
 }

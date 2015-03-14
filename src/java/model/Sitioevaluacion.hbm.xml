@@ -44,5 +44,12 @@
             </key>
             <one-to-many class="model.CriteriohijoHasSitioevaluacion" />
         </set>
+        <set name="estadisticaprompuntajes" table="estadisticaprompuntaje" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="sitioevaluacion_codigo" not-null="true" />
+            </key>
+            <one-to-many class="model.Estadisticaprompuntaje" />
+        </set>
+
     </class>
 </hibernate-mapping>
