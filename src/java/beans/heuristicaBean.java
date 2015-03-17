@@ -6,6 +6,7 @@
 
 package beans;
 
+import Report.CriterioHasSitioEvaluacionReport;
 import dao.HeuristicaDao;
 import dao.HeuristicaDaoImpl;
 import dao.UsuarioDao;
@@ -48,6 +49,8 @@ public class heuristicaBean implements Serializable{
     private List<Sitioevaluacion> sitios;
     private Sitioevaluacion selectedSitioEvaluacion;
     private List<CriteriohijoHasSitioevaluacion> criteriosHijosSitio;
+    //lista de los criterios para evaluar en el sitio elegido
+    private List<CriterioHasSitioEvaluacionReport> criteriosByEvaluacionSitio;
     private Map<String,Integer> puntajes;
     private List<Criteriopadre> listaCriteriosPadre;
     private Integer puntaje;
@@ -74,7 +77,7 @@ public class heuristicaBean implements Serializable{
     
     public List<CriteriohijoHasSitioevaluacion> getCriteriosHijosSitio(){
         
-        this.criteriosHijosSitio = this.heuristicaDao.findBySitioEvaluacion(this.selectedSitioEvaluacion);
+        this.criteriosHijosSitio = this.heuristicaDao.findBySitioEvaluacion(this.selectedSitioEvaluacion);        
                
         return this.criteriosHijosSitio;        
     } 
@@ -84,6 +87,17 @@ public class heuristicaBean implements Serializable{
         this.sitios = this.heuristicaDao.findAll(estadoPrueba);
         return sitios;
     }
+
+    public List<CriterioHasSitioEvaluacionReport> getCriteriosByEvaluacionSitio() {
+        this.criteriosByEvaluacionSitio = this.heuristicaDao.devolverCriteriosAEvaluar(this.selectedSitioEvaluacion.getCodigo());
+        return criteriosByEvaluacionSitio;
+    }
+
+    public void setCriteriosByEvaluacionSitio(List<CriterioHasSitioEvaluacionReport> criteriosByEvaluacionSitio) {
+        this.criteriosByEvaluacionSitio = criteriosByEvaluacionSitio;
+    }
+    
+    
 
     public void setSitios(List<Sitioevaluacion> sitios) {
         this.sitios = sitios;
@@ -100,11 +114,11 @@ public class heuristicaBean implements Serializable{
         this.selectedSitioEvaluacion = new Sitioevaluacion();
         this.idsColaboradores = new ArrayList<Integer>();
         puntajes = new HashMap<String,Integer>();       
-        puntajes.put("0 - No es un problema",0);
-        puntajes.put("1 - Problema sin importancia",1);
-        puntajes.put("2 - Problema de poca importancia",2);
-        puntajes.put("3 - Problema grave",3);
-        puntajes.put("4 - Catástrofe: obligatorio arreglarlo",4);
+        puntajes.put("1 - No es un problema",1);
+        puntajes.put("2 - Problema sin importancia",2);
+        puntajes.put("3 - Problema de poca importancia",3);
+        puntajes.put("4 - Problema grave",4);
+        puntajes.put("5 - Catástrofe: obligatorio arreglarlo",5);
         HashMap mapResultado = new LinkedHashMap();
         List misMapKeys = new ArrayList(puntajes.keySet());
         List misMapValues = new ArrayList(puntajes.values());
@@ -163,8 +177,7 @@ public class heuristicaBean implements Serializable{
     }
     
 
-    public void addMessage(Integer codigoHijo,Integer codigoSitio, String cometario) {
-       cometario = this.comentarioCriterioSitio;
+    public void addMessage(Integer codigoHijo,Integer codigoSitio) {
        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
        Date actual = null;
         try {
@@ -176,19 +189,20 @@ public class heuristicaBean implements Serializable{
         }     
        
        if(this.puntaje == null){
-              String summary =  "Por favor elegir un puntaje valido";
+        String summary =  "Por favor elegir un puntaje valido";
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));
         this.value2 = false;
         }else{
-        String summary = value2 ? "Criterio Evaluado" : "Criterio NO Evaluado";
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));
+        
         HeuristicaDao heuristicaDao = new HeuristicaDaoImpl();
         if(this.value2)
         heuristicaDao.updateCriterioSitio(this.puntaje, codigoHijo, codigoSitio, this.comentarioCriterioSitio,actual);
         else
         heuristicaDao.updateCriterioSitio(null, codigoHijo, codigoSitio, null, null);
         }        
-       this.comentarioCriterioSitio = null;
+        this.comentarioCriterioSitio = null;
+        this.puntaje = null;
+        this.value2 = false;
     }
     
     public boolean fijarValue2(boolean value2){
@@ -229,8 +243,6 @@ public class heuristicaBean implements Serializable{
      * Mensaje para cuadno se adicione un criterio padre a la prueba heuristica
      */
     public void addMessage1(Integer codigoCriterioPadre) {
-        String summary = value3 ? "Checked" : "Unchecked";
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));
         if(value3){
             codigosCriteriopadre.add(codigoCriterioPadre);
         }else{
@@ -308,9 +320,9 @@ public class heuristicaBean implements Serializable{
     }
 
     public void setComentarioCriterioSitio(String comentarioCriterioSitio) {
-        this.comentarioCriterioSitio = comentarioCriterioSitio;
-    }
-    
+          this.comentarioCriterioSitio = comentarioCriterioSitio;  
+        }
+
     private Integer progress;
  
     public Integer getProgress() {

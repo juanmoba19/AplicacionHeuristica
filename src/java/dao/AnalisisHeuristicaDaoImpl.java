@@ -6,6 +6,8 @@
 
 package dao;
 
+
+import Report.EvaluacionDetalladaUsuarioReport;
 import java.util.List;
 import model.Estadisticaprompuntaje;
 import model.Sitioevaluacion;
@@ -13,6 +15,7 @@ import model.Usuario;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
+import org.hibernate.transform.Transformers;
 import org.hibernate.type.StandardBasicTypes;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -83,14 +86,11 @@ public class AnalisisHeuristicaDaoImpl implements  AnalisisHeuristicaDao{
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         
         StringBuilder strSql = new StringBuilder();
-        strSql.append(" SELECT AVG (internal.sum) AS prom ");
-        strSql.append(" FROM ( ");
-        strSql.append(" SELECT sum(puntuacion_escala) AS sum ");
+        strSql.append(" SELECT AVG (puntuacion_escala) AS prom ");
         strSql.append(" FROM criteriohijo_has_sitioevaluacion ");
-        strSql.append(" WHERE sitioevaluacion_codigo = :sitioEvaluacion ");
-        strSql.append(" AND criteriopadre_codigo= :criterioPadre ");
-        strSql.append(" GROUP BY puntuacion_escala ");
-        strSql.append(" ) internal ");
+        strSql.append(" WHERE criteriopadre_codigo = :criterioPadre ");
+        strSql.append(" AND sitioevaluacion_codigo = :sitioEvaluacion ");
+        strSql.append(" GROUP BY criteriopadre_codigo ");
         
         session.beginTransaction();
         SQLQuery query = session.createSQLQuery(strSql.toString());
@@ -194,7 +194,7 @@ public class AnalisisHeuristicaDaoImpl implements  AnalisisHeuristicaDao{
        
        List<Usuario> model = null;
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        String sql =  "FROM Usuario u WHERE u.id IN (:idsUsuario)";
+        String sql =  "FROM Usuario u left join fetch u.rol WHERE u.id IN (:idsUsuario)";
         try {
             session.beginTransaction();
             Query query = session.createQuery(sql);
@@ -206,6 +206,38 @@ public class AnalisisHeuristicaDaoImpl implements  AnalisisHeuristicaDao{
             session.beginTransaction().rollback();
         }
         return model;
+    }
+
+    @Override
+    public List<EvaluacionDetalladaUsuarioReport> devolverDetallesEvaluaUsiario(Integer idUsuario, Integer codigoSitio) {
+        if (idUsuario == null || idUsuario < 0 || codigoSitio == null || codigoSitio < 0){
+            return null;
+        }
+         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        
+        StringBuilder strSql = new StringBuilder();
+        strSql.append(" SELECT ch.descripcion AS criterio,   ");
+        strSql.append(" chs.puntuacion_escala AS puntuacion, ");
+        strSql.append(" chs.fecha AS fecha,  ");
+        strSql.append(" chs.comentario AS comentario ");
+        strSql.append(" FROM criteriohijo_has_sitioevaluacion chs  ");
+        strSql.append(" INNER JOIN criteriohijo ch ON chs.criteriohijo_codigo = ch.codigo ");
+        strSql.append(" WHERE chs.usuario_id= :idUsuario  ");
+        strSql.append(" AND chs.sitioevaluacion_codigo = :codigoSitio ");
+
+        session.beginTransaction();
+        SQLQuery query = session.createSQLQuery(strSql.toString());
+        query.setResultTransformer(Transformers.aliasToBean(EvaluacionDetalladaUsuarioReport.class));
+        
+        query.setParameter("codigoSitio", codigoSitio);
+        query.setParameter("idUsuario", idUsuario);
+        
+        query.addScalar("criterio",StandardBasicTypes.STRING);
+        query.addScalar("puntuacion",StandardBasicTypes.INTEGER);
+        query.addScalar("fecha",StandardBasicTypes.DATE);
+        query.addScalar("comentario",StandardBasicTypes.STRING);
+        
+        return query.list();
     }
     
 }

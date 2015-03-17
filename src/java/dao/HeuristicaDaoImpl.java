@@ -6,6 +6,7 @@
 
 package dao;
 
+import Report.CriterioHasSitioEvaluacionReport;
 import java.util.Date;
 import java.util.List;
 import javax.faces.context.FacesContext;
@@ -15,7 +16,10 @@ import model.Criteriopadre;
 import model.Sitioevaluacion;
 import model.Usuario;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
+import org.hibernate.transform.Transformers;
+import org.hibernate.type.StandardBasicTypes;
 import util.HibernateUtil;
 
 /**
@@ -310,7 +314,6 @@ public class HeuristicaDaoImpl implements HeuristicaDao{
         
        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
        String hql="";
-       Integer idUsuario = this.usuario.getId();
 
        try {
 
@@ -354,6 +357,48 @@ public class HeuristicaDaoImpl implements HeuristicaDao{
         
         return flag;
         
+    }
+
+    @Override
+    public List<CriterioHasSitioEvaluacionReport> devolverCriteriosAEvaluar(Integer codigoSitioEvaluacion) {
+        
+        if (codigoSitioEvaluacion == null || codigoSitioEvaluacion < 0){
+            return null;
+        }
+        
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Integer idUsuario = this.usuario.getId();
+        
+        StringBuilder strSql = new StringBuilder();
+        strSql.append(" SELECT chs.criteriopadre_codigo AS codigoPadre, ");
+        strSql.append(" cp.nombre AS descripcionPadre, ");
+        strSql.append(" chs.criteriohijo_codigo AS codigoHijo, ");
+        strSql.append(" ch.descripcion AS descripcionHijo, ");
+        strSql.append(" chs.puntuacion_escala AS puntuacion, ");
+        strSql.append(" chs.comentario AS comentario, ");
+        strSql.append(" chs.sitioevaluacion_codigo AS codigoSitio ");
+        strSql.append(" FROM criteriohijo_has_sitioevaluacion chs ");
+        strSql.append(" INNER JOIN criteriopadre cp ON chs.criteriopadre_codigo = cp.codigo ");
+        strSql.append(" INNER JOIN criteriohijo ch ON chs.criteriohijo_codigo = ch.codigo ");
+        strSql.append(" WHERE chs.sitioevaluacion_codigo = :codigoSitioEvaluacion ");
+        strSql.append(" AND chs.usuario_id = :idUsuario ");
+        
+        session.beginTransaction();
+        SQLQuery query = session.createSQLQuery(strSql.toString());
+        query.setResultTransformer(Transformers.aliasToBean(CriterioHasSitioEvaluacionReport.class));
+        
+        query.setParameter("codigoSitioEvaluacion", codigoSitioEvaluacion);
+        query.setParameter("idUsuario", idUsuario);
+        
+        query.addScalar("codigoPadre",StandardBasicTypes.INTEGER);
+        query.addScalar("descripcionPadre",StandardBasicTypes.STRING);
+        query.addScalar("codigoHijo",StandardBasicTypes.INTEGER);
+        query.addScalar("descripcionHijo",StandardBasicTypes.STRING);
+        query.addScalar("puntuacion",StandardBasicTypes.INTEGER);
+        query.addScalar("comentario",StandardBasicTypes.STRING);
+        query.addScalar("codigoSitio",StandardBasicTypes.INTEGER);
+        
+        return query.list();
     }
     
 }

@@ -15,7 +15,7 @@
                 <p:growl id="msgs" showDetail="true" /> 
                 <h:form id="formEjecutarEval">
                     
-                        <p:dataList value="#{heuristicaBean.criteriosHijosSitio}" var="criteriosHijo" type="unordered" itemType="none" paginator="true" rows="6" styleClass="paginated" paginatorPosition="bottom">
+                    <p:dataList value="#{heuristicaBean.criteriosByEvaluacionSitio}" var="criteriosByEvaluacion" type="unordered" itemType="none" paginator="true" rows="6" styleClass="paginated" paginatorPosition="bottom">
 
                             <p:growl id="msgs" />
                             <f:facet name="header">
@@ -25,29 +25,28 @@
 
                             <h:panelGrid columns="2" cellpadding="5">
                                 <h:outputText value="Criterio Padre: " style="font-weight: bold" />
-                                <h:outputText value="#{criteriosHijo.criteriopadre.nombre}" />
+                                <h:outputText value="#{criteriosByEvaluacion.descripcionPadre}" />
 
                                 <h:outputText value="Criterio Hijo: " style="font-weight: bold" />
-                                <h:outputText value="#{criteriosHijo.criteriohijo.descripcion}" />
+                                <h:outputText value="#{criteriosByEvaluacion.descripcionHijo}" />
 
                                 <p:outputLabel for="country" value="Puntaje " style="font-weight: bold" />
 
-                                <p:selectOneMenu id="country" style="width:150px" value="#{empty criteriosHijo.puntuacion.escala ? heuristicaBean.puntaje : criteriosHijo.puntuacion.escala }">
+                                <p:selectOneMenu id="country" style="width:150px" value="#{empty criteriosByEvaluacion.puntuacion ? heuristicaBean.puntaje : criteriosByEvaluacion.puntuacion }" disabled="#{empty criteriosByEvaluacion.puntuacion ? false : true}">
                                     <p:ajax listener="#{heuristicaBean.fijarPuntuacion}"/>
                                     <f:selectItem itemLabel="Seleccionar Puntaje" itemValue="" noSelectionOption="true" />
                                     <f:selectItems value="#{heuristicaBean.puntajes}" />
                                 </p:selectOneMenu>
                                 
                                 <h4 style="margin-top: 2px">Deja tu comentario</h4>
-                                <p:inputTextarea id="txtComentario" rows="5" cols="50" counter="display" maxlength="250" counterTemplate="{0} caracteres restantes." autoResize="true" value="#{heuristicaBean.comentarioCriterioSitio}">
-                                    <p:ajax event="change" listener="#{heuristicaBean.comentarioCriterioSitio}" />
+                                <p:inputTextarea id="txtComentario" rows="5" cols="50" counter="display" maxlength="250" counterTemplate="{0} caracteres restantes." autoResize="true" value="#{empty criteriosByEvaluacion.comentario ? heuristicaBean.comentarioCriterioSitio : criteriosByEvaluacion.comentario}" disabled="#{empty criteriosByEvaluacion.comentario ? false:true}">
+                                    <p:ajax event="change" listener="#{heuristicaBean.comentarioCriterioSitio}" async="false" />
                                 </p:inputTextarea>
                                 <h:outputText/>
                                 <h:outputText id="display"/>
-                                
                                 <h:outputText value="Evaluado: " style="font-weight: bold"/>
-                                <p:selectBooleanButton id="botonBoolean" value="#{empty criteriosHijo.puntuacion.escala ? heuristicaBean.value2 : true}" onLabel="Si" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px;" disabled="#{empty criteriosHijo.puntuacion.escala ? false:true}" >                                    
-                                    <p:ajax update="msgs" listener="#{heuristicaBean.addMessage(criteriosHijo.criteriohijo.codigo,criteriosHijo.sitioevaluacion.codigo,heuristicaBean.comentarioCriterioSitio)}" />
+                                <p:selectBooleanButton id="botonBoolean" value="#{empty criteriosByEvaluacion.puntuacion ? heuristicaBean.value2 : true}" onLabel="Si" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px;" disabled="#{empty criteriosByEvaluacion.puntuacion ? false:true}" >                                    
+                                    <p:ajax update=":formEjecutarEval, msgs" listener="#{heuristicaBean.addMessage(criteriosByEvaluacion.codigoHijo,criteriosByEvaluacion.codigoSitio)}" />
                                 </p:selectBooleanButton>    
 
                             </h:panelGrid>

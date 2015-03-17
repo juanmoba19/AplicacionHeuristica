@@ -71,3 +71,26 @@ a:link:hover, a:visited:hover  {
    width:80% !important;
    height: 95% !important;
 }
+
+.ui-state-default .icon-exportPDF{
+    background-image: url(../images/icons/exportPDF.jpg);
+    width: 75% !important;
+    height: 75% !important;  
+}
+
+.ui-state-default .icon-exportExcel{
+    background-image: url(../images/icons/exportExcel.png);
+    width: 75% !important;
+    height: 75% !important;
+}
+
+.botonExport .ui-button-icon-only .ui-icon{
+      left: 30% !important;
+  margin-left: -6px !important;
+}
+
+.botonExport .ui-button-icon-only .ui-icon, .ui-button-text-icon-left .ui-icon, .ui-button-text-icon-right .ui-icon{
+    position: absolute !important;
+  top: 43% !important;
+  margin-top: -8px !important;
+}

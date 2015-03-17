@@ -6,6 +6,7 @@
 
 package dao;
 
+import Report.EvaluacionDetalladaUsuarioReport;
 import java.util.List;
 import model.Estadisticaprompuntaje;
 import model.Usuario;
@@ -23,4 +24,5 @@ public interface AnalisisHeuristicaDao {
     public Estadisticaprompuntaje buscarEstadisticaPromPuntaje(Integer sitioEvaluacion);
     public List<Integer> idsUsuariosBySitio(Integer idSitio);
     public List<Usuario> devolverUsuariosEvaluadores(Integer sitioEvaluacion);
+    public List<EvaluacionDetalladaUsuarioReport> devolverDetallesEvaluaUsiario(Integer idUsuario, Integer codigoSitio);
 }

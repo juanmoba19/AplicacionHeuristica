@@ -6,6 +6,7 @@
 
 package dao;
 
+import Report.CriterioHasSitioEvaluacionReport;
 import java.util.Date;
 import java.util.List;
 import model.Criteriohijo;
@@ -22,6 +23,7 @@ public interface HeuristicaDao {
     public Sitioevaluacion findBySitio(Sitioevaluacion sitio);
     public List<Sitioevaluacion> findAll(Integer estadoPrueba);
     public List<CriteriohijoHasSitioevaluacion> findBySitioEvaluacion(Sitioevaluacion sitioevaluacion);
+    public List<CriterioHasSitioEvaluacionReport> devolverCriteriosAEvaluar(Integer codigoSitioEvaluacion);
     public boolean create (Sitioevaluacion sitio);
     public boolean update (Sitioevaluacion sitio);
     public boolean delete (Sitioevaluacion sitio);

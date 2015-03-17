@@ -6,6 +6,7 @@
 
 package beans;
 
+import Report.EvaluacionDetalladaUsuarioReport;
 import dao.AnalisisHeuristicaDao;
 import dao.AnalisisHeuristicaDaoImpl;
 import dao.SitioDao;
@@ -14,6 +15,7 @@ import enumerator.promCriteriosPadre;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.faces.event.ActionEvent;
 import model.Estadisticaprompuntaje;
@@ -43,6 +45,8 @@ public class sitioAnalizarBean implements Serializable {
     private List<Usuario> listaUsuario;
     // usuario seleccionado del grid
     private Usuario selectedUsuario;
+    // Lista de las evaluaciones personalizadas por usuario
+    private List<EvaluacionDetalladaUsuarioReport> listaEvalDetalleUsuario;
     /**
      * Creates a new instance of sitioAnalizarBean
      */
@@ -52,6 +56,7 @@ public class sitioAnalizarBean implements Serializable {
         this.sitioDao = new SitioDaoImpl();
         this.analisisHeuristicaDao = new AnalisisHeuristicaDaoImpl();
         this.selectedSitio = new Sitioevaluacion();
+        this.selectedUsuario = new Usuario();
     }
 
     public Sitioevaluacion getSelectedSitio() {
@@ -152,6 +157,16 @@ public class sitioAnalizarBean implements Serializable {
 
     public void setSelectedUsuario(Usuario selectedUsuario) {
         this.selectedUsuario = selectedUsuario;
+    }
+
+    public List<EvaluacionDetalladaUsuarioReport> getListaEvalDetalleUsuario() {
+        if(this.selectedUsuario.getId() != null && this.selectedSitio.getCodigo() != null)
+        this. listaEvalDetalleUsuario = analisisHeuristicaDao.devolverDetallesEvaluaUsiario(this.selectedUsuario.getId(), this.selectedSitio.getCodigo());
+        return listaEvalDetalleUsuario;
+    }
+
+    public void setListaEvalDetalleUsuario(List<EvaluacionDetalladaUsuarioReport> listaEvalDetalleUsuario) {
+        this.listaEvalDetalleUsuario = listaEvalDetalleUsuario;
     }
     
     

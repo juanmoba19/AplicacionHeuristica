@@ -11,12 +11,11 @@
         <ui:composition template="./../template.xhtml">
             
             <ui:define name="content">
-                <p:inputText value="#{sitioAnalizarBean.selectedSitio.nombre}"/>
-                
+                                
                 <h:form id="formBarModel">
                     <p:growl id="growl" showDetail="true" />
 
-                    <h:panelGrid columns="2" columnClasses="left,right" style="width:100%">
+                    <h:panelGrid columns="2" columnClasses="left,right" style="width:100%;margin-top: 40px;">
                         <p:chart type="bar" model="#{sitioAnalizarBean.barModel}" style="height: 300px">
                             <p:ajax event="itemSelect" listener="#{sitioAnalizarBean.itemSelect}" update="growl" />
                         </p:chart>  
@@ -29,24 +28,47 @@
                         <f:facet name="header">
                             Usuarios Implicados en la Evaluacion
                         </f:facet>
-                        <p:commandLink  update=":formBarModel:userDetail" oncomplete="PF('userDialog').show()" title="View Detail" styleClass="ui-icon ui-icon-search" style="float:left;margin-right:10px">
+                        <p:commandLink  update=":formBarModel:userDetail" title="View Detail" styleClass="ui-icon ui-icon-search" style="float:left;margin-right:10px">
                             <f:setPropertyActionListener value="#{usuario}" target="#{sitioAnalizarBean.selectedUsuario}" />
                             <h:outputText value="#{usuario.usuario}, #{usuario.rol.nombre}" />
                         </p:commandLink>
-                        <h:outputText value="#{usuario.usuario}, #{usuario.email}" style="display:inline-block"/>
+                        <h:outputText value="#{usuario.usuario}, #{usuario.rol.nombre}" style="display:inline-block"/>
                     </p:dataList>
                     </div>
                     
-                    <p:dialog header="Informacion Evaluacion por Usuario" widgetVar="userDialog" modal="true" showEffect="blind" hideEffect="explode" resizable="false">
-                        <p:outputPanel id="userDetail" style="text-align:center;">
-                            <p:panelGrid  columns="2" rendered="#{not empty sitioAnalizarBean.selectedUsuario}" columnClasses="label,value">
-                               
-                                <h:outputText value="Id:" />
-                                <h:outputText value="#{sitioAnalizarBean.selectedUsuario.fechacreacion}" />
+                    <p:outputPanel id="userDetail" style="text-align:center; margin-top: 40px;">
+                            <h:form id="formUserDetail">                               
+                            <p:dataTable id="tbl" var="evalByUsuario" value="#{sitioAnalizarBean.listaEvalDetalleUsuario}"
+                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                             paginator="true" rows="10" style="margin-bottom:20px">
 
-                            </p:panelGrid>
+                                    
+                                <p:column headerText="Criterio">
+                                        <h:outputText value="#{evalByUsuario.criterio}" />
+                                    </p:column>
+
+                                <p:column headerText="Puntuacion">
+                                        <h:outputText value="#{evalByUsuario.puntuacion}" />
+                                    </p:column>
+
+                                <p:column headerText="Fecha">
+                                        <h:outputText value="#{evalByUsuario.fecha}" />
+                                    </p:column>
+
+                                <p:column headerText="Comentario">
+                                        <h:outputText value="#{evalByUsuario.comentario}" />
+                                    </p:column>
+                                </p:dataTable>
+                                <div class="botonExport" style="margin-top: -16px;margin-bottom: 31px;text-align: right">
+                                        <p:commandButton ajax="false" icon="icon-exportPDF" style="width: 32px;height: 32px">
+                                            <p:dataExporter type="pdf" target="tbl" fileName="cars"/>
+                                        </p:commandButton>
+                                        <p:commandButton ajax="false" icon="icon-exportExcel" style="width: 32px;height: 32px" >
+                                            <p:dataExporter type="xls" target="tbl" fileName="excel"/>
+                                        </p:commandButton>
+                                         </div>
+                                </h:form>                               
                         </p:outputPanel>
-                    </p:dialog>
 
                 </h:form>
                 
