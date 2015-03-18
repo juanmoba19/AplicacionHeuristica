@@ -7,17 +7,29 @@
 package beans;
 
 import Report.EvaluacionDetalladaUsuarioReport;
+import com.lowagie.text.BadElementException;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.HeaderFooter;
+import com.lowagie.text.Image;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Phrase;
+import com.lowagie.text.pdf.PdfPTable;
+import static com.lowagie.text.pdf.codec.BmpImage.getImage;
 import dao.AnalisisHeuristicaDao;
 import dao.AnalisisHeuristicaDaoImpl;
 import dao.SitioDao;
 import dao.SitioDaoImpl;
 import enumerator.promCriteriosPadre;
+import java.io.File;
+import java.io.IOException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.ServletContext;
 import model.Estadisticaprompuntaje;
 import model.Sitioevaluacion;
 import model.Usuario;
@@ -169,6 +181,45 @@ public class sitioAnalizarBean implements Serializable {
         this.listaEvalDetalleUsuario = listaEvalDetalleUsuario;
     }
     
+    public void preProcessPDF(Object document) throws IOException, DocumentException {
+
+        final Document pdf = (Document) document;
+
+        HeaderFooter header = new HeaderFooter(new Phrase("Informe Evaluacion Heuristica Usuario: "+ this.selectedUsuario.getUsuario()), false);
+        pdf.setHeader(header);
+        
+        pdf.setPageSize(PageSize.A4.rotate());
+        pdf.open();
+
+        PdfPTable pdfTable = new PdfPTable(1);
+        pdfTable.addCell(getImage("Uniqlog.png"));
+        
+        pdfTable.setWidthPercentage(10f);
+        pdfTable.setHorizontalAlignment(0);
+        pdf.add(pdfTable);
+
+    }
+    
+    public void postProcessPDF(Object document) throws IOException, DocumentException {
+        final Document pdf = (Document) document;
+        pdf.setPageSize(PageSize.A4.rotate());
+
+    }
+    
+    private Image getImage(String imageName) throws IOException, BadElementException {
+        final Image image = Image.getInstance(getAbsolutePath(imageName));
+        image.scalePercent(90f);
+        return image;
+    }
+    
+    private String getAbsolutePath(String imageName) {
+        final ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+        final StringBuilder logo = new StringBuilder().append(servletContext.getRealPath(""));
+        logo.append(File.separator).append("resources");
+                logo.append(File.separator).append("images");
+        logo.append(File.separator).append(imageName);
+        return logo.toString();
+    }
     
      
 }
