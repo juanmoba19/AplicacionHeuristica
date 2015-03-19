@@ -59,7 +59,7 @@
                                 </p:commandButton>
                                 
                                 <p:commandButton style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; margin-bottom:6px; font-size: 80%" id="btnAnalizarHeuristica" title="Analizar" value="Analizar" rendered="#{sitios.estadoprueba.codigo eq '3'}"
-                                                 actionListener="#{sitioAnalizarBean.seguirSitio}" oncomplete="handleAnalizarPruebaRequest(xhr, status, args)">                                    
+                                                 actionListener="#{sitioAnalizarBean.seguirSitio}">                                    
                                     <f:setPropertyActionListener value="#{sitios}" target="#{sitioAnalizarBean.selectedSitio}" />
                                 </p:commandButton>
                                 

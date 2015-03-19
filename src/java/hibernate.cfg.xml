@@ -23,5 +23,6 @@
     <mapping resource="model/Post.hbm.xml"/>
     <mapping resource="model/UsuarioHasSitioevaluacion.hbm.xml"/>
     <mapping resource="model/Estadisticaprompuntaje.hbm.xml"/>
+    <mapping resource="model/SitioevaluacionHasUsuarioPromEval.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

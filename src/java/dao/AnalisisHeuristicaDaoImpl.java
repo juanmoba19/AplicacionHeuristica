@@ -9,6 +9,7 @@ package dao;
 
 import Report.EvaluacionDetalladaUsuarioReport;
 import java.util.List;
+import javax.faces.context.FacesContext;
 import model.Estadisticaprompuntaje;
 import model.Sitioevaluacion;
 import model.Usuario;
@@ -28,6 +29,8 @@ import util.HibernateUtil;
 @Component
 public class AnalisisHeuristicaDaoImpl implements  AnalisisHeuristicaDao{
 
+    // Usuario en sesion 
+    Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioObj"); 
     
     @Override
     public void agregarPromHeuristicos(Integer sitioEvaluacion) {        
@@ -238,6 +241,81 @@ public class AnalisisHeuristicaDaoImpl implements  AnalisisHeuristicaDao{
         query.addScalar("comentario",StandardBasicTypes.STRING);
         
         return query.list();
+    }
+
+    @Override
+    public boolean isSitioPromPuntajeByUsuario(Integer sitioEvaluacion) {
+        
+        Integer idUsuario = usuario.getId();
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        boolean flag = false;
+        
+        StringBuilder strSql = new StringBuilder();
+        strSql.append(" SELECT puntuacion_escala AS id ");
+        strSql.append(" FROM criteriohijo_has_sitioevaluacion ");
+        strSql.append(" WHERE sitioevaluacion_codigo = :sitioEvaluacion ");
+        strSql.append(" AND sitioevaluacion_codigo = :usuario_id ");
+        
+        session.beginTransaction();
+        SQLQuery query = session.createSQLQuery(strSql.toString());
+        query.setParameter("sitioEvaluacion", sitioEvaluacion);
+        query.setParameter("usuario_id", idUsuario);
+        query.addScalar("id",StandardBasicTypes.INTEGER);
+        
+        Integer result = (Integer) query.uniqueResult();
+        if ( result != null && result > 0)
+        flag = true;
+        
+        return flag;
+        
+    }
+    
+    public Double buscarPromHeuristicoByUsuario(Integer idSitio, Integer idUsuario) {
+        
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        
+        StringBuilder strSql = new StringBuilder();
+        strSql.append(" SELECT promedio AS prom ");
+        strSql.append(" FROM sitioevaluacion_has_usuario_prom_eval ");
+        strSql.append(" WHERE sitioevaluacion_codigo = :idSitio ");
+        strSql.append(" AND usuario_id = :idUsuario ");
+        
+        session.beginTransaction();
+        SQLQuery query = session.createSQLQuery(strSql.toString());
+        query.setParameter("idSitio", idSitio);
+        query.setParameter("idUsuario", idUsuario);
+        query.addScalar("prom",StandardBasicTypes.DOUBLE);
+        
+        Double result = (Double) query.uniqueResult();
+        if ( result == null)
+        result = 0.0;
+        
+        return result;
+              
+    }
+    
+    public void agregarPromHeuristicoByUsuario(Integer idSitio, List<Integer> idsUsuarios){
+        
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        
+        
+        for (Integer idUsuario : idsUsuarios) {
+            StringBuilder strSql = new StringBuilder();
+            strSql.append(" INSERT INTO sitioevaluacion_has_usuario_prom_eval ");
+            strSql.append(" (sitioevaluacion_codigo,usuario_id,promedio) ");
+            strSql.append(" SELECT :idSitio, :idUsuario,  ");
+            strSql.append(" AVG(puntuacion_escala) ");
+            strSql.append(" FROM criteriohijo_has_sitioevaluacion ");
+            strSql.append(" WHERE sitioevaluacion_codigo = :idSitio AND usuario_id = :idUsuario ");
+
+            session.beginTransaction();
+            SQLQuery query = session.createSQLQuery(strSql.toString());
+            query.setParameter("idSitio", idSitio);
+            query.setParameter("idUsuario", idUsuario);
+            query.executeUpdate();
+            session.beginTransaction().commit();
+        }
+        
     }
     
 }

@@ -21,8 +21,11 @@ public interface AnalisisHeuristicaDao {
     public Double generarPromHeuristico(Integer criterioPadre, Integer sitioEvaluacion);
     public void agregarPromHeuristicos(Integer sitioEvaluacion);
     public boolean isSitioEstadisticaPromPuntaje(Integer sitioEvaluacion);
+    public boolean isSitioPromPuntajeByUsuario(Integer sitioEvaluacion);
     public Estadisticaprompuntaje buscarEstadisticaPromPuntaje(Integer sitioEvaluacion);
     public List<Integer> idsUsuariosBySitio(Integer idSitio);
     public List<Usuario> devolverUsuariosEvaluadores(Integer sitioEvaluacion);
     public List<EvaluacionDetalladaUsuarioReport> devolverDetallesEvaluaUsiario(Integer idUsuario, Integer codigoSitio);
+    public Double buscarPromHeuristicoByUsuario(Integer idSitio, Integer idUsuario);
+    public void agregarPromHeuristicoByUsuario(Integer idSitio, List<Integer> idsUsuarios);
 }

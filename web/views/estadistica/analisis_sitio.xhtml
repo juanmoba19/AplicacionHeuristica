@@ -59,7 +59,7 @@
                                         <h:outputText value="#{evalByUsuario.comentario}" />
                                     </p:column>
                                 </p:dataTable>
-                                <div class="botonExport" style="margin-top: -16px;margin-bottom: 31px;text-align: right">
+                                <div class="botonExport" style="margin-top: -16px;margin-bottom: 5px;text-align: right">
                                         <p:commandButton ajax="false" icon="icon-exportPDF" style="width: 32px;height: 32px">
                                             <p:dataExporter type="pdf" target="tbl" fileName="cars"
                                                             preProcessor="#{sitioAnalizarBean.preProcessPDF}" postProcessor="#{sitioAnalizarBean.postProcessPDF}" />
@@ -68,6 +68,9 @@
                                             <p:dataExporter type="xls" target="tbl" fileName="excel"/>
                                         </p:commandButton>
                                          </div>
+                                <h:panelGrid columns="2" columnClasses="left,right" style="width:100%;margin-top: 10px;">
+                                    <p:chart type="bubble" model="#{sitioAnalizarBean.bubbleModel2}" />
+                                </h:panelGrid>
                                 </h:form>                               
                         </p:outputPanel>
 
