@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 19-mar-2015 6:57:59 by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+  <class catalog="evaluacionheuristica" name="model.Estadisticaprompuntajebyusuario" table="estadisticaprompuntajebyusuario">
+    <composite-id class="model.EstadisticaprompuntajebyusuarioId" name="id">
+      <key-property name="usuarioId" type="int">
+        <column name="usuario_id"/>
+      </key-property>
+      <key-property name="sitioevaluacionCodigo" type="int">
+        <column name="sitioevaluacion_codigo"/>
+      </key-property>
+    </composite-id>
+    <many-to-one class="model.Usuario" fetch="select" insert="false" name="usuario" update="false">
+      <column name="usuario_id" not-null="true"/>
+    </many-to-one>
+    <many-to-one class="model.Sitioevaluacion" fetch="select" insert="false" name="sitioevaluacion" update="false">
+      <column name="sitioevaluacion_codigo" not-null="true"/>
+    </many-to-one>
+    <property name="criterio1" type="java.lang.Double">
+      <column name="criterio1" precision="22" scale="0"/>
+    </property>
+    <property name="criterio2" type="java.lang.Double">
+      <column name="criterio2" precision="22" scale="0"/>
+    </property>
+    <property name="criterio3" type="java.lang.Double">
+      <column name="criterio3" precision="22" scale="0"/>
+    </property>
+    <property name="criterio4" type="java.lang.Double">
+      <column name="criterio4" precision="22" scale="0"/>
+    </property>
+    <property name="criterio5" type="java.lang.Double">
+      <column name="criterio5" precision="22" scale="0"/>
+    </property>
+    <property name="criterio6" type="java.lang.Double">
+      <column name="criterio6" precision="22" scale="0"/>
+    </property>
+    <property name="criterio7" type="java.lang.Double">
+      <column name="criterio7" precision="22" scale="0"/>
+    </property>
+    <property name="criterio8" type="java.lang.Double">
+      <column name="criterio8" precision="22" scale="0"/>
+    </property>
+    <property name="criterio9" type="java.lang.Double">
+      <column name="criterio9" precision="22" scale="0"/>
+    </property>
+    <property name="criterio10" type="java.lang.Double">
+      <column name="criterio10" precision="22" scale="0"/>
+    </property>
+  </class>
+</hibernate-mapping>

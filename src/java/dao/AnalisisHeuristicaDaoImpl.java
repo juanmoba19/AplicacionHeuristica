@@ -8,9 +8,12 @@ package dao;
 
 
 import Report.EvaluacionDetalladaUsuarioReport;
+import Report.PromedioUsuarioReport;
 import java.util.List;
 import javax.faces.context.FacesContext;
 import model.Estadisticaprompuntaje;
+import model.Estadisticaprompuntajebyusuario;
+import model.EstadisticaprompuntajebyusuarioId;
 import model.Sitioevaluacion;
 import model.Usuario;
 import org.hibernate.Query;
@@ -316,6 +319,159 @@ public class AnalisisHeuristicaDaoImpl implements  AnalisisHeuristicaDao{
             session.beginTransaction().commit();
         }
         
+    }
+    
+    public void agregarPromHeuristicoByCriteriByUsuario(Integer sitioEvaluacion, List<Integer>idsUsuario) {        
+        
+              
+        Sitioevaluacion sitio = findBySitio(sitioEvaluacion);
+        Estadisticaprompuntajebyusuario estadisticaprompuntaje = new Estadisticaprompuntajebyusuario(); 
+        estadisticaprompuntaje.setSitioevaluacion(sitio);        
+        double prom = 0;
+        
+        for (Integer idUsuario : idsUsuario) {
+       
+        Usuario miUsuario = findByUsuario(idUsuario);
+        estadisticaprompuntaje.setUsuario(miUsuario);
+           
+        prom = generarPromHeuristicoByCriteriByUsuario(1, sitioEvaluacion, idUsuario);
+        estadisticaprompuntaje.setCriterio1(prom);
+        
+        prom = generarPromHeuristicoByCriteriByUsuario(2, sitioEvaluacion, idUsuario);
+        estadisticaprompuntaje.setCriterio2(prom);
+        
+        prom = generarPromHeuristicoByCriteriByUsuario(3, sitioEvaluacion, idUsuario);
+        estadisticaprompuntaje.setCriterio3(prom);
+        
+        prom = generarPromHeuristicoByCriteriByUsuario(4, sitioEvaluacion, idUsuario);
+        estadisticaprompuntaje.setCriterio4(prom);
+        
+        prom = generarPromHeuristicoByCriteriByUsuario(5, sitioEvaluacion, idUsuario);
+        estadisticaprompuntaje.setCriterio5(prom);
+        
+        prom = generarPromHeuristicoByCriteriByUsuario(6, sitioEvaluacion, idUsuario);
+        estadisticaprompuntaje.setCriterio6(prom);
+        
+        prom = generarPromHeuristicoByCriteriByUsuario(7, sitioEvaluacion, idUsuario);
+        estadisticaprompuntaje.setCriterio7(prom);
+        
+        prom = generarPromHeuristicoByCriteriByUsuario(8, sitioEvaluacion, idUsuario);
+        estadisticaprompuntaje.setCriterio8(prom);
+        
+        prom = generarPromHeuristicoByCriteriByUsuario(9, sitioEvaluacion, idUsuario);
+        estadisticaprompuntaje.setCriterio9(prom);
+        
+        prom = generarPromHeuristicoByCriteriByUsuario(10, sitioEvaluacion, idUsuario);
+        estadisticaprompuntaje.setCriterio10(prom);
+        
+        EstadisticaprompuntajebyusuarioId objectUsuario = new EstadisticaprompuntajebyusuarioId(idUsuario, sitioEvaluacion);
+        estadisticaprompuntaje.setId(objectUsuario);
+        
+        Session session  = HibernateUtil.getSessionFactory().getCurrentSession();
+        try {
+            session.beginTransaction();
+            session.save(estadisticaprompuntaje);
+             session.beginTransaction().commit();
+        } catch (Exception e) {
+            session.beginTransaction().rollback();
+        }
+        }       
+    }
+    
+    public Double generarPromHeuristicoByCriteriByUsuario(Integer criterioPadre, Integer sitioEvaluacion, Integer idUsuario) {
+        
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        
+        StringBuilder strSql = new StringBuilder();
+        strSql.append(" SELECT IFNULL(AVG(puntuacion_escala),0) AS prom ");
+        strSql.append(" FROM criteriohijo_has_sitioevaluacion ");
+        strSql.append(" WHERE usuario_id = :idUsuario ");
+        strSql.append(" AND sitioevaluacion_codigo = :sitioEvaluacion ");
+        strSql.append(" AND criteriopadre_codigo = :criterioPadre ");
+        
+        session.beginTransaction();
+        SQLQuery query = session.createSQLQuery(strSql.toString());
+        query.setParameter("idUsuario", idUsuario);
+        query.setParameter("sitioEvaluacion", sitioEvaluacion);
+        query.setParameter("criterioPadre", criterioPadre);
+        query.addScalar("prom",StandardBasicTypes.DOUBLE);
+        
+        return (Double)query.uniqueResult();
+              
+    }
+    
+    public Usuario findByUsuario(Integer idUsuario) {
+        
+        Usuario model = null;
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        String sql =  "FROM Usuario WHERE id = '"+idUsuario+"'";
+        try {
+            session.beginTransaction();
+            model = (Usuario) session.createQuery(sql).uniqueResult();
+            session.beginTransaction().commit();
+        } catch (Exception e) {
+            session.beginTransaction().rollback();
+        }
+        return model;
+    }
+    
+    public PromedioUsuarioReport buscarPromHeuristicoByCriteriByUsuario(Integer sitioEvaluacion, Integer idUsuario){
+        
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        
+        StringBuilder strSql = new StringBuilder();
+        strSql.append(" SELECT u.usuario AS usuario, ");
+        strSql.append(" criterio1 AS criterio1, criterio2 AS criterio2,  ");
+        strSql.append(" criterio3 AS criterio3, criterio4 AS criterio4,  ");
+        strSql.append(" criterio5 AS criterio5, criterio6 AS criterio6,  ");
+        strSql.append(" criterio7 AS criterio7, criterio8 AS criterio8,  ");
+        strSql.append(" criterio9 AS criterio9, criterio10 AS criterio10  ");
+        strSql.append(" FROM estadisticaprompuntajebyusuario e ");
+        strSql.append(" INNER JOIN usuario u ");
+        strSql.append(" ON e.usuario_id = u.id ");
+        strSql.append(" WHERE e.usuario_id = :idUsuario ");
+        strSql.append(" AND e.sitioevaluacion_codigo = :sitioEvaluacion ");
+        
+        session.beginTransaction();
+        SQLQuery query = session.createSQLQuery(strSql.toString());
+        query.setResultTransformer(Transformers.aliasToBean(PromedioUsuarioReport.class));
+        query.setParameter("idUsuario", idUsuario);
+        query.setParameter("sitioEvaluacion", sitioEvaluacion);        
+        query.addScalar("usuario",StandardBasicTypes.STRING);
+        query.addScalar("criterio1",StandardBasicTypes.DOUBLE);
+        query.addScalar("criterio2",StandardBasicTypes.DOUBLE);
+        query.addScalar("criterio3",StandardBasicTypes.DOUBLE);
+        query.addScalar("criterio4",StandardBasicTypes.DOUBLE);
+        query.addScalar("criterio5",StandardBasicTypes.DOUBLE);
+        query.addScalar("criterio6",StandardBasicTypes.DOUBLE);
+        query.addScalar("criterio7",StandardBasicTypes.DOUBLE);
+        query.addScalar("criterio8",StandardBasicTypes.DOUBLE);
+        query.addScalar("criterio9",StandardBasicTypes.DOUBLE);
+        query.addScalar("criterio10",StandardBasicTypes.DOUBLE);
+        
+        return (PromedioUsuarioReport)query.uniqueResult();
+    }
+    
+    public boolean isSitioEstadisticaPromPuntajeByCriterioByUsuario(Integer idSitio){
+        
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        boolean flag = false;
+        
+        StringBuilder strSql = new StringBuilder();
+        strSql.append(" SELECT sitioevaluacion_codigo AS id ");
+        strSql.append(" FROM estadisticaprompuntajebyusuario ");
+        strSql.append(" WHERE sitioevaluacion_codigo = :idSitio ");
+        
+        session.beginTransaction();
+        SQLQuery query = session.createSQLQuery(strSql.toString());
+        query.setParameter("idSitio", idSitio);
+        query.addScalar("id",StandardBasicTypes.INTEGER);
+        
+        Integer result = (Integer) query.uniqueResult();
+        if ( result != null && result > 0)
+        flag = true;
+        
+        return flag;
     }
     
 }

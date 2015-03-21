@@ -7,6 +7,7 @@
 package dao;
 
 import Report.EvaluacionDetalladaUsuarioReport;
+import Report.PromedioUsuarioReport;
 import java.util.List;
 import model.Estadisticaprompuntaje;
 import model.Usuario;
@@ -28,4 +29,9 @@ public interface AnalisisHeuristicaDao {
     public List<EvaluacionDetalladaUsuarioReport> devolverDetallesEvaluaUsiario(Integer idUsuario, Integer codigoSitio);
     public Double buscarPromHeuristicoByUsuario(Integer idSitio, Integer idUsuario);
     public void agregarPromHeuristicoByUsuario(Integer idSitio, List<Integer> idsUsuarios);
+    public Double generarPromHeuristicoByCriteriByUsuario(Integer criterioPadre, Integer sitioEvaluacion, Integer idUsuario);
+    public void agregarPromHeuristicoByCriteriByUsuario(Integer sitioEvaluacion, List<Integer>idsUsuario);        
+    public Usuario findByUsuario(Integer idUsuario);
+    public PromedioUsuarioReport buscarPromHeuristicoByCriteriByUsuario(Integer sitioEvaluacion, Integer idUsuario);
+    public boolean isSitioEstadisticaPromPuntajeByCriterioByUsuario(Integer idSitio);
 }

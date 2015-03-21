@@ -7,6 +7,7 @@
 package beans;
 
 import Report.EvaluacionDetalladaUsuarioReport;
+import Report.PromedioUsuarioReport;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -31,6 +32,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.ServletContext;
 import model.Estadisticaprompuntaje;
+import model.Estadisticaprompuntajebyusuario;
 import model.Sitioevaluacion;
 import model.Usuario;
 import org.primefaces.context.RequestContext;
@@ -39,7 +41,9 @@ import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.BubbleChartModel;
 import org.primefaces.model.chart.BubbleChartSeries;
+import org.primefaces.model.chart.CategoryAxis;
 import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.LineChartModel;
 import util.MyUtil;
 
 /**
@@ -61,8 +65,8 @@ public class sitioAnalizarBean implements Serializable {
     private Usuario selectedUsuario;
     // Lista de las evaluaciones personalizadas por usuario
     private List<EvaluacionDetalladaUsuarioReport> listaEvalDetalleUsuario;
-    // Instancia del modelo que crea los datos para los usuarios
-    private BubbleChartModel bubbleModel2;
+    // Model Linear chart
+    private LineChartModel lineModel2;
     /**
      * Creates a new instance of sitioAnalizarBean
      */
@@ -90,7 +94,7 @@ public class sitioAnalizarBean implements Serializable {
         Sitioevaluacion sitioevaluacion = this.sitioDao.findBySitio(this.selectedSitio);
         if (sitioevaluacion != null) {
             createBarModels();
-            createBubbleModels();
+            createLineModels();
             ruta = MyUtil.basepathlogin() + "views/estadistica/analisis_sitio.xhtml";
             FacesContext contex = FacesContext.getCurrentInstance();
             contex.getExternalContext().redirect(ruta);
@@ -100,56 +104,7 @@ public class sitioAnalizarBean implements Serializable {
             }
         }
     }
-     
-     private void createBubbleModels(){
-         
-        bubbleModel2 = initBubbleModel();
-        bubbleModel2.setTitle("Promedio Puntaje Por Usuarios");
-        bubbleModel2.setShadow(false);
-        bubbleModel2.setBubbleGradients(true);
-        bubbleModel2.setBubbleAlpha(0.8);
-        bubbleModel2.getAxis(AxisType.X).setTickAngle(-50);
-        Axis yAxis = bubbleModel2.getAxis(AxisType.Y);
-        yAxis.setMin(0);
-        yAxis.setMax(250);
-        yAxis.setTickAngle(50);
-    }
-     
-     private BubbleChartModel initBubbleModel(){
-        
-        Integer idSitio = this.selectedSitio.getCodigo();
-        List<Integer> idsUsuarios = analisisHeuristicaDao.idsUsuariosBySitio(idSitio);
-        boolean existeAnalisisByUsuario = false;
-        
-         for (Integer idUsuario : idsUsuarios) {
-             if( analisisHeuristicaDao.isSitioPromPuntajeByUsuario(idSitio)){
-                 existeAnalisisByUsuario = true;
-                 break;
-             }
-         }
-         
-         if(existeAnalisisByUsuario == false){
-             analisisHeuristicaDao.agregarPromHeuristicoByUsuario(idSitio, idsUsuarios);
-         }
-         
-         
-         
-        BubbleChartModel model = new BubbleChartModel();
-         
-        model.add(new BubbleChartSeries("Acura", 70, 183,55));
-        model.add(new BubbleChartSeries("Alfa Romeo", 45, 92, 36));
-        model.add(new BubbleChartSeries("AM General", 24, 104, 40));
-        model.add(new BubbleChartSeries("Bugatti", 50, 123, 60));
-        model.add(new BubbleChartSeries("BMW", 15, 89, 25));
-        model.add(new BubbleChartSeries("Audi", 40, 180, 80));
-        model.add(new BubbleChartSeries("Aston Martin", 70, 70, 48));
-         
-        return model;
-    }
-
-     public BubbleChartModel getBubbleModel2() {
-        return bubbleModel2;
-    }
+   
      
     public BarChartModel getBarModel() {
         return barModel;
@@ -157,6 +112,10 @@ public class sitioAnalizarBean implements Serializable {
 
     public void setBarModel(BarChartModel barModel) {
         this.barModel = barModel;
+    }
+    
+    public LineChartModel getLineModel2() {
+        return lineModel2;
     }
      
      private void createBarModels() {
@@ -176,6 +135,50 @@ public class sitioAnalizarBean implements Serializable {
         yAxis.setLabel("Puntaje");
         yAxis.setMin(0);
         yAxis.setMax(5);
+    }
+     
+     private void createLineModels() {
+                
+        lineModel2 = initCategoryModel();
+        lineModel2.setTitle("Promedio Puntajes Por usuario");
+        lineModel2.setLegendPosition("e");
+        lineModel2.setShowPointLabels(true);
+        lineModel2.getAxes().put(AxisType.X, new CategoryAxis("Criterios Heuristicos"));
+        Axis yAxis = lineModel2.getAxis(AxisType.Y);
+        yAxis.setLabel("Puntuacion");
+        yAxis.setMin(0);
+        yAxis.setMax(5);
+    }
+     
+     private LineChartModel initCategoryModel() {
+        Integer idSitio = this.selectedSitio.getCodigo();        
+        LineChartModel model = new LineChartModel();
+        boolean isAnalisis = analisisHeuristicaDao.isSitioEstadisticaPromPuntajeByCriterioByUsuario(idSitio);
+         List<Integer> idsUsuarios = analisisHeuristicaDao.idsUsuariosBySitio(idSitio);
+        if(isAnalisis == false){           
+            analisisHeuristicaDao.agregarPromHeuristicoByCriteriByUsuario(idSitio, idsUsuarios);
+        }
+        
+         for (Integer idUsuario : idsUsuarios) {
+             
+             PromedioUsuarioReport usuarioReport = analisisHeuristicaDao.buscarPromHeuristicoByCriteriByUsuario(idSitio, idUsuario);
+             ChartSeries boys = new ChartSeries();
+             boys.setLabel(usuarioReport.getUsuario());
+             boys.set(promCriteriosPadre.CRITERIO1.getCriterioPadre(),usuarioReport.getCriterio1() );
+             boys.set(promCriteriosPadre.CRITERIO2.getCriterioPadre(), usuarioReport.getCriterio2());
+             boys.set(promCriteriosPadre.CRITERIO3.getCriterioPadre(), usuarioReport.getCriterio3());
+             boys.set(promCriteriosPadre.CRITERIO4.getCriterioPadre(), usuarioReport.getCriterio4());
+             boys.set(promCriteriosPadre.CRITERIO5.getCriterioPadre(), usuarioReport.getCriterio5());
+             boys.set(promCriteriosPadre.CRITERIO6.getCriterioPadre(), usuarioReport.getCriterio6());
+             boys.set(promCriteriosPadre.CRITERIO7.getCriterioPadre(), usuarioReport.getCriterio7());
+             boys.set(promCriteriosPadre.CRITERIO8.getCriterioPadre(), usuarioReport.getCriterio8());
+             boys.set(promCriteriosPadre.CRITERIO9.getCriterioPadre(), usuarioReport.getCriterio9());
+             boys.set(promCriteriosPadre.CRITERIO10.getCriterioPadre(), usuarioReport.getCriterio10());
+             model.addSeries(boys);
+         }
+       
+         
+        return model;
     }
      
      private BarChartModel initBarModel() {
