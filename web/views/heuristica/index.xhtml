@@ -135,12 +135,11 @@
                                                 <p:ajax update="msgs" listener="#{heuristicaBean.addMessage1(criterioPadre.codigo)}" />
                                             </p:selectBooleanCheckbox>
                                         </h:panelGrid>
-                                    </p:dataList>
-                                    <p:commandButton id="btnAgregarCriterioPadre" update=":formSitios" actionListener="#{heuristicaBean.agregarCriteriosPadres}" icon="ui-icon-check" title="Agregar" value="Agregar" onclick="PF('pbAjax').start();"/>
+                                    </p:dataList>                                    
                                     <p:progressBar widgetVar="pbAjax" ajax="true" value="#{heuristicaBean.progress}" labelTemplate="{value}%" styleClass="animated" global="false">
                                         <p:ajax event="complete" listener="#{heuristicaBean.onComplete}" update="growl" />
                                     </p:progressBar>
-                                    
+                                    <p:commandButton id="btnAgregarCriterioPadre" style="margin-top: 10px;" update=":formSitios" actionListener="#{heuristicaBean.agregarCriteriosPadres}" icon="ui-icon-check" title="Agregar" value="Agregar" onclick="PF('pbAjax').start();"/>
                                 </p:scrollPanel>
                             </p:tab>
                             <p:tab title="Asignar Evaluadores">

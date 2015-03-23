@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <body>
+        
+        <ui:composition template="./template.xhtml">
+            
+            <ui:define name="content">
+                <p:outputPanel deferred="true" style="margin-bottom: 3%;margin-top: 3%">
+                    <h2 style="text-align: center">Realizar una evaluación heurística</h2>
+                    <p style="margin-bottom: 15px;margin-top: 25px;text-align: justify"> La evaluación heurística es un análisis de experto en el cual se hace una inspección 
+                        Para hacer un test de este tipo, hay que conocer las tareas que se han de realizar, el perfil de usuarios que van a utilizar el sistema o sitio web, y adecuar estos 
+                        principios heurísticos a nuestro contexto. Para esto, son de ayuda las mencionadas subheurísticas de Pierotti.<br/>
+                        <br/>
+                        Para el desarrollo de esta aplicacion se utilizo <a href="http://olgacarreras.blogspot.com.es/2011/07/sirius-nueva-sistema-para-la-evaluacion.html">el test Sirius</a>, que permite dar información cuantitativa, aparte de cualitativa, acerca de la situación de un 
+                        determinado sistema en cuanto a usabilidad. Me creo una hoja de excel donde voy anotando los problemas encontrados, donde se sitúan, 
+                        una recomendación para corregirlo y la prioridad. Aunque yo utilizo prioridad “Alta”, “media” y “baja”, Nielsen recomienda un sistema de 0 a 4:
+                        <ol start="1">
+                            <li><strong>No es un problema de usabilidad</strong>.</li>
+                            <li><strong>Problema sin importancia</strong>: No es necesario arreglarlo a menos que haya tiempo de sobra.</li>
+                            <li><strong>Problema de poca importancia</strong>: Arreglarlo no tiene mucha importancia.</li>
+                            <li><strong>Problema grave</strong>: es importante arreglarlo.</li>
+                            <li><strong>Problema catastrófico</strong>: Es vital arreglarlo.</li>
+                        </ol>
+                        <div align="center" style="margin-top: 4%;margin-bottom: 3%" id="logo">
+                        <p:graphicImage name="/images/formatoExcel.jpg" style="width: 90%;"/>
+                        </div>
+                        También intento tener siempre al menos otro punto de vista, a ser posible algún compañero experto en usabilidad, 
+                        y dos o tres usuarios no expertos, que nos ayudan a ponernos en las botas de un usuario que no conozca el sistema 
+                        en absoluto. Durante algún tiempo, mi abuela, sin conocimientos informáticos, era una gran “tester” para este tipo 
+                        de pruebas, pero mas adelante tenía su propio portátil, cuenta en facebook y skype, y era una jovencita de menos 
+                        de cuarenta según “brain training”, así que dejé de hacerla trabajar gratis con mis tests y la dejé cuidando su 
+                        granja virtual.
+                    </p>
+                     <h2>Análisis de resultados</h2>
+                    <p><strong>Cuantitativo</strong>: El test Sirius permite expresar de modo numérico la cantidad y gravedad de los problemas a resolver para mejorar la usabilidad de un sistema o sitio web, y también pueden introducirse gráficas donde se compare la localización de errores por tipo de evaluador, o por heurística evaluada.<br/>
+                        <br/>
+                            <strong>Cualitativo</strong>: Se deben listar los problemas encontrados, su localización y gravedad, de modo que puedan categorizarse y ordenarse por prioridad. Normalmente presento un listado donde se explican los problemas y posibles soluciones en profundidad, y otro mas esquemático (normalmente en una hoja de cálculo) para que el equipo de desarrollo encargado de corregir estos errores lo tenga como instrumento de trabajo.</p>
+                     <p>Para saber más:</p>
+                     <ul>
+                         <ul>
+                             <li><a title="Evaluación heurística (PDF, se abre en ventana/pestaña nueva)" href="http://www.aipo.es/libro/pdf/15-evaluacion-heuristica.pdf" target="_blank">Evaluación Heurística: González María Laura, Pascual Afra, Lorés Jesús – Universitat de Lléida (www.aipo.es)</a></li>
+                             <li><a title="Ver artículo (se abre en ventana/pestaña nueva)" href="http://olgacarreras.blogspot.com.es/2012/03/estandares-formales-de-usabilidad-y-su.html" target="_blank">Estándares formales de usabilidad y su aplicación práctica en una evaluación heurística: Olga Carreras </a></li>
+                             <li><a title="Ver artículo (se abre en ventana/pestaña nueva)" href="http://olgacarreras.blogspot.com.es/2011/07/sirius-nueva-sistema-para-la-evaluacion.html" target="_blank">Sirius. Nuevo sistema para la evaluación de la usabilidad web: Olga Carreras</a></li>
+                             <li><a title="Ver artículo (se abre en ventan/pestaña nueva)" href="http://www.stcsig.org/usability/topics/articles/he-checklist.html" target="_blank">Heuristic Evaluation – A System Checklist: Deniese Pierotti (en inglés)</a></li>
+                             <li><a title="Ver artículo (se abre en ventana/pestaña nueva)" href="http://www.nngroup.com/articles/how-to-conduct-a-heuristic-evaluation/" target="_blank">How to Conduct a Heuristic Evaluation: Jakob Nielsen (en inglés)</a></li>
+                             <li><a title="Ver artículo (se abre en ventana/pestaña nueva)" href="http://www.nngroup.com/articles/ten-usability-heuristics/" target="_blank">10 Usability Heuristics for User Interface Design: Jakob Nielsen (en inglés)</a></li>
+                         </ul>
+                     </ul>
+                </p:outputPanel>
+            </ui:define>
+
+        </ui:composition>
+        
+    </body>
+</html>

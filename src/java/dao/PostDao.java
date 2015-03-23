@@ -21,4 +21,5 @@ public interface PostDao {
     public Post findByPost(Post post);
     public List<Comentariopost> findComentariosByPost(Post post);
     public boolean createComentario(Comentariopost comentario);
+    public boolean create(Post post);
 }

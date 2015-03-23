@@ -10,6 +10,9 @@
         <ui:composition template="./../template.xhtml">
             <ui:define name="content">
                  <p:growl id="msgs" showDetail="true" /> 
+                 <h:form style="margin-top: 15px;margin-bottom: 10px;">
+                    <p:commandButton id="btnForoCreate" update=":formCreate" oncomplete="PF('dialogForoCreate').show()" icon="icon-new" title="Crear" value="Crear"/>                      
+                </h:form>
                   <h:form id="formDataTablePost">
                       <p:dataTable id="posts" var="post" value="#{postBean.posts}"
                      paginator="true" rows="5" paginatorPosition="bottom" 
@@ -35,6 +38,24 @@
                           </p:column>
                   </p:dataTable>
               </h:form>
+                 <h:form id="formCreate">
+                     <p:dialog header="Crear Entrada a Foro" widgetVar="dialogForoCreate" id="dlgForoCreate"  showEffect="fade" hideEffect="explode" resizable="false" modal="true">
+                         <h:panelGrid  id="display" columns="2" cellpadding="4" style="margin:0 auto;">
+
+                             <h:outputText value="Titulo Post: " />
+                             <p:inputText value="#{postBean.selectedPost.titulo}"/>
+
+                             <h:outputText value="Contenido: " />
+                             <p:inputTextarea id="txtContenido" rows="5" cols="50" counter="display1" maxlength="250" counterTemplate="{0} caracteres restantes." autoResize="true" value="#{postBean.selectedPost.contenido}" />
+                             <h:outputText id="display1"/>      
+                             <f:facet name="footer">
+                                 <p:separator/>
+                                 <p:commandButton id="btnCreateAceptar" update=":formDataTablePost, :msgs" oncomplete="PF('dialogForoCreate').hide()" actionListener="#{postBean.btnCreateForo(actionEvent)}" icon="ui-icon-check" title="Guardar" value="Crear"/>
+                                 <p:commandButton id="btnCreateCancelar" oncomplete="PF('dialogForoCreate').hide()" icon="ui-icon-close" title="Cancelar" value="Cancelar"/>
+                             </f:facet>
+                         </h:panelGrid>
+                     </p:dialog>
+                 </h:form>
             </ui:define>
         </ui:composition>        
     </h:body>  

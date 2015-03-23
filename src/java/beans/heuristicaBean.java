@@ -297,7 +297,9 @@ public class heuristicaBean implements Serializable{
     public void ejecutarHeuristica(ActionEvent event){
          
          String ruta = "";
-         
+         this.comentarioCriterioSitio = null;
+         this.puntaje = null;
+         this.value2 = false;
          Sitioevaluacion sitioevaluacion = this.selectedSitioEvaluacion;
          if (sitioevaluacion != null){
              ruta = MyUtil.basepathlogin()+"views/heuristica/ejecucion_prueba.xhtml";

@@ -16,22 +16,25 @@
     <h:body>
         <div id="conteiner">
         <div id="top" class="ui-widget-header ui-corner-all">
-            <ui:insert name="top">Top</ui:insert>
+            <ui:insert name="top">Aplicacion Para la Evaluacion de Pruebas Heuristicas</ui:insert>
         </div>
         <div id="menu">
             <h:form>  
                 <p:growl id="messages"/>
 
                 <p:menubar>
+                    
+                    <p:submenu label="Inicio" icon="ui-icon-document">
+                        <p:menuitem value="Home" url="#{appBean.basePath}inicio.xhtml" />
+                        <p:menuitem value="Ayuda" url="#{appBean.basePath}ayuda.xhtml" />
+                    </p:submenu> 
+                    
                     <p:submenu label="Administrar" icon="ui-icon-document">
                         <p:menuitem value="Usuario" url="#{appBean.basePath}usuario/index.xhtml" />
-                        <p:separator />
-                        <p:menuitem value="Quit" url="#" />
                     </p:submenu>
 
                     <p:submenu label="Foro" icon="ui-icon-document">
                         <p:menuitem value="Crear Foro" url="#{appBean.basePath}foro/index.xhtml" />
-                        <p:menuitem value="Redo" url="#" icon="ui-icon-arrowreturnthick-1-e" />
                     </p:submenu>
                     
                    <p:submenu label="Heuristica" icon="ui-icon-document">
@@ -47,7 +50,6 @@
 
                     <f:facet name="options">
                         <p:inputText style="margin-right:10px" placeholder="Search"/>
-                        <p:commandButton type="button" value="Logout" icon="ui-icon-extlink" />
                     </f:facet>
                 </p:menubar>
             </h:form>
@@ -59,7 +61,7 @@
 
         <div id="bottom" class="ui-widget-header ui-corner-all ui-widget-content ui-corner-all">
             <ui:insert name="bottom"> Universidad del Quindio - Laboratorio de Usabilidad <br></br>
-                   &copy; 2014
+                   &copy; 2015
             </ui:insert>
         </div>
               </div>

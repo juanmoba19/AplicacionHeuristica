@@ -8,11 +8,14 @@ package beans;
 
 import dao.PostDao;
 import dao.PostDaoImpl;
+import java.awt.Desktop.Action;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -124,6 +127,38 @@ public class PostBean implements Serializable{
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, null);
             FacesContext.getCurrentInstance().addMessage(null, message);
         }         
-    } 
+    }
+    
+    public void btnCreateForo(Action actionEvent){
+        
+        String msg;
+                
+        Date hoy = new Date();
+        String mes = new SimpleDateFormat("MMMM").format(hoy);
+        
+        Calendar fechaActual = new GregorianCalendar();
+        
+        String anio = Integer.toString(fechaActual.get(Calendar.YEAR));
+        String dia = Integer.toString(fechaActual.get(Calendar.DAY_OF_MONTH));
+        String hora = Integer.toString(fechaActual.get(Calendar.HOUR_OF_DAY));
+        String minuto = Integer.toString(fechaActual.get(Calendar.MINUTE));
+        String horaMinuto = hora +":" + minuto;
+        
+        this.selectedPost.setDia(dia);
+        this.selectedPost.setMes(mes);
+        this.selectedPost.setAnio(anio);
+        this.selectedPost.setHora(horaMinuto);
+        
+        if(postDao.create(this.selectedPost)){
+           msg = "Se guardo correctamente la Entrada al Foro"; 
+           FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
+           FacesContext.getCurrentInstance().addMessage(null, message);
+           this.selectedPost = null;
+        }else{
+            msg = "Error al crear la Entrada al Foro";
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } 
+    }
           
 }

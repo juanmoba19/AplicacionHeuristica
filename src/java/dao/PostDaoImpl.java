@@ -104,4 +104,25 @@ public class PostDaoImpl implements PostDao{
         return flag;
     }
     
+    @Override
+    public boolean create(Post post) {
+        
+        Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioObj"); 
+        
+        post.setUsuario(usuario);
+        
+        boolean flag;
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        try {
+            session.beginTransaction();
+            session.save(post);
+            session.beginTransaction().commit();
+            flag=true;
+        } catch (Exception e) {
+            flag = false;
+            session.beginTransaction().rollback();
+        }
+        return flag;
+    }
+    
 }
