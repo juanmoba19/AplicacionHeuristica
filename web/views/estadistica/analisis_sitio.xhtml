@@ -113,11 +113,12 @@
                                 </p:dataTable>
                                 <div class="botonExport" style="margin-top: -16px;margin-bottom: 5px;text-align: right">
                                         <p:commandButton ajax="false" icon="icon-exportPDF" style="width: 32px;height: 32px">
-                                            <p:dataExporter type="pdf" target="tbl" fileName="cars"
-                                                            preProcessor="#{sitioAnalizarBean.preProcessPDF}" postProcessor="#{sitioAnalizarBean.postProcessPDF}" />
+                                            <p:dataExporter type="pdf" target="tbl" fileName="pdf"
+                                                            preProcessor="#{sitioAnalizarBean.preProcessPDF}" />
                                         </p:commandButton>
                                         <p:commandButton ajax="false" icon="icon-exportExcel" style="width: 32px;height: 32px" >
-                                            <p:dataExporter type="xls" target="tbl" fileName="excel"/>
+                                            <p:dataExporter type="xls" target="tbl" fileName="excel"
+                                                            postProcessor="#{sitioAnalizarBean.postProcessXLS}" />
                                         </p:commandButton>
                                          </div>                                
                                 </h:form>

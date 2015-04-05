@@ -15,7 +15,6 @@ import com.lowagie.text.HeaderFooter;
 import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Phrase;
-import com.lowagie.text.pdf.PdfPTable;
 import static com.lowagie.text.pdf.codec.BmpImage.getImage;
 import dao.AnalisisHeuristicaDao;
 import dao.AnalisisHeuristicaDaoImpl;
@@ -32,15 +31,17 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.ServletContext;
 import model.Estadisticaprompuntaje;
-import model.Estadisticaprompuntajebyusuario;
 import model.Sitioevaluacion;
 import model.Usuario;
-import org.primefaces.context.RequestContext;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
-import org.primefaces.model.chart.BubbleChartModel;
-import org.primefaces.model.chart.BubbleChartSeries;
 import org.primefaces.model.chart.CategoryAxis;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartModel;
@@ -258,27 +259,17 @@ public class sitioAnalizarBean implements Serializable {
         HeaderFooter header = new HeaderFooter(new Phrase("Informe Evaluacion Heuristica Usuario: "+ this.selectedUsuario.getUsuario()), false);
         pdf.setHeader(header);
         
-        pdf.setPageSize(PageSize.A4.rotate());
+        pdf.setPageSize(PageSize.A4);
         pdf.open();
-
-        PdfPTable pdfTable = new PdfPTable(1);
-        pdfTable.addCell(getImage("Uniqlog.PNG"));
         
-        pdfTable.setWidthPercentage(10f);
-        pdfTable.setHorizontalAlignment(0);
-        pdf.add(pdfTable);
-
-    }
-    
-    public void postProcessPDF(Object document) throws IOException, DocumentException {
-        final Document pdf = (Document) document;
-        pdf.setPageSize(PageSize.A4.rotate());
-
+        pdf.add(getImage("Uniqlog.PNG"));
+        
     }
     
     private Image getImage(String imageName) throws IOException, BadElementException {
         final Image image = Image.getInstance(getAbsolutePath(imageName));
-        image.scalePercent(90f);
+        image.scalePercent(30f);
+        image.setWidthPercentage(30f);
         return image;
     }
     
@@ -299,7 +290,21 @@ public class sitioAnalizarBean implements Serializable {
         this.punSitioConcl = punSitioConcl;
     }
     
-    
+    public void postProcessXLS(Object document) {
+        HSSFWorkbook wb = (HSSFWorkbook) document;
+        HSSFSheet sheet = wb.getSheetAt(0);
+        HSSFRow header = sheet.getRow(0);
+         
+        HSSFCellStyle cellStyle = wb.createCellStyle();  
+        cellStyle.setFillForegroundColor(HSSFColor.GREEN.index);
+        cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+         
+        for(int i=0; i < header.getPhysicalNumberOfCells();i++) {
+            HSSFCell cell = header.getCell(i);
+             
+            cell.setCellStyle(cellStyle);
+        }
+    }
     
      
 }
