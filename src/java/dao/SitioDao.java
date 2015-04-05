@@ -16,5 +16,6 @@ public interface SitioDao {
     
     public boolean createSitio(Sitioevaluacion sitioEvaluacion);
     public Sitioevaluacion findBySitio(Sitioevaluacion sitioevaluacion);
+    public boolean actualizarSitio(Sitioevaluacion sitioEvaluacion);
     
 }

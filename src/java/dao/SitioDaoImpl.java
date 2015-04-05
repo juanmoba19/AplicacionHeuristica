@@ -55,4 +55,19 @@ public class SitioDaoImpl implements  SitioDao{
         
     }
     
+    public boolean actualizarSitio(Sitioevaluacion sitioEvaluacion) {
+        boolean flag;
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        try {
+            session.beginTransaction();
+            session.update(sitioEvaluacion);
+            session.beginTransaction().commit();
+            flag=true;
+        } catch (Exception e) {
+            flag = false;
+            session.beginTransaction().rollback();
+        }
+        return flag;
+    }
+    
 }

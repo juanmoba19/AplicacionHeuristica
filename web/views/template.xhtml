@@ -39,7 +39,7 @@
                     
                    <p:submenu label="Heuristica" icon="ui-icon-document">
                         <p:menuitem value="Lista Sitios" url="#{appBean.basePath}heuristica/index.xhtml" />
-                        <p:menuitem value="Gestionar Sitios" url="#{appBean.basePath}heuristica/gestion_sitio.xhtml" />
+                        <p:menuitem value="Gestionar Sitios" url="#{appBean.basePath}heuristica/gestion_sitio.xhtml" rendered="#{appBean.rol eq '1'}" />
                     </p:submenu>
                     
                     <p:submenu label="Estadistica" icon="ui-icon-document">

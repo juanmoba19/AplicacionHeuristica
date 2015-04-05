@@ -35,7 +35,7 @@ public class sitioCrearBean implements Serializable{
     private Sitioevaluacion selectedSitio;
     private Date dateEvaluacion;
     private String imagenProducto;
-    private SitioDao sitioDao;
+    transient SitioDao sitioDao;
 
     /**
      * Creates a new instance of sitioBean

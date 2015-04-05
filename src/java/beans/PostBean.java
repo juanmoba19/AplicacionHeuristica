@@ -6,9 +6,12 @@
 
 package beans;
 
+import dao.HeuristicaDao;
+import dao.HeuristicaDaoImpl;
 import dao.PostDao;
 import dao.PostDaoImpl;
 import java.awt.Desktop.Action;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,15 +20,18 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
 import model.Comentariopost;
 import model.Post;
+import model.Sitioevaluacion;
 import model.Usuario;
-import org.primefaces.context.RequestContext;
 import util.MyUtil;
 
 /**
@@ -41,8 +47,51 @@ public class PostBean implements Serializable{
      */ 
     private List<Post> posts;
     private Post selectedPost;
-    private PostDao postDao;
-    private Comentariopost comentario;
+    transient PostDao postDao;
+    transient Comentariopost comentario;
+    transient HeuristicaDao heuristicaDao;
+    private List<SelectItem> selectOneItemsSitio;
+    private int idSitio;
+    private String titulo;
+    private String contenido;
+    // variable para saber si se filtra por sitio
+    private Integer codigoBySitio;
+
+    public Integer getCodigoBySitio() {
+        return codigoBySitio;
+    }
+
+    public void setCodigoBySitio(Integer codigoBySitio) {
+        this.codigoBySitio = codigoBySitio;
+    }    
+        
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getContenido() {
+        return contenido;
+    }
+
+    public void setContenido(String contenido) {
+        this.contenido = contenido;
+    }
+    
+    
+
+    public int getIdSitio() {
+        return idSitio;
+    }
+
+    public void setIdSitio(int idSitio) {
+        this.idSitio = idSitio;
+    }
+    
+    
 
     public Comentariopost getComentario() {
         return comentario;
@@ -55,6 +104,7 @@ public class PostBean implements Serializable{
     public PostBean() {
         this.posts = new ArrayList<Post>();
         this.postDao = new PostDaoImpl();
+        this.heuristicaDao = new HeuristicaDaoImpl();
         this.comentario = new Comentariopost();
         if(this.selectedPost == null){
             this.selectedPost=new Post();
@@ -62,8 +112,8 @@ public class PostBean implements Serializable{
     }
 
     public List<Post> getPosts() {
-        PostDao postDao = new PostDaoImpl();
-        this.posts = postDao.findAll();
+        this.posts = postDao.findAll(codigoBySitio);
+        setCodigoBySitio(null);
         return posts;
     }
 
@@ -80,22 +130,23 @@ public class PostBean implements Serializable{
     }
     
     public void seguirPost(ActionEvent event) {
-        RequestContext context = RequestContext.getCurrentInstance();
-        boolean isPost;
+        
         String ruta = ""; 
         
         Post po = this.postDao.findByPost(this.selectedPost);
         if(po != null ) {
-            isPost = true;
             ruta = MyUtil.basepathlogin()+"views/foro/post_n.xhtml";
+            FacesContext contex = FacesContext.getCurrentInstance();
+             try {
+                  contex.getExternalContext().redirect(ruta);
+             } catch(IOException ex) {
+                 Logger.getLogger(PostBean.class.getName()).log(Level.SEVERE, null, ex);
+             }
         } else {
-            isPost = false;
             if(this.selectedPost == null){
             this.selectedPost=new Post();
         }
         }
-        context.addCallbackParam("isPost", isPost);
-        context.addCallbackParam("ruta", ruta);
     }
     
     public List<Comentariopost> getComentariosByPost() {
@@ -132,8 +183,9 @@ public class PostBean implements Serializable{
     public void btnCreateForo(Action actionEvent){
         
         String msg;
-                
-        Date hoy = new Date();
+        
+        if ( !this.titulo.equals("") || !this.contenido.equals("") || this.idSitio!=0 ){
+          Date hoy = new Date();
         String mes = new SimpleDateFormat("MMMM").format(hoy);
         
         Calendar fechaActual = new GregorianCalendar();
@@ -148,17 +200,50 @@ public class PostBean implements Serializable{
         this.selectedPost.setMes(mes);
         this.selectedPost.setAnio(anio);
         this.selectedPost.setHora(horaMinuto);
+        this.selectedPost.setTitulo(this.titulo);
+        this.selectedPost.setContenido(this.contenido);
+        
+        Sitioevaluacion sitioevaluacion = postDao.findBySitio(this.idSitio);
+        this.selectedPost.setSitioevaluacion(sitioevaluacion);
         
         if(postDao.create(this.selectedPost)){
            msg = "Se guardo correctamente la Entrada al Foro"; 
            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
            FacesContext.getCurrentInstance().addMessage(null, message);
-           this.selectedPost = null;
+            setTitulo("");
+            setContenido("");
+            setIdSitio(0);
         }else{
+             setTitulo("");
+            setContenido("");
+            setIdSitio(0);
             msg = "Error al crear la Entrada al Foro";
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, null);
             FacesContext.getCurrentInstance().addMessage(null, message);
-        } 
+        }   
+        }else{
+             setTitulo("");
+            setContenido("");
+            setIdSitio(0);
+           msg = "Por favor llenar todos los Campos Requeridos";
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, null);
+            FacesContext.getCurrentInstance().addMessage(null, message); 
+        }
+        
     }
-          
+
+    public List<SelectItem> getSelectOneItemsSitio() {
+        this.selectOneItemsSitio = new ArrayList<SelectItem>();
+        List<Sitioevaluacion> sitios = this.postDao.sitiosPermitidos();
+        if (sitios != null && sitios.size() > 0){
+          for (Sitioevaluacion sitioevaluacion : sitios) {
+            SelectItem selectItem = new SelectItem(sitioevaluacion.getCodigo(), sitioevaluacion.getNombre());
+            this.selectOneItemsSitio.add(selectItem);
+        }  
+        }
+        
+         return selectOneItemsSitio;
+    }
+     
+    
 }

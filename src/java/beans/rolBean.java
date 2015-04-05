@@ -26,7 +26,7 @@ public class rolBean {
     private List<SelectItem> selectOneItemsRol;
 
     public List<SelectItem> getSelectOneItemsRol() {
-            this.selectOneItemsRol = new ArrayList<SelectItem>();
+        this.selectOneItemsRol = new ArrayList<SelectItem>();
         RolDao rolDao = new RolDaoImpl();
         List<Rol> roles = rolDao.selectItems();
         for (Rol rol : roles) {

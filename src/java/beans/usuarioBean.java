@@ -42,7 +42,7 @@ public class usuarioBean {
     public List<Usuario> getUsuarios() {
         
         UsuarioDao usuarioDao = new UsuarioDaoImpl();
-        this.usuarios = usuarioDao.findAll();
+        this.usuarios = usuarioDao.findAll(null);
         return usuarios;
     }
 

@@ -8,6 +8,8 @@ package beans;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
+import javax.faces.context.FacesContext;
+import model.Usuario;
 import util.MyUtil;
 
 /**
@@ -18,10 +20,22 @@ import util.MyUtil;
 @ApplicationScoped
 public class appBean {
 
+    // rol en sesion para los permisos
+    private int rol;
+
+    public int getRol() {
+        this.rol =  (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("rol");
+        return rol;
+    }
+
+    public void setRol(int rol) {
+        this.rol = rol;
+    }
     /**
      * Creates a new instance of appBean
      */
     public appBean() {
+        
     }
     
     public String getBaseUrl(){

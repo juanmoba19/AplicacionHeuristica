@@ -12,7 +12,7 @@
             <ui:define name="content">   
                  <p:growl id="msgs" showDetail="true" /> 
                  <h:form style="margin-top: 15px;margin-bottom: 10px">
-                    <p:commandButton id="btnUsuarioCreate" update=":formCreate" oncomplete="PF('dialogUsuarioCreate').show()" icon="icon-new" title="Crear" value="Crear"/>                      
+                    <p:commandButton id="btnUsuarioCreate" update=":formCreate" oncomplete="PF('dialogUsuarioCreate').show()" icon="icon-new" title="Crear" value="Crear" rendered="#{appBean.rol eq '1'}"/>                      
                 </h:form>
               <h:form id="formDataTable">
                   <p:dataTable id="usuarios" var="usuario" value="#{usuarioBean.usuarios}"
@@ -34,7 +34,7 @@
                       <p:column headerText="Rol">
                           <h:outputText value="#{usuario.rol.nombre}" />
                       </p:column>
-                      <p:column style="width:66px;text-align: center">
+                      <p:column headerText="Accion" style="width:66px;text-align: center" rendered="#{appBean.rol eq '1'}">
                            <p:commandButton id="btnUpdate" update=":formUpdate" oncomplete="PF('dialogUsuarioUpdate').show()" icon="icon-edit" title="Modificar">
                               <f:setPropertyActionListener value="#{usuario}" target="#{usuarioBean.selectedUsuario}" />
                           </p:commandButton>

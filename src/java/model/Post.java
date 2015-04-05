@@ -17,6 +17,7 @@ public class Post  implements java.io.Serializable {
      private String mes;
      private String anio;
      private String hora;
+     private Sitioevaluacion sitioevaluacion;
 
     public Post() {
     }
@@ -25,8 +26,9 @@ public class Post  implements java.io.Serializable {
     public Post(Usuario usuario) {
         this.id = 0;
         this.usuario = new Usuario();
+        this.sitioevaluacion = new Sitioevaluacion();
     }
-    public Post(Usuario usuario, String titulo, String contenido, String dia, String mes, String anio, String hora) {
+    public Post(Usuario usuario, String titulo, String contenido, String dia, String mes, String anio, String hora,Sitioevaluacion sitioevaluacion) {
        this.usuario = usuario;
        this.titulo = titulo;
        this.contenido = contenido;
@@ -34,6 +36,7 @@ public class Post  implements java.io.Serializable {
        this.mes = mes;
        this.anio = anio;
        this.hora = hora;
+       this.sitioevaluacion = sitioevaluacion;
     }
    
     public Integer getId() {
@@ -93,6 +96,15 @@ public class Post  implements java.io.Serializable {
         this.hora = hora;
     }
 
+    public Sitioevaluacion getSitioevaluacion() {
+        return sitioevaluacion;
+    }
+
+    public void setSitioevaluacion(Sitioevaluacion sitioevaluacion) {
+        this.sitioevaluacion = sitioevaluacion;
+    }
+
+    
 
 
 

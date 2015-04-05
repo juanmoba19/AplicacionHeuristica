@@ -9,6 +9,7 @@ package dao;
 import java.util.List;
 import model.Comentariopost;
 import model.Post;
+import model.Sitioevaluacion;
 
 /**
  *
@@ -17,9 +18,12 @@ import model.Post;
 public interface PostDao {
     
     public Post findByUsuarioPost(Post post);
-    public List<Post> findAll();
+    public List<Post> findAll(Integer codigoBySitio);
     public Post findByPost(Post post);
     public List<Comentariopost> findComentariosByPost(Post post);
     public boolean createComentario(Comentariopost comentario);
     public boolean create(Post post);
+    public Sitioevaluacion findBySitio(Integer sitioevaluacion);
+    public List<Integer> idsSitiosByUsuario(Integer idUsuario);
+    public List<Sitioevaluacion> sitiosPermitidos();
 }

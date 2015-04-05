@@ -107,3 +107,39 @@ div.et-box.et-info{
   webkit-box-shadow: none;
   box-shadow: none;
 }
+
+#navegador ul{
+   list-style-type: none;
+   text-align: center;
+}
+
+#navegador li{
+   display: inline;
+   text-align: center;
+   margin: 0 6px 0 0;
+}
+
+#navegador li a {
+   padding: 2px 7px 2px 7px;
+   color: #666;
+   background-color: #eeeeee;
+   border: 1px solid #ccc;
+   text-decoration: none;
+}
+
+#navegador li a:hover{
+   background-color: #333333;
+   color: #ffffff;
+}
+
+.border2 {
+    margin: 2em 0;
+    height: 17px;
+    text-align: center;
+    padding: 10px;
+    width: 65%;
+    border:  #036374  solid 2px;
+    background: #71FF00;
+    -moz-border-radius: 1em;
+    -webkit-border-radius: 1em;
+}

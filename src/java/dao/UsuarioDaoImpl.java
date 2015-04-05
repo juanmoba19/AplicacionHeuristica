@@ -7,7 +7,9 @@
 package dao;
 
 import java.util.List;
+import javax.faces.context.FacesContext;
 import model.Usuario;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import util.HibernateUtil;
 
@@ -17,12 +19,15 @@ import util.HibernateUtil;
  */
 public class UsuarioDaoImpl implements UsuarioDao{
 
+    // Usuario en sesion 
+    Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioObj"); 
+    
     @Override
     public Usuario findByUsuario(Usuario usuario) {
         
         Usuario model = null;
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        String sql =  "FROM Usuario WHERE usuario = '"+usuario.getUsuario()+"'";
+        String sql =  "FROM Usuario u left join fetch u.rol WHERE usuario = '"+usuario.getUsuario()+"'";
         try {
             session.beginTransaction();
             model = (Usuario) session.createQuery(sql).uniqueResult();
@@ -47,14 +52,24 @@ public class UsuarioDaoImpl implements UsuarioDao{
     }
 
     @Override
-    public List<Usuario> findAll() {
+    public List<Usuario> findAll(Integer num) {
         
         List<Usuario> listado = null;
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        String sql =  "FROM Usuario u left join fetch u.rol";
+        String sql ="";
+        if (num == null){
+            sql = "FROM Usuario u left join fetch u.rol";
+        }else{
+            sql = "FROM Usuario u left join fetch u.rol WHERE u.id != :idUsuario ";
+        }
+         
         try {
             session.beginTransaction();
-            listado = session.createQuery(sql).list();
+            Query query = session.createQuery(sql);
+            if (num != null){
+             query.setParameter("idUsuario", this.usuario.getId());   
+            }            
+            listado = query.list();
             session.beginTransaction().commit();
         } catch (Exception e) {
             session.beginTransaction().rollback();

@@ -21,8 +21,60 @@
                         </p:chart>  
                     </h:panelGrid>
                     
+                    <h4>Descripcion de los criterios Heuristicos</h4>
+                    <div align="justify">Para saber la definicion de cada uno de los criterios mostrados
+                    en la grafica anterior, pasar el mouse por cada uno de estos:</div>
+                    <div id="navegador" style="margin-left: -20px">
+                        <ul>
+                            <li><h:outputLink id="cri1" value="#">
+                                <h:outputText value="Crto 1" /></h:outputLink>
+                                <p:tooltip id="toolTipCri1" for="cri1" value="Entendibilidad y facilidad en la interaccion" />
+                            </li>
+                            <li><h:outputLink id="cri2" value="#">
+                                <h:outputText value="Crto 2" /></h:outputLink>
+                                <p:tooltip id="toolTipCri2" for="cri2" value="Identidad e Informacion" />
+                            </li>
+                            <li><h:outputLink id="cri3" value="#">
+                                <h:outputText value="Crto 3" /></h:outputLink>
+                                <p:tooltip id="toolTipCri3" for="cri3" value="Heuristico aspectos generales" />
+                            </li>
+                            <li><h:outputLink id="cri4" value="#">
+                                <h:outputText value="Crto 4" /></h:outputLink>
+                                <p:tooltip id="toolTipCri4" for="cri4" value="Estructura y navegacion" />
+                            </li>
+                            <li><h:outputLink id="cri5" value="#">
+                                <h:outputText value="Crto 5" /></h:outputLink>
+                                <p:tooltip id="toolTipCri5" for="cri5" value="Rotulado " />
+                            </li>
+                            <li><h:outputLink id="cri6" value="#">
+                                <h:outputText value="Crto 6" /></h:outputLink>
+                                <p:tooltip id="toolTipCri6" for="cri6" value="Layout de la pagina" />
+                            </li>
+                            <li><h:outputLink id="cri7" value="#">
+                                <h:outputText value="Crto 7" /></h:outputLink>
+                                <p:tooltip id="toolTipCri7" for="cri7" value="Control y retroalimentacion " />
+                            </li>
+                            <li><h:outputLink id="cri8" value="#">
+                                <h:outputText value="Crto 8" /></h:outputLink>
+                                <p:tooltip id="toolTipCri8" for="cri8" value="Elementos multimedia " />
+                            </li>
+                            <li><h:outputLink id="cri9" value="#">
+                                <h:outputText value="Crto 9" /></h:outputLink>
+                                <p:tooltip id="toolTipCri9" for="cri9" value="Busqueda " />
+                            </li>
+                            <li><h:outputLink id="cri10" value="#">
+                                <h:outputText value="Crto 10" /></h:outputLink>
+                                <p:tooltip id="toolTipCri10" for="cri10" value="Ayuda" />
+                            </li>
+                           
+                        </ul>
+                    </div>
                    
                     <br></br><br></br>
+                    
+                    <div align="justify" >Para conocer la puntuacion por evaluador, dar click en la lupa del usuario deseado,
+                    posteriormente se cargara el grid de abajo, y estos resultador se podran exportar a excel o PDF</div>
+                    <br></br>
                     <div style="width: 50%"> 
                     <p:dataList value="#{sitioAnalizarBean.listaUsuario}" var="usuario" type="unordered" itemType="none" paginator="true" paginatorPosition="bottom" rows="10" styleClass="paginated">
                         <f:facet name="header">
@@ -67,13 +119,25 @@
                                         <p:commandButton ajax="false" icon="icon-exportExcel" style="width: 32px;height: 32px" >
                                             <p:dataExporter type="xls" target="tbl" fileName="excel"/>
                                         </p:commandButton>
-                                         </div>
-                                <h:panelGrid columns="2" columnClasses="left,right" style="width:100%;margin-top: 10px;">
-                                    <p:chart type="line" model="#{sitioAnalizarBean.lineModel2}" style="height:300px;"/>
-                                </h:panelGrid>
-                                </h:form>                               
+                                         </div>                                
+                                </h:form>
                         </p:outputPanel>
-
+                    <h:panelGrid columns="2" columnClasses="left,right" style="width:100%;margin-top: 10px;">
+                        <p:chart type="line" model="#{sitioAnalizarBean.lineModel2}" style="height:300px;"/>
+                    </h:panelGrid>
+                    
+                    <div align="center">
+                    <div class="border2"  align="center" >
+                        <strong>
+                         <h:outputText style="font-size: larger" value="Conclusion: El sitio " /> 
+                        <h:outputText style="font-size: larger" value="#{sitioAnalizarBean.selectedSitio.nombre}" />
+                        <h:outputText style="font-size: larger" value=" es un sitio Web " /> 
+                        <h:outputText style="font-size: larger" value=" NO " rendered="#{sitioAnalizarBean.punSitioConcl gt 0.0 and sitioAnalizarBean.punSitioConcl le 1.5}"/>                        
+                        <h:outputText style="font-size: larger" value=" POCO " rendered="#{sitioAnalizarBean.punSitioConcl gt 1.5 and sitioAnalizarBean.punSitioConcl lt 2.5}"/>                        
+                        <h:outputText style="font-size: larger" value=" Usable " /> 
+                        </strong>
+                    </div>
+                    </div>        
                 </h:form>
                 
             </ui:define>

@@ -19,8 +19,13 @@
         <ui:composition template="./../template.xhtml">
 
             <ui:define name="content">
-                <h:form id="formSitios" style="margin-top: 15px"> 
+                <h:form id="formSitios" style="margin-top: 15px">
 
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                    
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                        <p:graphicImage name="/images/ajaxloadingbar.gif" />
+                    </p:dialog>
                     <p:dataTable id="sitios" var="sitios" value="#{heuristicaBean.getSitios(0)}"
                                  paginator="true" rows="10" paginatorPosition="bottom"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
@@ -64,12 +69,16 @@
                                 </p:commandButton>
                                 
                                 <p:commandButton  style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; font-size: 80%;"  actionListener="#{sitioModificarBean.seguirSitio(event)}"
-                                                  oncomplete="handleSitioRequest(xhr, status, args)" value="Editar" >
+                                                   value="Editar" rendered="#{appBean.rol eq '1'}" >
+                                     <f:setPropertyActionListener value="#{sitios}" target="#{sitioModificarBean.selectedSitio}" />
+                                 </p:commandButton> 
+                                
+                                <p:commandButton  style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; font-size: 80%;"  actionListener="#{sitioModificarBean.seguirForoBySitio}"
+                                                  value="Foro" rendered="#{sitios.estadoprueba.codigo ne '1'}" >
+                                    <f:setPropertyActionListener value="#{sitios.codigo}" target="#{postBean.codigoBySitio}" />
+                                </p:commandButton>
 
-                                    <f:setPropertyActionListener value="#{sitios}" target="#{sitioModificarBean.selectedSitio}" />
-                                </p:commandButton> 
                             </div>
-
                         </p:column>
 
                     </p:dataTable>
@@ -114,7 +123,7 @@
                     </p:dialog>                  
                 </h:form>
 
-                <h:form id="formPlanearEval"> 
+                <h:form id="formPlanearEval">                     
                     <p:dialog header="Sitio: #{heuristicaBean.selectedSitioEvaluacion.nombre} - URL: #{heuristicaBean.selectedSitioEvaluacion.url}" widgetVar="dialogPlanearEval" id="dlgPlanearEval"  showEffect="fade" hideEffect="explode" resizable="false" modal="true">                        
                         <p:ajax listener="#{heuristicaBean.inicializarProgress()}" />
                         <h4 style="margin-top:0">Planeacion de la prueba Heuristica</h4>

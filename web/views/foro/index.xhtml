@@ -27,8 +27,8 @@
                                       value=" #{post.contenido} " />
                                   <br/>
                                   <div align="right">
-                                      <p:commandButton  actionListener="#{postBean.seguirPost(event)}"
-                                                        oncomplete="handlePostRequest(xhr, status, args)" value="Ver" style="width: 70; height: 30px" >
+                                      <p:commandButton  actionListener="#{postBean.seguirPost}"
+                                                        value="Ver" style="width: 70px; height: 30px" >
                                           
                                           <f:setPropertyActionListener value="#{post}" target="#{postBean.selectedPost}" />
                                       </p:commandButton>
@@ -43,15 +43,20 @@
                          <h:panelGrid  id="display" columns="2" cellpadding="4" style="margin:0 auto;">
 
                              <h:outputText value="Titulo Post: " />
-                             <p:inputText value="#{postBean.selectedPost.titulo}"/>
-
+                             <p:inputText id="tituloPost" value="#{postBean.titulo}"/>
+                             <h:outputText value="Asociar Sitio: " />
+                             <p:selectOneMenu  value="#{postBean.idSitio}">
+                                  <f:selectItem itemLabel="- Seleccione -" itemValue="" />
+                                  <f:selectItems value="#{postBean.selectOneItemsSitio}" />
+                              </p:selectOneMenu>
                              <h:outputText value="Contenido: " />
-                             <p:inputTextarea id="txtContenido" rows="5" cols="50" counter="display1" maxlength="250" counterTemplate="{0} caracteres restantes." autoResize="true" value="#{postBean.selectedPost.contenido}" />
-                             <h:outputText id="display1"/>      
+                             <p:inputTextarea id="txtContenido" rows="5" cols="50" counter="display1" maxlength="250" counterTemplate="{0} caracteres restantes." autoResize="true" value="#{postBean.contenido}" />
+                             <h:outputText />
+                             <h:outputText id="display1"/>  
                              <f:facet name="footer">
                                  <p:separator/>
                                  <p:commandButton id="btnCreateAceptar" update=":formDataTablePost, :msgs" oncomplete="PF('dialogForoCreate').hide()" actionListener="#{postBean.btnCreateForo(actionEvent)}" icon="ui-icon-check" title="Guardar" value="Crear"/>
-                                 <p:commandButton id="btnCreateCancelar" oncomplete="PF('dialogForoCreate').hide()" icon="ui-icon-close" title="Cancelar" value="Cancelar"/>
+                                 <p:commandButton id="btnCreateCancelar" oncomplete="PF('dialogForoCreate').hide()" icon="ui-icon-close" title="Cancelar" value="Cancelar" />
                              </f:facet>
                          </h:panelGrid>
                      </p:dialog>

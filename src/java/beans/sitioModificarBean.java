@@ -8,9 +8,12 @@ package beans;
 import dao.SitioDao;
 import dao.SitioDaoImpl;
 import java.awt.Desktop;
+import java.awt.Desktop.Action;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -34,7 +37,7 @@ public class sitioModificarBean implements Serializable{
     private Sitioevaluacion selectedSitio;
     private Date dateEvaluacion;
     private String imagenProducto;
-    private SitioDao sitioDao;
+    transient SitioDao sitioDao;
 
     /**
      * Creates a new instance of sitioBean
@@ -92,10 +95,10 @@ public class sitioModificarBean implements Serializable{
         FacesContext.getCurrentInstance().addMessage("Mensaje", mensaje);
     }
     
-    public void btnCreateSitio(Desktop.Action actionEvent) throws IOException{
+    public void btnModificarSitio(Action actionEvent) throws IOException{
         
         String msg;
-        if (this.sitioDao.createSitio(this.selectedSitio)){
+        if (this.sitioDao.actualizarSitio(this.selectedSitio)){
             msg = "Se modifico correctamente el Sitio";
              FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
            FacesContext.getCurrentInstance().addMessage(null, message);
@@ -109,23 +112,36 @@ public class sitioModificarBean implements Serializable{
     }
     
     public void seguirSitio(ActionEvent event){
-         RequestContext context = RequestContext.getCurrentInstance();
-         boolean isRuta;
          String ruta = "";
          
          Sitioevaluacion sitioevaluacion = this.sitioDao.findBySitio(this.selectedSitio);
          if (sitioevaluacion != null){
-             isRuta = true;
              ruta = MyUtil.basepathlogin()+"views/heuristica/modificar_sitio.xhtml";
+             FacesContext contex = FacesContext.getCurrentInstance();
+             try {
+                  contex.getExternalContext().redirect(ruta);
+             } catch(IOException ex) {
+                 Logger.getLogger(sitioModificarBean.class.getName()).log(Level.SEVERE, null, ex);
+             }
+            
          }else{
-             isRuta = false;
              if (this.selectedSitio == null ){
                  this.selectedSitio = new Sitioevaluacion();
              }
-         }
-        context.addCallbackParam("isRuta", isRuta);
-        context.addCallbackParam("ruta", ruta);   
+         }  
     }
     
+    public void seguirForoBySitio(ActionEvent event){
+         String ruta = "";
+         
+             ruta = MyUtil.basepathlogin()+"views/foro/index.xhtml";
+             FacesContext contex = FacesContext.getCurrentInstance();
+             try {
+                  contex.getExternalContext().redirect(ruta);
+             } catch(IOException ex) {
+                 Logger.getLogger(sitioModificarBean.class.getName()).log(Level.SEVERE, null, ex);
+             }
+            
+    }  
     
 }

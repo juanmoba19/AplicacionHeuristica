@@ -55,8 +55,8 @@ import util.MyUtil;
 public class sitioAnalizarBean implements Serializable {
 
     private Sitioevaluacion selectedSitio;
-    private SitioDao sitioDao;
-    private AnalisisHeuristicaDao analisisHeuristicaDao;
+    transient SitioDao sitioDao;
+    transient AnalisisHeuristicaDao analisisHeuristicaDao;
     // Model que nos permite crear las graficas de estadistica 
     private BarChartModel barModel;
     // Lista de los usuarios implicados en al evaluacion
@@ -67,6 +67,8 @@ public class sitioAnalizarBean implements Serializable {
     private List<EvaluacionDetalladaUsuarioReport> listaEvalDetalleUsuario;
     // Model Linear chart
     private LineChartModel lineModel2;
+    // promedio para saber si es un sitio usable o no
+    private Double punSitioConcl;
     /**
      * Creates a new instance of sitioAnalizarBean
      */
@@ -77,6 +79,7 @@ public class sitioAnalizarBean implements Serializable {
         this.analisisHeuristicaDao = new AnalisisHeuristicaDaoImpl();
         this.selectedSitio = new Sitioevaluacion();
         this.selectedUsuario = new Usuario();
+        this.punSitioConcl = 0.0;
     }
 
     public Sitioevaluacion getSelectedSitio() {
@@ -195,17 +198,29 @@ public class sitioAnalizarBean implements Serializable {
         ChartSeries criterios = new ChartSeries();
         criterios.setLabel("Criterio Padre");
         criterios.set(promCriteriosPadre.CRITERIO1.getCriterioPadre(), estadisticaprompuntaje.getCriterio1());
+        this.punSitioConcl+= estadisticaprompuntaje.getCriterio1();
         criterios.set(promCriteriosPadre.CRITERIO2.getCriterioPadre(), estadisticaprompuntaje.getCriterio2());
+        this.punSitioConcl+= estadisticaprompuntaje.getCriterio2();
         criterios.set(promCriteriosPadre.CRITERIO3.getCriterioPadre(), estadisticaprompuntaje.getCriterio3());
+        this.punSitioConcl+= estadisticaprompuntaje.getCriterio3();
         criterios.set(promCriteriosPadre.CRITERIO4.getCriterioPadre(), estadisticaprompuntaje.getCriterio4());
+        this.punSitioConcl+= estadisticaprompuntaje.getCriterio4();
         criterios.set(promCriteriosPadre.CRITERIO5.getCriterioPadre(), estadisticaprompuntaje.getCriterio5());
+        this.punSitioConcl+= estadisticaprompuntaje.getCriterio5();
         criterios.set(promCriteriosPadre.CRITERIO6.getCriterioPadre(), estadisticaprompuntaje.getCriterio6());
+        this.punSitioConcl+= estadisticaprompuntaje.getCriterio6();
         criterios.set(promCriteriosPadre.CRITERIO7.getCriterioPadre(), estadisticaprompuntaje.getCriterio7());
+        this.punSitioConcl+= estadisticaprompuntaje.getCriterio7();
         criterios.set(promCriteriosPadre.CRITERIO8.getCriterioPadre(), estadisticaprompuntaje.getCriterio8());
+        this.punSitioConcl+= estadisticaprompuntaje.getCriterio8();
         criterios.set(promCriteriosPadre.CRITERIO9.getCriterioPadre(), estadisticaprompuntaje.getCriterio9());
+        this.punSitioConcl+= estadisticaprompuntaje.getCriterio9();
         criterios.set(promCriteriosPadre.CRITERIO10.getCriterioPadre(),estadisticaprompuntaje.getCriterio10());
+        this.punSitioConcl+= estadisticaprompuntaje.getCriterio10();
         model.addSeries(criterios);
-         
+        
+        this.punSitioConcl = this.punSitioConcl / 10;
+        
         return model;
     }
 
@@ -247,7 +262,7 @@ public class sitioAnalizarBean implements Serializable {
         pdf.open();
 
         PdfPTable pdfTable = new PdfPTable(1);
-        pdfTable.addCell(getImage("Uniqlog.png"));
+        pdfTable.addCell(getImage("Uniqlog.PNG"));
         
         pdfTable.setWidthPercentage(10f);
         pdfTable.setHorizontalAlignment(0);
@@ -275,6 +290,16 @@ public class sitioAnalizarBean implements Serializable {
         logo.append(File.separator).append(imageName);
         return logo.toString();
     }
+
+    public Double getPunSitioConcl() {
+        return punSitioConcl;
+    }
+
+    public void setPunSitioConcl(Double punSitioConcl) {
+        this.punSitioConcl = punSitioConcl;
+    }
+    
+    
     
      
 }

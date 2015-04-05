@@ -50,7 +50,7 @@ public class heuristicaBean implements Serializable{
     private Sitioevaluacion selectedSitioEvaluacion;
     private List<CriteriohijoHasSitioevaluacion> criteriosHijosSitio;
     //lista de los criterios para evaluar en el sitio elegido
-    private List<CriterioHasSitioEvaluacionReport> criteriosByEvaluacionSitio;
+    transient List<CriterioHasSitioEvaluacionReport> criteriosByEvaluacionSitio;
     private Map<String,Integer> puntajes;
     private List<Criteriopadre> listaCriteriosPadre;
     private Integer puntaje;
@@ -72,7 +72,7 @@ public class heuristicaBean implements Serializable{
     // Variable para saber si es dueño de la prueba del sitio
     private boolean isDueñoSitio;
     // dao de heuristica dao
-    private HeuristicaDao heuristicaDao;
+    transient HeuristicaDao heuristicaDao;
     
     
     public List<CriteriohijoHasSitioevaluacion> getCriteriosHijosSitio(){
@@ -354,10 +354,10 @@ public class heuristicaBean implements Serializable{
         this.progress = 5;
     }
     
-    public List<Usuario> getUsuarios() {
+    public List<Usuario> getUsuarios(Integer num) {
         
         UsuarioDao usuarioDao = new UsuarioDaoImpl();
-        this.usuarios = usuarioDao.findAll();
+        this.usuarios = usuarioDao.findAll(num);
         return usuarios;
     }
 
@@ -380,7 +380,7 @@ public class heuristicaBean implements Serializable{
     
     public void llenarListaCheckbox(){
         nomUsuarios = new HashMap<Integer,String>();
-        List<Usuario> usuarios = getUsuarios();
+        List<Usuario> usuarios = getUsuarios(1);
         
         for(Usuario usuario : usuarios){
             nomUsuarios.put(usuario.getId(),usuario.getUsuario());

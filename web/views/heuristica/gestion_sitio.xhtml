@@ -19,17 +19,21 @@
                                        
                                        bold" />
                         <p:inplace id="ajaxNombre" editor="true">
-                            <p:inputText value="#{sitioBean.selectedSitio.nombre}" required="true" label="text" />
+                            <p:inputText title="Click en el boton ok para agregar este dato" id="nombreSitio" value="#{sitioBean.selectedSitio.nombre}" required="true" label="text" />
+                            <p:tooltip id="toolTipNombreSitio" for="nombreSitio" showEvent="focus" hideEvent="blur" />
                         </p:inplace>
+                         
 
                         <h:outputLabel for="ajaxUrl" value="Url:" style="font-weight: bold" />
                         <p:inplace id="ajaxUrl" editor="true">
-                            <p:inputText value="#{sitioBean.selectedSitio.url}" required="true" label="text" />
+                            <p:inputText id="url" title="Click en el boton ok para agregar este dato" value="#{sitioBean.selectedSitio.url}" required="true" label="text" />
+                            <p:tooltip id="toolTipUrl" for="url" showEvent="focus" hideEvent="blur" />
                         </p:inplace>
                         
                         <h:outputLabel for="ajaxTipo" value="Tipo Sitio:" style="font-weight: bold" />
                         <p:inplace id="ajaxTipo" editor="true">
-                            <p:inputText value="#{sitioBean.selectedSitio.tipo}" required="true" label="text" />
+                            <p:inputText id="tipoSitio" title="Click en el boton ok para agregar este dato" value="#{sitioBean.selectedSitio.tipo}" required="true" label="text" />
+                            <p:tooltip id="toolTiptipoSitio" for="tipoSitio" showEvent="focus" hideEvent="blur" />
                         </p:inplace>
                         
                         <h:outputLabel value="Estado Prueba:" style="font-weight: bold" />
@@ -40,19 +44,17 @@
                         
                         <p:outputLabel for="datetime" value="Fecha Evaluacion:" style="font-weight: bold" />
                         <p:calendar id="datetime" value="#{sitioBean.selectedSitio.fechaEvaluacion}" pattern="MM/dd/yyyy HH:mm:ss" />
-                        
-                        <!--<h:outputLabel for="image" value="Imagen Sitio:" style="font-weight: bold"/>
-                        <p:inplace id="image" label="Show" effect="slide">
-                            <p:graphicImage name="/images/sitios/google.png" style="width:100%;" />
-                        </p:inplace>-->
-                       
+                                               
                         <h:outputLabel value="Imagen:" style="font-weight: bold" />
                         <h:panelGroup>
                             <p:fileUpload fileUploadListener="#{sitioBean.subirImagen}" mode="advanced" dragDropSupport="false"
-                            update="graImageSitio" sizeLimit="100000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
-                            <p:graphicImage cache="false" id="graImageSitio" value="#{sitioBean.imagenProducto}" width="150" height="120"/>                       
-                        </h:panelGroup>
+                            update="graImageSitio" sizeLimit="1000000" fileLimit="2" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                            <p:graphicImage cache="false" id="graImageSitio" value="#{sitioBean.imagenProducto}" width="400" height="300"/>                       
+                        </h:panelGroup>                        
                         <f:facet name="footer">
+                            <div align="center" style="font-family: cursive;margin-bottom: 10px;">
+                                <font size="2">Para cargar una imagen, elegirla (Choose), seguidamente click en Upload y ya quedara asociada al sitio que se creara.</font>
+                            </div>
                             <p:commandButton id="btnCreateAceptar" update=":msgs" actionListener="#{sitioBean.btnCreateSitio(actionEvent)}" icon="ui-icon-check" title="Guardar" value="Crear"/>                            
                         </f:facet>
                     </h:panelGrid>
