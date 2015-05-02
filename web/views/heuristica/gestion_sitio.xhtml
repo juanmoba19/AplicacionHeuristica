@@ -46,16 +46,24 @@
                         <p:calendar id="datetime" value="#{sitioBean.selectedSitio.fechaEvaluacion}" pattern="MM/dd/yyyy HH:mm:ss" />
                                                
                         <h:outputLabel value="Imagen:" style="font-weight: bold" />
-                        <h:panelGroup>
-                            <p:fileUpload fileUploadListener="#{sitioBean.subirImagen}" mode="advanced" dragDropSupport="false"
-                            update="graImageSitio" sizeLimit="1000000" fileLimit="2" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
-                            <p:graphicImage cache="false" id="graImageSitio" value="#{sitioBean.imagenProducto}" width="400" height="300"/>                       
-                        </h:panelGroup>                        
+                        
+                        <h:form enctype="multipart/form-data">
+                            <p:fieldset legend="Subir Imagen Sitio" toggleable="true" collapsed="true" >
+                                <p:fileUpload fileUploadListener="#{sitioBean.subirImagen}" style="margin-top: 20px;"
+                                              mode="advanced"
+                                              sizeLimit="1000000" 
+                                              multiple="false" 
+                                              allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                              update="graImageSitio"/>
+                                <p:graphicImage cache="false" id="graImageSitio" value="#{sitioBean.imagenProducto}" width="400" height="300"/>
+                            </p:fieldset>
+                            <p:growl id="messages" showDetail="true"/>
+                        </h:form>
                         <f:facet name="footer">
                             <div align="center" style="font-family: cursive;margin-bottom: 10px;">
-                                <font size="2">Para cargar una imagen, elegirla (Choose), seguidamente click en Upload y ya quedara asociada al sitio que se creara.</font>
+                                <font size="3">Para cargar una imagen, elegirla (Choose), seguidamente click en Upload y ya quedara asociada al sitio que se creara.</font>
                             </div>
-                            <p:commandButton id="btnCreateAceptar" update=":msgs" actionListener="#{sitioBean.btnCreateSitio(actionEvent)}" icon="ui-icon-check" title="Guardar" value="Crear"/>                            
+                            <p:commandButton ajax="false" id="btnCreateAceptar" update=":msgs" actionListener="#{sitioBean.btnCreateSitio(actionEvent)}" icon="ui-icon-check" title="Guardar" value="Crear"/>                            
                         </f:facet>
                     </h:panelGrid>
                 </h:form>

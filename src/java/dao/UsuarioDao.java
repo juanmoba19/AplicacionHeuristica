@@ -21,4 +21,6 @@ public interface UsuarioDao {
     public boolean create(Usuario usuario);
     public boolean update (Usuario usuario);
     public boolean delete (Integer id);
+    public Usuario findByContrasena(Usuario usuario);
+    public boolean actualizarContrasena(String contraNueva);
 }

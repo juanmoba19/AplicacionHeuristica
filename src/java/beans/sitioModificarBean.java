@@ -7,7 +7,6 @@
 package beans;
 import dao.SitioDao;
 import dao.SitioDaoImpl;
-import java.awt.Desktop;
 import java.awt.Desktop.Action;
 import java.io.IOException;
 import java.io.Serializable;
@@ -21,7 +20,6 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import model.Sitioevaluacion;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.springframework.util.StringUtils;
 import util.MyUtil;

@@ -152,13 +152,14 @@
                                 </p:scrollPanel>
                             </p:tab>
                             <p:tab title="Asignar Evaluadores">
+                                <p:growl id="msg" />
                                 <h:panelGrid columns="2" style="margin-bottom:10px;" cellpadding="15">
                                     <h:outputText value="Usuarios: " />
                                     <p:selectManyCheckbox id="usuarios" value="#{heuristicaBean.selectedUsuario}" layout="grid" columns="3" >
                                         <f:selectItems value="#{heuristicaBean.nomUsuarios}" var="city" itemLabel="#{city}" itemValue="#{city}" />
                                     </p:selectManyCheckbox>
                                 </h:panelGrid>
-                                <p:commandButton value="Agregar Evaluadores"  icon="ui-icon-check" actionListener="#{heuristicaBean.agregarEvaluadoresParticipantes}" oncomplete="PF('dialogPlanearEval').hide()" />
+                                <p:commandButton value="Agregar Evaluadores"  update="msg, :formSitios" icon="ui-icon-check" actionListener="#{heuristicaBean.agregarEvaluadoresParticipantes}" oncomplete="PF('dialogPlanearEval').hide()" />
                             </p:tab>
                         </p:tabView>
                     </p:dialog>                  

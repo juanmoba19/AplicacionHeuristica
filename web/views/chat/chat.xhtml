@@ -1,65 +1,63 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"  
-      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      >
 
-    <h:head>
-        <title>Chat test!</title>
-    </h:head>
-    <script type="text/javascript">
-        setInterval("nextMessage()", 200); //update the chart every 200 ms               
-         
-        function updateMessages(xhr, status, args) {
-            if(!args.ok) return;
-            $('#chat').append('<div class="msg">[' +args.dateSent+ '] <strong>'+args.user+'</strong>: '+args.text+'</div>');
-        }
-         
-    </script>
-    
     <body>
 
         <ui:composition template="./../template.xhtml">
-
+            
             <ui:define name="content">
+                <h:head>
+                    <title>Chat</title>
+                </h:head>
+                <script type="text/javascript">
+                    setInterval("nextMessage()", 200); //update the chart every 200 ms               
+         
+                    function updateMessages(xhr, status, args) {
+                        if (!args.ok)
+                            return;
+                        $('#chat').append('<div class="msg">[' + args.dateSent + '] <strong>' + args.user + '</strong>: ' + args.text + '</div>');
+                    }
 
-                <h:form prependId="false">
-                    <h:panelGrid columns="2">
-                        Name: <p:inputText value="#{messageBean.message.user}"/>
-                        Text: <p:inputText value="#{messageBean.message.message}"/>
-                        <p:commandButton type="reset" value="Clear"/>
-                        <p:commandButton value="Send!" actionListener="#{messageBean.sendMessage}"/>
-                    </h:panelGrid>
+                </script>
+                <h:body>
+                    <h2 style="text-align: center">Chat Evaluacion Heuristica</h2>
+                     <p:accordionPanel>
+                         <p:tab title="Chat Colaborativo">
+                    <h:form prependId="false" id="formChat">
+                        <h:panelGrid columns="2" id="panelChat">
+                            <h:outputLabel  value="Usuario:" style="font-weight: 
+                                       
+                                       bold" /> <p:outputLabel value="#{messageBean.message.user}"/>
+                            <h:outputLabel  value="Escribir Mensaje:" style="font-weight: 
+                                       
+                                            bold" /> 
+                            <p:inputTextarea id="txtComentario" rows="3" cols="35" counter="display" maxlength="250" counterTemplate="{0} caracteres restantes." autoResize="true" value="#{messageBean.message.message}" />
+                        <h:outputText id="display" />
+                        <h:outputLabel />
+                            <p:commandButton type="reset" value="Borrar"/>
+                            <p:commandButton value="Enviar!" actionListener="#{messageBean.sendMessage}" oncomplete="limpiarTextoComentario()"/>
+                        </h:panelGrid>
 
-                    <p:remoteCommand name="nextMessage" actionListener="#{messageBean.firstUnreadMessage}"
-                                     oncomplete="updateMessages(xhr, status, args);"/>
-                </h:form>
-                <hr/>
-                <h3>Live chat</h3>
-                <div id="chat"></div>
-        
+                        <p:remoteCommand name="nextMessage" actionListener="#{messageBean.firstUnreadMessage}"
+                                         oncomplete="updateMessages(xhr, status, args);"/>
+                    </h:form>
+                    <hr/>
+                    <h3>Conversacion</h3>
+                    <div id="chat"></div>
+                    </p:tab>
+                         </p:accordionPanel>
+                         
+                </h:body>
+
             </ui:define>
 
         </ui:composition>
-       
+
     </body>
-    <script type="text/javascript">
-                    function handleMessage(message) {
-                        var chatContent = $(PrimeFaces.escapeClientId('form:public')),
-                        text = (message.user) ? message.user + ':' + message.text: message.text;
- 
-                        chatContent.append(text + '<br />');
- 
-                        //keep scroll
-                        chatContent.scrollTop(chatContent.height());
- 
-                        if(message.updateList) {
-                            updateList();
-                        }
-                    }
-                </script>
 </html>
- 

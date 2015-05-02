@@ -284,13 +284,7 @@ public class heuristicaBean implements Serializable{
             
         }
         this.value3 = false;
-        if (heuristicaDao.updateEstadoSitio(this.selectedSitioEvaluacion.getCodigo(), 2)){
-            msg = "Se han agregado los Criterios y cambiado el estado al Sitio exitosamente";
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
-        }else{
-            msg = "Error al cambiar esl estado del Sitio";
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
-        }
+       
        
     }
     
@@ -397,20 +391,12 @@ public class heuristicaBean implements Serializable{
     }
     
    public void agregarEvaluadoresParticipantes(){
-       String msg;
+        String msg;
         HeuristicaDao heuristicaDao = new HeuristicaDaoImpl();
-        //int idSitioEvaluacion = this.selectedSitioEvaluacion.getCodigo();
-                
-       //SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-       // Date date = new Date();
-       // String hoy = sdf.format(date);
-       // Date actual = sdf.parse(hoy);
-        //this.comentario.setFecha(actual);
-       // Sitioevaluacion sitioevaluacion = (Sitioevaluacion) session.load(Sitioevaluacion.class, idSitioEvaluacion);
-        
-        // agregar los datos a la clase CriteriohijoHasSitioevaluacion
+     
         Set<Integer> idsUsuario = this.nomUsuarios.keySet();
        String[] selectedUsuarios = this.selectedUsuario;
+       if(selectedUsuarios.length < 5){
        for (String su : selectedUsuarios) {
            for (Integer o : this.nomUsuarios.keySet()) {
                if (this.nomUsuarios.get(o).equals(su)) {
@@ -435,15 +421,28 @@ public class heuristicaBean implements Serializable{
             
         }
         }
-        
-        this.value3 = false;
+       }else{
+           this.selectedUsuario = null;
+           msg = "Se recomienda elegir 4 o menos evaluadores";
+           FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
+           FacesContext.getCurrentInstance().addMessage(null, message);
+       }
+       
+       this.value3 = false;
+       if(selectedUsuarios.length < 5){
         if (heuristicaDao.updateEstadoSitio(this.selectedSitioEvaluacion.getCodigo(), 2)){
             msg = "Se han agregado los Criterios y cambiado el estado al Sitio exitosamente";
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            this.selectedUsuario = null;
         }else{
             msg = "Error al cambiar esl estado del Sitio";
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            this.selectedUsuario = null;
+            return;
         }
+       }
    }
 
     public boolean isIsDueñoSitio() {

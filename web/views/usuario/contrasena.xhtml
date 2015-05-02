@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../template.xhtml">
+
+            <ui:define name="content">
+                <h:form id="formLogin">
+                <p:growl id="growl" showDetail="true" />    
+                <h:panelGrid columns="2" columnClasses="column" cellpadding="5" style="margin-bottom: 90px; margin-top: 30px">
+                <h:outputLabel value="Contraseña Antigua: " style="font-weight: 
+                                       
+                                       bold" />
+                <p:password id="contAntigua" value="#{usuarioBean.contraActual}" required="true" label="password" />
+                
+                <h:outputLabel value="Nueva Contraseña: " style="font-weight: 
+                                       
+                                       bold" />
+                <p:password id="conNueva" value="#{usuarioBean.contraNueva}" required="true" label="password" />
+                
+                <h:outputLabel value="Confirmar Contraseña: " style="font-weight: 
+                                       
+                                       bold" />
+                <p:password id="conConf" value="#{usuarioBean.contraConfNueva}" required="true" label="password" />
+                
+                <p:commandButton value="Cambiar Contraseña" update="growl" actionListener="#{usuarioBean.cambiarContrasena(event)}" />
+                </h:panelGrid>
+                </h:form>    
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

@@ -10,6 +10,7 @@ import java.util.List;
 import javax.faces.context.FacesContext;
 import model.Usuario;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import util.HibernateUtil;
 
@@ -131,6 +132,45 @@ public class UsuarioDaoImpl implements UsuarioDao{
             flag = false;
             session.beginTransaction().rollback();
         }
+        return flag;
+    }
+
+    @Override
+    public Usuario findByContrasena(Usuario usuario) {
+        Usuario model = null;
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        String sql =  "FROM Usuario u WHERE u.clave = '"+usuario.getClave()+"'";
+        try {
+            session.beginTransaction();
+            model = (Usuario) session.createQuery(sql).uniqueResult();
+            session.beginTransaction().commit();
+        } catch (Exception e) {
+            session.beginTransaction().rollback();
+        }
+        return model;
+    }
+
+    @Override
+    public boolean actualizarContrasena(String contraNueva) {
+        
+        boolean flag = false;
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        
+        StringBuilder strSql = new StringBuilder();
+        strSql.append(" UPDATE usuario set clave = :contraNueva WHERE id = :id ");
+        
+        try {
+            session.beginTransaction();
+        SQLQuery query = session.createSQLQuery(strSql.toString());
+        query.setParameter("contraNueva", contraNueva);
+        query.setParameter("id", usuario.getId());
+        query.executeUpdate();
+        session.beginTransaction().commit();
+        flag = true;
+        } catch (Exception e) {
+            session.beginTransaction().rollback();
+        }
+        
         return flag;
     }
     

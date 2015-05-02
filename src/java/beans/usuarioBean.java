@@ -9,6 +9,7 @@ package beans;
 import dao.UsuarioDao;
 import dao.UsuarioDaoImpl;
 import java.awt.Desktop.Action;
+import java.awt.event.ActionEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,6 +33,10 @@ public class usuarioBean {
      */
     private List<Usuario> usuarios;
     private Usuario selectedUsuario;
+    private String contraActual;
+    private String contraNueva;
+    private String contraConfNueva;
+    
     
     public usuarioBean() {
         
@@ -107,6 +112,55 @@ public class usuarioBean {
             FacesContext.getCurrentInstance().addMessage(null, message);
         }      
         
+    }
+
+    public String getContraActual() {
+        return contraActual;
+    }
+
+    public void setContraActual(String contraActual) {
+        this.contraActual = contraActual;
+    }
+
+    public String getContraNueva() {
+        return contraNueva;
+    }
+
+    public void setContraNueva(String contraNueva) {
+        this.contraNueva = contraNueva;
+    }
+
+    public String getContraConfNueva() {
+        return contraConfNueva;
+    }
+
+    public void setContraConfNueva(String contraConfNueva) {
+        this.contraConfNueva = contraConfNueva;
+    }
+    
+    public void cambiarContrasena(ActionEvent event){
+        
+        UsuarioDao usuarioDao = new UsuarioDaoImpl();
+        String msg = "";
+        Usuario usuario = new Usuario();
+        usuario.setClave(contraActual);
+        
+        if( usuarioDao.findByContrasena(usuario) != null ){
+            
+            if(contraNueva.equals(contraConfNueva)){
+                
+                if(usuarioDao.actualizarContrasena(contraNueva)){
+                    msg = "Se Cambio correctamente la contraseña";
+                }
+            }else {
+                    msg = "No coincide la contraseña nueva con la confirmacin"; 
+            }
+        }else{
+                    msg = "La contraseña antigua no es correcta";
+        }
+        
+         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
+         FacesContext.getCurrentInstance().addMessage(null, message);
     }
     
 }

@@ -31,10 +31,12 @@
                     
                     <p:submenu label="Administrar" icon="ui-icon-document">
                         <p:menuitem value="Usuario" url="#{appBean.basePath}usuario/index.xhtml" />
+                        <p:menuitem value="Cambio Contraseña" url="#{appBean.basePath}usuario/contrasena.xhtml" />
                     </p:submenu>
 
-                    <p:submenu label="Foro" icon="ui-icon-document">
-                        <p:menuitem value="Crear Foro" url="#{appBean.basePath}foro/index.xhtml" />
+                    <p:submenu label="Comunicacion" icon="ui-icon-document">
+                        <p:menuitem value="Foro" url="#{appBean.basePath}foro/index.xhtml" />
+                        <p:menuitem value="Chat" url="#{appBean.basePath}chat/chat.xhtml" />
                     </p:submenu>
                     
                    <p:submenu label="Heuristica" icon="ui-icon-document">
@@ -96,6 +98,10 @@
         if(args.isRuta){
             location.href = args.ruta;
         }
+    }
+    
+    function limpiarTextoComentario(){
+         document.getElementById("j_idt35:txtComentario").value = ''
     }
         </script>
 

@@ -8,8 +8,8 @@ package uniquindio.chat;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
+import model.Usuario;
  
 /**
  * Represents message
@@ -19,6 +19,9 @@ public class Message implements Serializable {
     private Date dateSent;
     private String user;
     private String message;
+    
+    // Usuario en sesion 
+    Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioObj"); 
  
     public Date getDateSent() {
         return dateSent;
@@ -37,6 +40,7 @@ public class Message implements Serializable {
     }
  
     public String getUser() {
+        this.user = usuario.getUsuario();
         return user;
     }
  
