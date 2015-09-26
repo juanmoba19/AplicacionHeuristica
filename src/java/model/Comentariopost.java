@@ -15,6 +15,7 @@ public class Comentariopost  implements java.io.Serializable {
      private Post post;
      private String comentario;
      private Date fecha;
+     private boolean isDueñoComentario;
 
     public Comentariopost() {
     }
@@ -68,7 +69,15 @@ public class Comentariopost  implements java.io.Serializable {
         this.fecha = fecha;
     }
 
+    public boolean isIsDueñoComentario() {
+        return isDueñoComentario;
+    }
 
+    public void setIsDueñoComentario(boolean isDueñoComentario) {
+        this.isDueñoComentario = isDueñoComentario;
+    }
+        
+    
 
 
 }

@@ -22,9 +22,11 @@
                         <p:password id="password" value="#{loginBean.usuario.clave}" required="true" label="password" />
 
                         <f:facet name="footer">
+                            <div class="button-login">
                             <p:commandButton value="Login" update="growl" actionListener="#{loginBean.login(event)}"
                                              oncomplete="handleLoginRequest(xhr, status, args)" />
-                        </f:facet>  
+                            </div>
+                        </f:facet> 
                     </h:panelGrid>
                 </p:panel>
             </h:form>

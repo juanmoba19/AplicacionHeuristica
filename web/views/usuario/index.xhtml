@@ -10,9 +10,12 @@
 
         <ui:composition template="./../template.xhtml">
             <ui:define name="content">   
-                 <p:growl id="msgs" showDetail="true" /> 
+                 <p:growl id="msgs" showDetail="true" />
+                 <div style="text-align: center">
+                 <h2 style="margin-top: 0">Usuarios</h2>
+                 </div>
                  <h:form style="margin-top: 15px;margin-bottom: 10px">
-                    <p:commandButton id="btnUsuarioCreate" update=":formCreate" oncomplete="PF('dialogUsuarioCreate').show()" icon="icon-new" title="Crear" value="Crear" rendered="#{appBean.rol eq '1'}"/>                      
+                    <p:commandButton id="btnUsuarioCreate" update=":formCreate" oncomplete="PF('dialogUsuarioCreate').show()" icon="icon-new" title="Crear" value="Crear Usuario" rendered="#{appBean.rol eq '1'}"/>                      
                 </h:form>
               <h:form id="formDataTable">
                   <p:dataTable id="usuarios" var="usuario" value="#{usuarioBean.usuarios}"
@@ -38,9 +41,11 @@
                            <p:commandButton id="btnUpdate" update=":formUpdate" oncomplete="PF('dialogUsuarioUpdate').show()" icon="icon-edit" title="Modificar">
                               <f:setPropertyActionListener value="#{usuario}" target="#{usuarioBean.selectedUsuario}" />
                           </p:commandButton>
+                          <p:tooltip id="toolTipBtnUpdate" for="btnUpdate" value="Editar Usuario" trackMouse="true" />
                           <p:commandButton id="btnDelete" update=":formDelete" oncomplete="PF('dialogUsuarioDelete').show()" icon="icon-delete" title="Eliminar">
                               <f:setPropertyActionListener value="#{usuario}" target="#{usuarioBean.selectedUsuario}" />
                           </p:commandButton>
+                          <p:tooltip id="toolTipBtnDelete" for="btnDelete" value="Eliminar Usuario" trackMouse="true" />
                       </p:column>
                   </p:dataTable>
               </h:form>
@@ -59,6 +64,12 @@
 
                               <h:outputText value="Email:" />
                               <p:inputText value="#{usuarioBean.selectedUsuario.email}" size="30"/>
+                              
+                              <h:outputText value="Descripción" />
+                              <p:inputTextarea id="txtComentario" rows="5" cols="40" counter="descripcionCrear" maxlength="250" counterTemplate="{0} caracteres restantes." autoResize="true" value="#{usuarioBean.selectedUsuario.descripcion}" >
+                              </p:inputTextarea>      
+                                  <h:outputText/>
+                                <h:outputText id="descripcionCrear"/>
                               
                               <h:outputText value="Estado:" />
                               <p:selectOneMenu  value="#{usuarioBean.selectedUsuario.estado}">
@@ -89,6 +100,12 @@
 
                               <h:outputText value="Email:" />
                               <p:inputText value="#{usuarioBean.selectedUsuario.email}" size="30"/>
+                              
+                              <h:outputText value="Descripción" />
+                              <p:inputTextarea id="txtComentario" rows="5" cols="40" counter="descripcionEditar" maxlength="250" counterTemplate="{0} caracteres restantes." autoResize="true" value="#{usuarioBean.selectedUsuario.descripcion}">
+                              </p:inputTextarea>    
+                                <h:outputText/>
+                                <h:outputText id="descripcionEditar"/>
                               
                               <h:outputText value="Estado:" />
                               <p:selectOneMenu  value="#{usuarioBean.selectedUsuario.estado}">

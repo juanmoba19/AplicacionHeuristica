@@ -38,17 +38,21 @@
 
                                     <h:outputText value="Fecha:" style="font-weight: bolder" />
                                     <h:outputText value="#{comentarios.fecha}" style="font-weight: normal"/>
-                                    
+
                                     <h:outputText value="Comentario:" style="font-weight: bolder" />
                                     <h:outputText value="#{comentarios.comentario}" style="font-weight: normal"/>
-                                    
+
+                                    <h:outputText value="" rendered="#{comentarios.isDueñoComentario eq true}"/>
+                                    <p:commandButton id="btnDelete" update=":formComentarios, :msgs" title="Eliminar" rendered="#{comentarios.isDueñoComentario eq true}" action="#{postBean.eliminarComentario(actionEvent)}" value="Eliminar" style="width: 60%;height: 100%">
+                                        <f:setPropertyActionListener value="#{comentarios.id}" target="#{postBean.idComentario}" />
+                                   </p:commandButton>
                                     <p:separator style="width: 915%" />
                                 </h:panelGrid>
-                            </p:outputPanel>
+                            </p:outputPanel>                            
                         </h:panelGrid>
                     </p:dataScroller>
                 </h:form>
-                
+
                 <h:form id="formDejarComentario">
                     <p:fieldset style="margin-bottom:20px; margin-top: 10px" id="comentario">
                         <h4 style="margin-top: 2px">Deja tu comentario</h4>
@@ -56,12 +60,12 @@
                         <h:outputText id="display" />
                         <p> 
                             <p:commandButton  id="btnDejarComentario" update=":formComentarios, :msgs" actionListener="#{postBean.btnDejarComentario(actionEvent)}" title="Dejar Comentario" value="Dejar Comentario" oncomplete="limpiarComentario()"> 
-                                
+
                             </p:commandButton>
                         </p> 
                     </p:fieldset>
                 </h:form>
-                
+
             </ui:define>
         </ui:composition>
 

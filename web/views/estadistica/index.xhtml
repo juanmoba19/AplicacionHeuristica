@@ -12,6 +12,9 @@
         <ui:composition template="./../template.xhtml">
 
             <ui:define name="content">
+                <div style="text-align: center">
+                 <h2 style="margin-top: 0">Analisis Información</h2>
+                 </div>
                 <h:form id="formSitiosEstadistica" style="margin-top: 15px"> 
 
                     <p:dataTable id="sitios" var="sitios" value="#{heuristicaBean.getSitios(3)}"

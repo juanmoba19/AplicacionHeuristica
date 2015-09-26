@@ -203,4 +203,21 @@ public class PostDaoImpl implements PostDao{
         return listado;
     }
 
+    @Override
+    public boolean delete(Integer id) {
+        boolean flag;
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        try {
+            session.beginTransaction();
+            Comentariopost comentario = (Comentariopost) session.load(Comentariopost.class, id);
+            session.delete(comentario);
+            session.beginTransaction().commit();
+            flag=true;
+        } catch (Exception e) {
+            flag = false;
+            session.beginTransaction().rollback();
+        }
+        return flag;    
+    }
+
 }

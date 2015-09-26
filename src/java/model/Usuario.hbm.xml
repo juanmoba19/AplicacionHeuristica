@@ -35,5 +35,8 @@
         <property name="fechamodificacion" type="timestamp">
             <column name="fechamodificacion" length="19" />
         </property>
+        <property name="descripcion" type="string">
+            <column name="descripcion" length="65535" />
+        </property>
     </class>
 </hibernate-mapping>

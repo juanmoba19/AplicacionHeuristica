@@ -26,4 +26,5 @@ public interface PostDao {
     public Sitioevaluacion findBySitio(Integer sitioevaluacion);
     public List<Integer> idsSitiosByUsuario(Integer idUsuario);
     public List<Sitioevaluacion> sitiosPermitidos();
+    public boolean delete(Integer id);
 }

@@ -70,6 +70,8 @@ public class sitioAnalizarBean implements Serializable {
     private LineChartModel lineModel2;
     // promedio para saber si es un sitio usable o no
     private Double punSitioConcl;
+    // Cantidad de criterios heuristicos tenidos en cuenta
+    private Integer cantidadCriteriosEvaluados;
     /**
      * Creates a new instance of sitioAnalizarBean
      */
@@ -81,6 +83,7 @@ public class sitioAnalizarBean implements Serializable {
         this.selectedSitio = new Sitioevaluacion();
         this.selectedUsuario = new Usuario();
         this.punSitioConcl = 0.0;
+        this.cantidadCriteriosEvaluados = 0;
     }
 
     public Sitioevaluacion getSelectedSitio() {
@@ -200,27 +203,57 @@ public class sitioAnalizarBean implements Serializable {
         criterios.setLabel("Criterio Padre");
         criterios.set(promCriteriosPadre.CRITERIO1.getCriterioPadre(), estadisticaprompuntaje.getCriterio1());
         this.punSitioConcl+= estadisticaprompuntaje.getCriterio1();
+        if (estadisticaprompuntaje.getCriterio1() != 0){
+            cantidadCriteriosEvaluados++;
+        }
         criterios.set(promCriteriosPadre.CRITERIO2.getCriterioPadre(), estadisticaprompuntaje.getCriterio2());
         this.punSitioConcl+= estadisticaprompuntaje.getCriterio2();
+        if (estadisticaprompuntaje.getCriterio2() != 0){
+            cantidadCriteriosEvaluados++;
+        }
         criterios.set(promCriteriosPadre.CRITERIO3.getCriterioPadre(), estadisticaprompuntaje.getCriterio3());
         this.punSitioConcl+= estadisticaprompuntaje.getCriterio3();
+        if (estadisticaprompuntaje.getCriterio3() != 0){
+            cantidadCriteriosEvaluados++;
+        }
         criterios.set(promCriteriosPadre.CRITERIO4.getCriterioPadre(), estadisticaprompuntaje.getCriterio4());
         this.punSitioConcl+= estadisticaprompuntaje.getCriterio4();
+        if (estadisticaprompuntaje.getCriterio4() != 0){
+            cantidadCriteriosEvaluados++;
+        }
         criterios.set(promCriteriosPadre.CRITERIO5.getCriterioPadre(), estadisticaprompuntaje.getCriterio5());
         this.punSitioConcl+= estadisticaprompuntaje.getCriterio5();
+        if (estadisticaprompuntaje.getCriterio5() != 0){
+            cantidadCriteriosEvaluados++;
+        }
         criterios.set(promCriteriosPadre.CRITERIO6.getCriterioPadre(), estadisticaprompuntaje.getCriterio6());
         this.punSitioConcl+= estadisticaprompuntaje.getCriterio6();
+        if (estadisticaprompuntaje.getCriterio6() != 0){
+            cantidadCriteriosEvaluados++;
+        }
         criterios.set(promCriteriosPadre.CRITERIO7.getCriterioPadre(), estadisticaprompuntaje.getCriterio7());
         this.punSitioConcl+= estadisticaprompuntaje.getCriterio7();
+        if (estadisticaprompuntaje.getCriterio7() != 0){
+            cantidadCriteriosEvaluados++;
+        }
         criterios.set(promCriteriosPadre.CRITERIO8.getCriterioPadre(), estadisticaprompuntaje.getCriterio8());
         this.punSitioConcl+= estadisticaprompuntaje.getCriterio8();
+        if (estadisticaprompuntaje.getCriterio8() != 0){
+            cantidadCriteriosEvaluados++;
+        }
         criterios.set(promCriteriosPadre.CRITERIO9.getCriterioPadre(), estadisticaprompuntaje.getCriterio9());
         this.punSitioConcl+= estadisticaprompuntaje.getCriterio9();
+        if (estadisticaprompuntaje.getCriterio9() != 0){
+            cantidadCriteriosEvaluados++;
+        }
         criterios.set(promCriteriosPadre.CRITERIO10.getCriterioPadre(),estadisticaprompuntaje.getCriterio10());
         this.punSitioConcl+= estadisticaprompuntaje.getCriterio10();
+        if (estadisticaprompuntaje.getCriterio10() != 0){
+            cantidadCriteriosEvaluados++;
+        }
         model.addSeries(criterios);
         
-        this.punSitioConcl = this.punSitioConcl / 10;
+        this.punSitioConcl = this.punSitioConcl / cantidadCriteriosEvaluados;
         
         return model;
     }

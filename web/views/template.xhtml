@@ -26,7 +26,6 @@
                     
                     <p:submenu label="Inicio" icon="ui-icon-document">
                         <p:menuitem value="Home" url="#{appBean.basePath}inicio.xhtml" />
-                        <p:menuitem value="Ayuda" url="#{appBean.basePath}ayuda.xhtml" />
                     </p:submenu> 
                     
                     <p:submenu label="Administrar" icon="ui-icon-document">
@@ -55,7 +54,13 @@
                     </f:facet>
                 </p:menubar>
             </h:form>
-        </div>
+            <div id="menuAyudA" style="text-align: right">
+                <h:link outcome="#{appBean.basePath}ayuda.xhtml" >
+                <p:graphicImage id="imageAyuda"  height="36" width="36" name="/images/icons/ayuda.jpeg"/> 
+                <p:tooltip id="toolTipAyuda" for="imageAyuda" value="Ayuda" />
+                </h:link>
+            </div>
+            </div>
 
         <div id="content" class="center_content">
             <ui:insert name="content">Content</ui:insert>

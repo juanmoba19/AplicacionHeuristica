@@ -34,6 +34,7 @@ public class Usuario  implements java.io.Serializable {
      private Date fechacreacion;
      private String usuariomodificacion;
      private Date fechamodificacion;
+     private String descripcion;
 
     public Usuario() {
         this.id = 0;
@@ -41,15 +42,16 @@ public class Usuario  implements java.io.Serializable {
     }
 
 	
-    public Usuario(Rol rol, String usuario, String clave, String email, String usuariocreacion, Date fechacreacion) {
+    public Usuario(Rol rol, String usuario, String clave, String email, String usuariocreacion, Date fechacreacion, String descripcion) {
         this.rol = rol;
         this.usuario = usuario;
         this.clave = clave;
         this.email = email;
         this.usuariocreacion = usuariocreacion;
         this.fechacreacion = fechacreacion;
+        this.descripcion = descripcion;
     }
-    public Usuario(Rol rol, String usuario, String clave, String email, Boolean estado, String usuariocreacion, Date fechacreacion, String usuariomodificacion, Date fechamodificacion) {
+    public Usuario(Rol rol, String usuario, String clave, String email, Boolean estado, String usuariocreacion, Date fechacreacion, String usuariomodificacion, Date fechamodificacion, String descripcion) {
        this.rol = rol;
        this.usuario = usuario;
        this.clave = clave;
@@ -59,6 +61,7 @@ public class Usuario  implements java.io.Serializable {
        this.fechacreacion = fechacreacion;
        this.usuariomodificacion = usuariomodificacion;
        this.fechamodificacion = fechamodificacion;
+       this.descripcion = descripcion;
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
@@ -163,7 +166,16 @@ public class Usuario  implements java.io.Serializable {
         this.fechamodificacion = fechamodificacion;
     }
 
+    @Column(name="descripcion")
+    public String getDescripcion() {
+        return descripcion;
+    }
 
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    
 
 
 }

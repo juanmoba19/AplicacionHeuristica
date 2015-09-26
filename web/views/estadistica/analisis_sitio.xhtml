@@ -133,8 +133,10 @@
                          <h:outputText style="font-size: larger" value="Conclusion: El sitio " /> 
                         <h:outputText style="font-size: larger" value="#{sitioAnalizarBean.selectedSitio.nombre}" />
                         <h:outputText style="font-size: larger" value=" es un sitio Web " /> 
-                        <h:outputText style="font-size: larger" value=" NO " rendered="#{sitioAnalizarBean.punSitioConcl gt 0.0 and sitioAnalizarBean.punSitioConcl le 1.5}"/>                        
-                        <h:outputText style="font-size: larger" value=" POCO " rendered="#{sitioAnalizarBean.punSitioConcl gt 1.5 and sitioAnalizarBean.punSitioConcl lt 2.5}"/>                        
+                        <h:outputText style="font-size: larger" value=" ALTAMENTE " rendered="#{sitioAnalizarBean.punSitioConcl gt 0.0 and sitioAnalizarBean.punSitioConcl le 1.5}"/>                        
+                        <h:outputText style="font-size: larger" value=" ACEPTABLEMENTE " rendered="#{sitioAnalizarBean.punSitioConcl gt 1.5 and sitioAnalizarBean.punSitioConcl lt 2.5}"/>
+                        <h:outputText style="font-size: larger" value=" MEDIANAMENTE " rendered="#{sitioAnalizarBean.punSitioConcl ge 2.5 and sitioAnalizarBean.punSitioConcl le 4.0}"/>                        
+                        <h:outputText style="font-size: larger" value=" BAJAMENTE " rendered="#{sitioAnalizarBean.punSitioConcl gt 4.0}"/>                        
                         <h:outputText style="font-size: larger" value=" Usable " /> 
                         </strong>
                     </div>

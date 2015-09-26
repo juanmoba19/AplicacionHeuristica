@@ -56,6 +56,10 @@ public class PostBean implements Serializable{
     private String contenido;
     // variable para saber si se filtra por sitio
     private Integer codigoBySitio;
+    // Variable para saber si el usuario en sesion es el dueño del comentario
+    private boolean isDueñoComentario;
+    // id del comentario que se eliminara
+    private Integer idComentario;
 
     public Integer getCodigoBySitio() {
         return codigoBySitio;
@@ -81,8 +85,24 @@ public class PostBean implements Serializable{
         this.contenido = contenido;
     }
     
+    public void setIsDueñoComentario(boolean isDueñoComentario){
+        this.isDueñoComentario = isDueñoComentario;
+    }
     
+    public boolean getIsDueñoComentario(){
+        return isDueñoComentario;
+    }
 
+    public Integer getIdComentario() {
+        return idComentario;
+    }
+
+    public void setIdComentario(Integer idComentario) {
+        this.idComentario = idComentario;
+    }
+    
+    
+    
     public int getIdSitio() {
         return idSitio;
     }
@@ -152,6 +172,11 @@ public class PostBean implements Serializable{
     public List<Comentariopost> getComentariosByPost() {
         
         List<Comentariopost> lista = this.postDao.findComentariosByPost(this.selectedPost);
+        List<Boolean> isDueño = isDueñoComentario(lista);
+        
+        for (int i = 0; i < lista.size(); i++) {
+            lista.get(i).setIsDueñoComentario(isDueño.get(i));
+        }
         
         return lista;
     }
@@ -244,6 +269,40 @@ public class PostBean implements Serializable{
         
          return selectOneItemsSitio;
     }
+    
+    
      
+     public List<Boolean> isDueñoComentario(List<Comentariopost> lista) {
+        
+        List<Boolean> isDueño = new ArrayList<Boolean>();
+        // Usuario en sesion 
+        Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioObj"); 
+        for(Comentariopost comentario : lista){
+            if(comentario.getUsuario().getId() == usuario.getId()){
+                isDueño.add(true);
+            }else{
+                isDueño.add(false);
+            }
+        }
+        
+        return isDueño;
+    }
+     
+    public void eliminarComentario(Action actionEvent){
+        
+        Integer idComentario = this.idComentario;
+        
+        String msg;
+        if(this.postDao.delete(idComentario)){
+           msg = "Se eliminó correctamente el Comentario"; 
+           FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
+           FacesContext.getCurrentInstance().addMessage(null, message);
+        }else{
+            msg = "Error al eliminar el comentario";
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }     
+        
+    }
     
 }

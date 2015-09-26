@@ -39,7 +39,12 @@ a:link:hover, a:visited:hover  {
 }
 
 .ui-state-default .icon-delete{
-    background-image: url(../images/icons/eliminarUsuario.jpg);
+    background-image: url(../images/icons/eliminarUsuario.png);
+    width: 50%;
+}
+
+.ui-state-default .icon-new-foro{
+    background-image: url(../images/icons/agregarForo.png);
     width: 50%;
 }
 

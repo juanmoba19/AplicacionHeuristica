@@ -9,7 +9,6 @@ package beans;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.FacesContext;
-import model.Usuario;
 import util.MyUtil;
 
 /**

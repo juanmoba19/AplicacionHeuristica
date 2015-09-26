@@ -10,8 +10,11 @@
         <ui:composition template="./../template.xhtml">
             <ui:define name="content">
                  <p:growl id="msgs" showDetail="true" /> 
+                 <div style="text-align: center">
+                 <h2 style="margin-top: 0">Foros</h2>
+                 </div>
                  <h:form style="margin-top: 15px;margin-bottom: 10px;">
-                    <p:commandButton id="btnForoCreate" update=":formCreate" oncomplete="PF('dialogForoCreate').show()" icon="icon-new" title="Crear" value="Crear"/>                      
+                    <p:commandButton id="btnForoCreate" update=":formCreate" oncomplete="PF('dialogForoCreate').show()" icon="icon-new-foro" title="Crear" value="Crear Foro"/>                      
                 </h:form>
                   <h:form id="formDataTablePost">
                       <p:dataTable id="posts" var="post" value="#{postBean.posts}"
@@ -27,8 +30,8 @@
                                       value=" #{post.contenido} " />
                                   <br/>
                                   <div align="right">
-                                      <p:commandButton  actionListener="#{postBean.seguirPost}"
-                                                        value="Ver" style="width: 70px; height: 30px" >
+                                      <p:commandButton  action="#{postBean.seguirPost(actionEvent)}"
+                                                        value="Participar en Foro" style="width: 145px; height: 30px" >
                                           
                                           <f:setPropertyActionListener value="#{post}" target="#{postBean.selectedPost}" />
                                       </p:commandButton>
