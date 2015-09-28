@@ -109,6 +109,7 @@ public class sitioCrearBean implements Serializable{
         this.selectedSitio.setNombre("Click para Ingresar Nombre Sitio");
         this.selectedSitio.setUrl("Click para escribir Url");
         this.selectedSitio.setTipo("Click para seleccionar el tipo");
+        this.selectedSitio.setDescripcion("");
         this.imagenProducto=null;
         ec.redirect(ec.getRequestContextPath() + "/faces/views/heuristica/index.xhtml");
         

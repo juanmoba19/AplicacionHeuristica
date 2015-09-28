@@ -86,7 +86,7 @@
                   </p:dialog>
               </h:form>
               <h:form id="formUpdate">
-                  <p:dialog header="Modificar Usuario" widgetVar="dialogUsuarioUpdate" id="dlgUsuarioUpdate" showEffect="fade" hideEffect="explode" resizable="false">
+                  <p:dialog header="Editar Usuario" widgetVar="dialogUsuarioUpdate" id="dlgUsuarioUpdate" showEffect="fade" hideEffect="explode" resizable="false">
                       <h:panelGrid  id="display" columns="2" cellpadding="4" style="margin:0 auto;">
                             
                               <h:outputText value="Usuario:" />
@@ -116,7 +116,7 @@
                               <f:facet name="footer">
                                    <p:separator/>
                                    <h:inputHidden value="#{usuarioBean.selectedUsuario.id}"/>       
-                                   <p:commandButton id="btnUpdateAceptar" update=":formDataTable, :msgs" oncomplete="PF('dialogUsuarioUpdate').hide()" actionListener="#{usuarioBean.btnUpdateUsuario(actionEvent)}" icon="ui-icon-check" title="Modificar" value="Modificar"/>
+                                   <p:commandButton id="btnUpdateAceptar" update=":formDataTable, :msgs" oncomplete="PF('dialogUsuarioUpdate').hide()" actionListener="#{usuarioBean.btnUpdateUsuario(actionEvent)}" icon="ui-icon-check" title="Modificar" value="Editar"/>
                                    <p:commandButton id="btnUpdateCancelar" oncomplete="PF('dialogUsuarioUpdate').hide()" icon="ui-icon-close" title="Cancelar" value="Cancelar"/>
                               </f:facet>
                           </h:panelGrid>

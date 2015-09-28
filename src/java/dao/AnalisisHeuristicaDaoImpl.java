@@ -7,6 +7,7 @@
 package dao;
 
 
+import Report.EvaluacionComentariosCriteriosReport;
 import Report.EvaluacionDetalladaUsuarioReport;
 import Report.PromedioUsuarioReport;
 import java.util.List;
@@ -472,6 +473,35 @@ public class AnalisisHeuristicaDaoImpl implements  AnalisisHeuristicaDao{
         flag = true;
         
         return flag;
+    }
+
+    @Override
+    public List<EvaluacionComentariosCriteriosReport> verComentariosConsolidadosSitio(Integer idSitio) {
+        
+        if (idSitio == null || idSitio <= 0){
+            return null;
+        }
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        
+        StringBuilder strSql = new StringBuilder();
+        strSql.append(" SELECT criteriohijo.descripcion AS criterio,   ");
+        strSql.append(" GROUP_CONCAT(criteriositio.comentario) AS comentario ");
+        strSql.append(" FROM criteriohijo_has_sitioevaluacion criteriositio  ");
+        strSql.append(" INNER JOIN criteriohijo criteriohijo ");
+        strSql.append(" ON criteriositio.criteriohijo_codigo = criteriohijo.codigo  ");
+        strSql.append(" WHERE sitioevaluacion_codigo = :sitioCodigo ");
+        strSql.append(" GROUP BY criteriositio.criteriohijo_codigo ");
+
+        session.beginTransaction();
+        SQLQuery query = session.createSQLQuery(strSql.toString());
+        query.setResultTransformer(Transformers.aliasToBean(EvaluacionDetalladaUsuarioReport.class));
+        
+        query.setParameter("sitioCodigo", idSitio);
+        
+        query.addScalar("criterio",StandardBasicTypes.STRING);
+        query.addScalar("comentario",StandardBasicTypes.STRING);
+        
+        return query.list();
     }
     
 }

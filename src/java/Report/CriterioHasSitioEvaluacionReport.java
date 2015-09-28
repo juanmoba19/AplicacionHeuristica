@@ -19,6 +19,7 @@ public class CriterioHasSitioEvaluacionReport {
     private Integer puntuacion;
     private String comentario;
     private Integer codigoSitio;
+    private String frecuencia;
 
     public Integer getCodigoPadre() {
         return codigoPadre;
@@ -74,6 +75,14 @@ public class CriterioHasSitioEvaluacionReport {
 
     public void setCodigoSitio(Integer codigoSitio) {
         this.codigoSitio = codigoSitio;
+    }
+
+    public String getFrecuencia() {
+        return frecuencia;
+    }
+
+    public void setFrecuencia(String frecuencia) {
+        this.frecuencia = frecuencia;
     }
     
     

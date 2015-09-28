@@ -13,7 +13,7 @@
                 <p:growl id="msgs" showDetail="true" /> 
                 <h:form id="sitiosHeuristicos" enctype="multipart/form-data" prependId="false" >
                     
-                    <h4>Sitios - Evaluacion Heuristica</h4>
+                    <h4>Informacion - Sitio Evaluacion Heuristica</h4>
                     <h:panelGrid columns="2" columnClasses="column" cellpadding="5">
                         <h:outputLabel for="ajaxNombre" value="Nombre Sitio:" style="font-weight: 
                                        
@@ -37,6 +37,12 @@
                             <f:selectItem itemLabel="- Seleccione -" itemValue="" />
                             <f:selectItems value="#{estadoPruebaBean.selectOneItemEstadoPrueba}" />
                         </p:selectOneMenu>
+                        
+                        <h:outputLabel value="Descripción:" style="font-weight: bold" />
+                        <p:inputTextarea id="txtComentarioEditar" rows="5" cols="40" counter="descripcionSitioEditar" maxlength="250" counterTemplate="{0} caracteres restantes." autoResize="true" value="#{sitioModificarBean.selectedSitio.descripcion}">
+                        </p:inputTextarea>    
+                        <h:outputText/>
+                        <h:outputText id="descripcionSitioEditar"/>
                         
                         <p:outputLabel for="datetime" value="Fecha Evaluacion:" style="font-weight: bold" />
                         <p:calendar id="datetime" value="#{sitioModificarBean.selectedSitio.fechaEvaluacion}" pattern="MM/dd/yyyy HH:mm:ss" />

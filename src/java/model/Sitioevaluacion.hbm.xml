@@ -32,6 +32,15 @@
         <property name="idUsuarioCreador" type="java.lang.Integer">
             <column name="idUsuarioCreador" />
         </property>
+        <property name="descripcion" type="string">
+            <column name="descripcion" length="65535" />
+        </property>
+        <property name="evaluadoresTotal" type="java.lang.Integer">
+            <column name="evaluadoresTotal" />
+        </property>
+        <property name="evaluadoresConfirm" type="java.lang.Integer">
+            <column name="evaluadoresConfirm" />
+        </property>
         <set name="usuarioHasSitioevaluacions" table="usuario_has_sitioevaluacion" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="sitioevaluacion_codigo" not-null="true" />

@@ -18,6 +18,7 @@ public class CriteriohijoHasSitioevaluacion  implements java.io.Serializable {
      private Date fecha;
      private String comentario;
      private Usuario usuario;
+     private String frecuencia;
 
     public CriteriohijoHasSitioevaluacion() {
     }
@@ -99,8 +100,13 @@ public class CriteriohijoHasSitioevaluacion  implements java.io.Serializable {
         this.usuario = usuario;
     }
 
+    public String getFrecuencia() {
+        return frecuencia;
+    }
 
-
+    public void setFrecuencia(String frecuencia) {
+        this.frecuencia = frecuencia;
+    }
 
 }
 

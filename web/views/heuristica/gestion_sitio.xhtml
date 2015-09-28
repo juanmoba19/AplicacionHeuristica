@@ -12,41 +12,47 @@
             <ui:define name="content">
                 <p:growl id="msgs" showDetail="true" /> 
                 <h:form id="sitiosHeuristicos" enctype="multipart/form-data" prependId="false" >
-                    
+
                     <h4>Sitios - Evaluacion Heuristica</h4>
                     <h:panelGrid columns="2" columnClasses="column" cellpadding="5">
                         <h:outputLabel for="ajaxNombre" value="Nombre Sitio:" style="font-weight: 
-                                       
+
                                        bold" />
                         <p:inplace id="ajaxNombre" editor="true">
                             <p:inputText title="Click en el boton ok para agregar este dato" id="nombreSitio" value="#{sitioBean.selectedSitio.nombre}" required="true" label="text" />
                             <p:tooltip id="toolTipNombreSitio" for="nombreSitio" showEvent="focus" hideEvent="blur" />
                         </p:inplace>
-                         
+
 
                         <h:outputLabel for="ajaxUrl" value="Url:" style="font-weight: bold" />
                         <p:inplace id="ajaxUrl" editor="true">
                             <p:inputText id="url" title="Click en el boton ok para agregar este dato" value="#{sitioBean.selectedSitio.url}" required="true" label="text" />
                             <p:tooltip id="toolTipUrl" for="url" showEvent="focus" hideEvent="blur" />
                         </p:inplace>
-                        
+
                         <h:outputLabel for="ajaxTipo" value="Tipo Sitio:" style="font-weight: bold" />
                         <p:inplace id="ajaxTipo" editor="true">
                             <p:inputText id="tipoSitio" title="Click en el boton ok para agregar este dato" value="#{sitioBean.selectedSitio.tipo}" required="true" label="text" />
                             <p:tooltip id="toolTiptipoSitio" for="tipoSitio" showEvent="focus" hideEvent="blur" />
                         </p:inplace>
-                        
+
                         <h:outputLabel value="Estado Prueba:" style="font-weight: bold" />
                         <p:selectOneMenu  value="#{sitioBean.selectedSitio.estadoprueba.codigo}">
                             <f:selectItem itemLabel="- Seleccione -" itemValue="" />
                             <f:selectItems value="#{estadoPruebaBean.selectOneItemEstadoPrueba}" />
                         </p:selectOneMenu>
-                        
+
+                        <h:outputLabel value="Descripción:" style="font-weight: bold" />
+                        <p:inputTextarea id="txtComentario" rows="5" cols="40" counter="descripcionSitio" maxlength="250" counterTemplate="{0} caracteres restantes." autoResize="true" value="#{sitioBean.selectedSitio.descripcion}">
+                        </p:inputTextarea>    
+                        <h:outputText/>
+                        <h:outputText id="descripcionSitio"/>
+
                         <p:outputLabel for="datetime" value="Fecha Evaluacion:" style="font-weight: bold" />
                         <p:calendar id="datetime" value="#{sitioBean.selectedSitio.fechaEvaluacion}" pattern="MM/dd/yyyy HH:mm:ss" />
-                                               
+
                         <h:outputLabel value="Imagen:" style="font-weight: bold" />
-                        
+
                         <h:form enctype="multipart/form-data">
                             <p:fieldset legend="Subir Imagen Sitio" toggleable="true" collapsed="true" >
                                 <p:fileUpload fileUploadListener="#{sitioBean.subirImagen}" style="margin-top: 20px;"

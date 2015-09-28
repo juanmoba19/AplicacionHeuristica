@@ -4,14 +4,16 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"  
       xmlns:f="http://java.sun.com/jsf/core"  
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui" >
 
     <body>
 
         <ui:composition template="./../template.xhtml">
             
             <ui:define name="content">
-                                
+                <div style="text-align: center">
+                 <h2 style="margin-top: 0">Análisis Resultados</h2>
+                 </div>                
                 <h:form id="formBarModel">
                     <p:growl id="growl" showDetail="true" />
 
@@ -91,10 +93,12 @@
                     <p:outputPanel id="userDetail" style="text-align:center; margin-top: 40px;">
                             <h:form id="formUserDetail">                               
                             <p:dataTable id="tbl" var="evalByUsuario" value="#{sitioAnalizarBean.listaEvalDetalleUsuario}"
-                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                             paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                                              paginator="true" rows="10" style="margin-bottom:20px">
 
-                                    
+                                <f:facet name="header">
+                                    Resultador por Usuarios
+                                </f:facet>      
                                 <p:column headerText="Criterio">
                                         <h:outputText value="#{evalByUsuario.criterio}" />
                                     </p:column>
@@ -112,35 +116,46 @@
                                     </p:column>
                                 </p:dataTable>
                                 <div class="botonExport" style="margin-top: -16px;margin-bottom: 5px;text-align: right">
-                                        <p:commandButton ajax="false" icon="icon-exportPDF" style="width: 32px;height: 32px">
-                                            <p:dataExporter type="pdf" target="tbl" fileName="pdf"
-                                                            preProcessor="#{sitioAnalizarBean.preProcessPDF}" />
-                                        </p:commandButton>
-                                        <p:commandButton ajax="false" icon="icon-exportExcel" style="width: 32px;height: 32px" >
-                                            <p:dataExporter type="xls" target="tbl" fileName="excel"
-                                                            postProcessor="#{sitioAnalizarBean.postProcessXLS}" />
-                                        </p:commandButton>
-                                         </div>                                
+                                    <p:commandButton id="buttonExporPdf" ajax="false" icon="icon-exportPDF" style="width: 32px;height: 34px">
+                                        <p:dataExporter type="pdf" target="tbl" fileName="pdf"
+                                                        preProcessor="#{sitioAnalizarBean.preProcessPDF}" />                                            
+                                    </p:commandButton>
+                                    <p:tooltip id="toolTipExportPdf" for="buttonExporPdf" value="Exportar PDF" />
+                                    <p:commandButton id="buttonExporExcel" ajax="false" icon="icon-exportExcel" style="width: 32px;height: 34px" >
+                                        <p:dataExporter type="xls" target="tbl" fileName="excel"
+                                                        postProcessor="#{sitioAnalizarBean.postProcessXLS}" />
+                                    </p:commandButton>
+                                    <p:tooltip id="toolTipExportExcel" for="buttonExporExcel" value="Exportar Excel" />
+                                </div>                                
                                 </h:form>
                         </p:outputPanel>
-                    <h:panelGrid columns="2" columnClasses="left,right" style="width:100%;margin-top: 10px;">
+                    
+                        <p:outputPanel id="comentarioDetail" style="text-align:center; margin-top: 40px;">
+                            <h:form id="formComentarioDetail">                               
+                                <p:dataTable id="tblcom" var="evalByComentario" value="#{sitioAnalizarBean.listaComentariosCriterios}"
+                                             paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                             paginator="true" rows="10" style="margin-bottom:20px">
+
+                                    <f:facet name="header">
+                                       Lista de Comentarios por Criterios
+                                    </f:facet>   
+                                <p:column headerText="Criterio">
+                                    <h:outputText value="#{evalByComentario.criterio}" />
+                                    </p:column>
+
+                                <p:column headerText="Comentario">
+                                    <h:outputText value="#{evalByComentario.comentario}" />
+                                    </p:column>
+                                </p:dataTable>
+                                  
+                               
+                                </h:form>
+                        </p:outputPanel>    
+                    
+                    <h:panelGrid columns="2" columnClasses="left,right" style="width:100%;margin-top: 10px;margin-bottom: 15px;">
                         <p:chart type="line" model="#{sitioAnalizarBean.lineModel2}" style="height:300px;"/>
                     </h:panelGrid>
-                    
-                    <div align="center">
-                    <div class="border2"  align="center" >
-                        <strong>
-                         <h:outputText style="font-size: larger" value="Conclusion: El sitio " /> 
-                        <h:outputText style="font-size: larger" value="#{sitioAnalizarBean.selectedSitio.nombre}" />
-                        <h:outputText style="font-size: larger" value=" es un sitio Web " /> 
-                        <h:outputText style="font-size: larger" value=" ALTAMENTE " rendered="#{sitioAnalizarBean.punSitioConcl gt 0.0 and sitioAnalizarBean.punSitioConcl le 1.5}"/>                        
-                        <h:outputText style="font-size: larger" value=" ACEPTABLEMENTE " rendered="#{sitioAnalizarBean.punSitioConcl gt 1.5 and sitioAnalizarBean.punSitioConcl lt 2.5}"/>
-                        <h:outputText style="font-size: larger" value=" MEDIANAMENTE " rendered="#{sitioAnalizarBean.punSitioConcl ge 2.5 and sitioAnalizarBean.punSitioConcl le 4.0}"/>                        
-                        <h:outputText style="font-size: larger" value=" BAJAMENTE " rendered="#{sitioAnalizarBean.punSitioConcl gt 4.0}"/>                        
-                        <h:outputText style="font-size: larger" value=" Usable " /> 
-                        </strong>
-                    </div>
-                    </div>        
+                          
                 </h:form>
                 
             </ui:define>

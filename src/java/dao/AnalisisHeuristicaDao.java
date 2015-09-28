@@ -6,6 +6,7 @@
 
 package dao;
 
+import Report.EvaluacionComentariosCriteriosReport;
 import Report.EvaluacionDetalladaUsuarioReport;
 import Report.PromedioUsuarioReport;
 import java.util.List;
@@ -34,4 +35,5 @@ public interface AnalisisHeuristicaDao {
     public Usuario findByUsuario(Integer idUsuario);
     public PromedioUsuarioReport buscarPromHeuristicoByCriteriByUsuario(Integer sitioEvaluacion, Integer idUsuario);
     public boolean isSitioEstadisticaPromPuntajeByCriterioByUsuario(Integer idSitio);
+    public List<EvaluacionComentariosCriteriosReport> verComentariosConsolidadosSitio(Integer idSitio);
 }

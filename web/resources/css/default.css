@@ -78,7 +78,7 @@ a:link:hover, a:visited:hover  {
 }
 
 .ui-state-default .icon-exportPDF{
-    background-image: url(../images/icons/exportPDF.jpg);
+    background-image: url(../images/icons/exportPDF.png);
     width: 75% !important;
     height: 75% !important;  
 }

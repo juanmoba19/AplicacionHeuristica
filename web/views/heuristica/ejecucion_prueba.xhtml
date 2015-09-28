@@ -32,10 +32,17 @@
 
                                 <p:outputLabel for="country" value="Puntaje " style="font-weight: bold" />
 
-                                <p:selectOneMenu id="country" style="width:150px" value="#{empty criteriosByEvaluacion.puntuacion ? heuristicaBean.puntaje : criteriosByEvaluacion.puntuacion }" disabled="#{empty criteriosByEvaluacion.puntuacion ? false : true}">
+                                <p:selectOneMenu id="country" style="width:200px" value="#{empty criteriosByEvaluacion.puntuacion ? heuristicaBean.puntaje : criteriosByEvaluacion.puntuacion }" disabled="#{empty criteriosByEvaluacion.puntuacion ? false : true}">
                                     <p:ajax listener="#{heuristicaBean.fijarPuntuacion}"/>
                                     <f:selectItem itemLabel="Seleccionar Puntaje" itemValue="" noSelectionOption="true" />
                                     <f:selectItems value="#{heuristicaBean.puntajes}" />
+                                </p:selectOneMenu>
+                                
+                                <p:outputLabel for="frecuencia" value="Frecuencia " style="font-weight: bold" />
+                                <p:selectOneMenu id="frecuencia" style="width:200px" value="#{empty criteriosByEvaluacion.frecuencia ? heuristicaBean.frecuencia :criteriosByEvaluacion.frecuencia}" disabled="#{empty criteriosByEvaluacion.frecuencia ? false : true}">
+                                    <p:ajax  listener="#{heuristicaBean.fijarFrecuencia}"/>
+                                    <f:selectItem itemLabel="Seleccionar Frecuencia" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{heuristicaBean.frecuencias}" />
                                 </p:selectOneMenu>
                                 
                                 <h4 style="margin-top: 2px">Deja tu comentario</h4>
@@ -44,17 +51,60 @@
                                 </p:inputTextarea>
                                 <h:outputText/>
                                 <h:outputText id="display"/>
+                                </h:panelGrid>
+                            <h:panelGrid columns="3" cellpadding="22">
                                 <h:outputText value="Evaluado: " style="font-weight: bold"/>
-                                <p:selectBooleanButton id="botonBoolean" value="#{empty criteriosByEvaluacion.puntuacion ? heuristicaBean.value2 : true}" onLabel="Si" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px;" disabled="#{empty criteriosByEvaluacion.puntuacion ? false:true}" >                                    
-                                    <p:ajax update=":formEjecutarEval, msgs" listener="#{heuristicaBean.addMessage(criteriosByEvaluacion.codigoHijo,criteriosByEvaluacion.codigoSitio)}" />
-                                </p:selectBooleanButton>    
-
-                            </h:panelGrid>
+                                 <p:commandButton id="botonBoolean" value="Evaluar" style="width:80px;" disabled="#{empty criteriosByEvaluacion.puntuacion ? false:true}" >                                    
+                                    <p:ajax update=":formEjecutarEval, msgs" listener="#{heuristicaBean.addMessage(criteriosByEvaluacion.codigoHijo,criteriosByEvaluacion.codigoSitio, true)}" />
+                                 </p:commandButton>
+                                <p:commandButton id="btnUpdateCriterio" update=":formUpdateCriterio" oncomplete="PF('dialogoCriterioUpdate').show()" icon="icon-edit" title="Modificar" value="Editar" disabled="#{empty criteriosByEvaluacion.puntuacion ? true:false}">
+                                    <f:setPropertyActionListener value="#{criteriosByEvaluacion}" target="#{heuristicaBean.criterioSitioSeleccionado}" />
+                                </p:commandButton>
+                            </h:panelGrid>    
+                                       
                             <p:separator style="width: 90%" />
+                            
+                            <f:facet name="footer">
+                                <p:commandButton id="btnAnalisResultado" actionListener="#{heuristicaBean.ejecutarEvaluacionHeuristica}" icon="ui-icon-check" value="Analisis de Resultados" rendered="#{heuristicaBean.isDueñoSitio eq true and heuristicaBean.cantidadEvaluadoresTerminado eq true}"/>&nbsp;&nbsp;&nbsp;                                        
+                                <p:commandButton id="btnTerminarEjecucion" actionListener="#{heuristicaBean.terminarEjecucionPrueba}" icon="ui-icon-check" value="Terminar Ejecucion" rendered="#{heuristicaBean.cantidadEvaluadoresTerminado eq false}" />
+                            </f:facet>                            
 
                         </p:dataList>
-                    <p:commandButton id="btnAnalisResultado" actionListener="#{heuristicaBean.ejecutarEvaluacionHeuristica}" icon="ui-icon-check" value="Analisis de Resultados" rendered="#{heuristicaBean.isDueñoSitio eq true}"/>                                                    
+                    
                 </h:form>
+                
+                <h:form id="formUpdateCriterio" >
+                  <p:dialog header="Modificar Criterio Evaluacion" widgetVar="dialogoCriterioUpdate" id="dialogoCriterioUpdate" showEffect="fade" hideEffect="explode" resizable="false">
+                      <h:panelGrid  id="display" columns="2" cellpadding="8" style="margin:0 auto;">
+                            
+                              <h:outputText value="Puntuacion: " style="font-weight: bold" />
+                              <p:selectOneMenu id="editarPuntuacion" style="width:250px" value="#{heuristicaBean.criterioSitioSeleccionado.puntuacion}">
+                                    <f:selectItem itemLabel="Seleccionar Puntaje" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{heuristicaBean.puntajes}" />
+                                </p:selectOneMenu>
+                              
+                              <h:outputText value="Frecuencia " style="font-weight: bold" />
+                              <p:selectOneMenu id="frecuencia" style="width:250px" value="#{heuristicaBean.criterioSitioSeleccionado.frecuencia}">
+                                  <f:selectItem itemLabel="Seleccionar Frecuencia" itemValue="" noSelectionOption="true" />
+                                  <f:selectItems value="#{heuristicaBean.frecuencias}" />
+                              </p:selectOneMenu>      
+
+                              <h4 style="margin-top: 2px">Deja tu comentario</h4>
+                              <p:inputTextarea id="txtComentarioEditar" rows="5" cols="50" counter="displayEditar" maxlength="250" counterTemplate="{0} caracteres restantes." autoResize="true" value="#{heuristicaBean.criterioSitioSeleccionado.comentario}">
+                              </p:inputTextarea>
+                              <h:outputText/>
+                              <h:outputText id="displayEditar"/>
+                              
+                              <f:facet name="footer">
+                                   <p:separator/>       
+                                   <p:commandButton id="btnUpdateAceptar" update=":formEjecutarEval, :msgs" oncomplete="PF('dialogoCriterioUpdate').hide()" actionListener="#{heuristicaBean.btnUpdateCriterio(actionEvent)}" icon="ui-icon-check" title="Modificar" value="Modificar"/>
+                                   <p:commandButton id="btnUpdateCancelar" oncomplete="PF('dialogoCriterioUpdate').hide()" icon="ui-icon-close" title="Cancelar" value="Cancelar"/>
+                              </f:facet>
+
+                          </h:panelGrid>
+                  </p:dialog>
+              </h:form>
+                
             </ui:define>
 
         </ui:composition>

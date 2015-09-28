@@ -37,6 +37,7 @@ import model.Sitioevaluacion;
 import model.Usuario;
 import org.primefaces.context.RequestContext;
 import util.MyUtil;
+import java.awt.Desktop.Action;
 
 /**
  *
@@ -51,9 +52,12 @@ public class heuristicaBean implements Serializable{
     private List<CriteriohijoHasSitioevaluacion> criteriosHijosSitio;
     //lista de los criterios para evaluar en el sitio elegido
     transient List<CriterioHasSitioEvaluacionReport> criteriosByEvaluacionSitio;
+    transient CriterioHasSitioEvaluacionReport criterioSitioSeleccionado;
     private Map<String,Integer> puntajes;
+    private Map<String,Integer> frecuencias;
     private List<Criteriopadre> listaCriteriosPadre;
     private Integer puntaje;
+    private String frecuencia;
     private boolean value2;
     private boolean value1;
     // booleano para el selectBoolean de los criterios padres
@@ -82,6 +86,17 @@ public class heuristicaBean implements Serializable{
         return this.criteriosHijosSitio;        
     } 
 
+    public CriterioHasSitioEvaluacionReport getCriterioSitioSeleccionado() {
+            return criterioSitioSeleccionado;
+    }
+
+    public void setCriterioSitioSeleccionado(CriterioHasSitioEvaluacionReport criterioSitioSeleccionado) {
+        
+            this.criterioSitioSeleccionado = criterioSitioSeleccionado;
+    }
+    
+    
+
     public List<Sitioevaluacion> getSitios(Integer estadoPrueba) { 
         
         this.sitios = this.heuristicaDao.findAll(estadoPrueba);
@@ -108,6 +123,7 @@ public class heuristicaBean implements Serializable{
      */
     public heuristicaBean() {
         
+        this.criterioSitioSeleccionado = new CriterioHasSitioEvaluacionReport();
         this.heuristicaDao = new HeuristicaDaoImpl();
         this.codigosCriteriopadre = new ArrayList<Integer>();
         this.sitios = new ArrayList<Sitioevaluacion>();
@@ -119,6 +135,9 @@ public class heuristicaBean implements Serializable{
         puntajes.put("3 - Problema de poca importancia",3);
         puntajes.put("4 - Problema grave",4);
         puntajes.put("5 - Catástrofe: obligatorio arreglarlo",5);
+        frecuencias = new HashMap<String, Integer>();
+        frecuencias.put("Problema Comùn", 1);
+        frecuencias.put("Poco Habitual", 2);
         HashMap mapResultado = new LinkedHashMap();
         List misMapKeys = new ArrayList(puntajes.keySet());
         List misMapValues = new ArrayList(puntajes.values());
@@ -138,11 +157,22 @@ public class heuristicaBean implements Serializable{
 
     public Sitioevaluacion getSelectedSitioEvaluacion() {
         this.puntaje = null;
+        this.frecuencia = "";
         this.value2 = false;
         this.progress = 15;
         return selectedSitioEvaluacion;
         
     }
+
+    public String getFrecuencia() {
+        return frecuencia;
+    }
+
+    public void setFrecuencia(String frecuencia) {
+        this.frecuencia = frecuencia;
+    }
+    
+    
 
     public void setSelectedSitioEvaluacion(Sitioevaluacion selectedSitioEvaluacion) {
         this.selectedSitioEvaluacion = selectedSitioEvaluacion;
@@ -176,8 +206,12 @@ public class heuristicaBean implements Serializable{
         setPuntaje(this.puntaje);
     }
     
-
-    public void addMessage(Integer codigoHijo,Integer codigoSitio) {
+    public void fijarFrecuencia(){
+        setFrecuencia(this.frecuencia);
+    }
+    
+    public void addMessage(Integer codigoHijo,Integer codigoSitio, boolean value2) {
+      this.value2 = value2;  
        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
        Date actual = null;
         try {
@@ -186,8 +220,8 @@ public class heuristicaBean implements Serializable{
           actual = sdf.parse(hoy);
         } catch (Exception e) {
             e.printStackTrace();
-        }     
-       
+        }
+        
        if(this.puntaje == null){
         String summary =  "Por favor elegir un puntaje valido";
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));
@@ -196,12 +230,13 @@ public class heuristicaBean implements Serializable{
         
         HeuristicaDao heuristicaDao = new HeuristicaDaoImpl();
         if(this.value2)
-        heuristicaDao.updateCriterioSitio(this.puntaje, codigoHijo, codigoSitio, this.comentarioCriterioSitio,actual);
+        heuristicaDao.updateCriterioSitio(this.puntaje, codigoHijo, codigoSitio, this.comentarioCriterioSitio,actual, this.frecuencia);
         else
-        heuristicaDao.updateCriterioSitio(null, codigoHijo, codigoSitio, null, null);
+        heuristicaDao.updateCriterioSitio(null, codigoHijo, codigoSitio, null, null, null);
         }        
         this.comentarioCriterioSitio = null;
         this.puntaje = null;
+        this.frecuencia = "";
         this.value2 = false;
     }
     
@@ -239,6 +274,16 @@ public class heuristicaBean implements Serializable{
     public void setValue3(boolean value3) {
         this.value3 = value3;
     }
+
+    public Map<String, Integer> getFrecuencias() {
+        return frecuencias;
+    }
+
+    public void setFrecuencias(Map<String, Integer> frecuencias) {
+        this.frecuencias = frecuencias;
+    }
+    
+    
     /**
      * Mensaje para cuadno se adicione un criterio padre a la prueba heuristica
      */
@@ -293,6 +338,7 @@ public class heuristicaBean implements Serializable{
          String ruta = "";
          this.comentarioCriterioSitio = null;
          this.puntaje = null;
+         this.frecuencia = "";
          this.value2 = false;
          Sitioevaluacion sitioevaluacion = this.selectedSitioEvaluacion;
          if (sitioevaluacion != null){
@@ -394,7 +440,7 @@ public class heuristicaBean implements Serializable{
         String msg;
         HeuristicaDao heuristicaDao = new HeuristicaDaoImpl();
      
-        Set<Integer> idsUsuario = this.nomUsuarios.keySet();
+       Set<Integer> idsUsuario = this.nomUsuarios.keySet();
        String[] selectedUsuarios = this.selectedUsuario;
        if(selectedUsuarios.length < 5){
        for (String su : selectedUsuarios) {
@@ -405,6 +451,7 @@ public class heuristicaBean implements Serializable{
                }
            }
        }
+       heuristicaDao.agregarTotalEvaluadores(this.selectedSitioEvaluacion.getCodigo(), this.idsColaboradores.size());
         for(Integer idUsuario: this.idsColaboradores){
             for (Integer criterioPadre : this.codigosCriteriopadre) {
             List<Integer> criteriosHijos = heuristicaDao.obtenerIdsCriteriosHijos(criterioPadre);
@@ -480,5 +527,82 @@ public class heuristicaBean implements Serializable{
             e.printStackTrace();
        }
    }
+   
+   public void btnUpdateCriterio(Action actionEvent){
+        
+       SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+       Date actual = null;
+        try {
+          Date date = new Date();
+          String hoy = sdf.format(date);
+          actual = sdf.parse(hoy);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        String msg;
+        CriterioHasSitioEvaluacionReport criterioSitio = this.criterioSitioSeleccionado;
+        
+        if(heuristicaDao.updateCriterioSitio(criterioSitio.getPuntuacion(), criterioSitio.getCodigoHijo(), criterioSitio.getCodigoSitio(), criterioSitio.getComentario(),actual, criterioSitio.getFrecuencia())){
+           msg = "Se modificó correctamente el Criterio"; 
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
+            FacesContext.getCurrentInstance().addMessage(null, message); 
+        }else{
+            msg = "Error al modificar el Criterio";
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+    }
+   
+    public void terminarEjecucionPrueba(){
+         
+        String msgs;
+        String ruta = "";
+
+        try {
+            Integer codigoSitio = this.selectedSitioEvaluacion.getCodigo();
+            Integer cantidadParcial = heuristicaDao.consultarEvaluadoresParcial(codigoSitio);
+            cantidadParcial = cantidadParcial + 1;
+
+            heuristicaDao.agregarEvaluadorParcial(this.selectedSitioEvaluacion.getCodigo(), cantidadParcial);
+
+            msgs = "Se termino la Ejecucion correctamente";
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msgs, null);
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, message);
+            ruta = MyUtil.basepathlogin() + "views/heuristica/index.xhtml";
+            context.getExternalContext().redirect(ruta);
+        } catch (Exception e) {
+            msgs = "Error al terminar la Ejecucion de Prueba";
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msgs, null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }    
+        
+    }
+    
+    public boolean isCantidadEvaluadoresTerminado(){
+        
+        Integer codigoSitio = this.selectedSitioEvaluacion.getCodigo();
+        Integer cantidadTotal = heuristicaDao.consultarTotalEvaluadores(codigoSitio);
+        Integer cantidadParcial = heuristicaDao.consultarEvaluadoresParcial(codigoSitio);
+        
+        if(cantidadParcial >= cantidadTotal){
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public void crearNuevoSitio(){
+     
+         String ruta = MyUtil.basepathlogin()+"views/heuristica/gestion_sitio.xhtml";
+         FacesContext contex = FacesContext.getCurrentInstance();
+         try {
+            contex.getExternalContext().redirect(ruta);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+         
+    }
   
 } 

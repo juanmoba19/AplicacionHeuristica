@@ -17,6 +17,12 @@
         <div id="conteiner">
         <div id="top" class="ui-widget-header ui-corner-all">
             <ui:insert name="top">Aplicacion Para la Evaluacion de Pruebas Heuristicas</ui:insert>
+            <ui:insert name="button">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Usuario: #{appBean.informacionCabeceraUsuario()}</ui:insert>
         </div>
         <div id="menu">
             <h:form>  
@@ -30,7 +36,6 @@
                     
                     <p:submenu label="Administrar" icon="ui-icon-document">
                         <p:menuitem value="Usuario" url="#{appBean.basePath}usuario/index.xhtml" />
-                        <p:menuitem value="Cambio Contraseña" url="#{appBean.basePath}usuario/contrasena.xhtml" />
                     </p:submenu>
 
                     <p:submenu label="Comunicacion" icon="ui-icon-document">
@@ -40,7 +45,6 @@
                     
                    <p:submenu label="Heuristica" icon="ui-icon-document">
                         <p:menuitem value="Lista Sitios" url="#{appBean.basePath}heuristica/index.xhtml" />
-                        <p:menuitem value="Gestionar Sitios" url="#{appBean.basePath}heuristica/gestion_sitio.xhtml" rendered="#{appBean.rol eq '1'}" />
                     </p:submenu>
                     
                     <p:submenu label="Estadistica" icon="ui-icon-document">
@@ -50,7 +54,10 @@
                     <p:menuitem value="Salir" actionListener="#{loginBean.logout}" icon="ui-icon-close" oncomplete="handleLoginRequest(xhr, status, args)" />
 
                     <f:facet name="options">
-                        <p:inputText style="margin-right:10px" placeholder="Search"/>
+                        <h:commandLink id="settings" action="#{appBean.configurar}">
+                        <p:graphicImage name="/images/icons/settings.png" style="margin-left: -45px" />
+                        </h:commandLink>
+                        <p:tooltip id="toolTipSetting" for="settings" value="Configuración" />
                     </f:facet>
                 </p:menubar>
             </h:form>

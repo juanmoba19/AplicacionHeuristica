@@ -114,7 +114,7 @@ public class HeuristicaDaoImpl implements HeuristicaDao{
     }
 
     @Override
-    public boolean updateCriterioSitio(Integer puntuacion, Integer criterioHijo, Integer sitioEvaluacion, String comentario, Date fechaActual) {
+    public boolean updateCriterioSitio(Integer puntuacion, Integer criterioHijo, Integer sitioEvaluacion, String comentario, Date fechaActual, String frecuencia) {
         
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         String hql="";
@@ -124,7 +124,7 @@ public class HeuristicaDaoImpl implements HeuristicaDao{
             
             session.beginTransaction();
             if (  puntuacion != null )
-            hql = "UPDATE CriteriohijoHasSitioevaluacion set puntuacion_escala = :puntuacion, comentario = :comentario, fecha = :fechaActual where criteriohijo_codigo = :criterioHijo and sitioevaluacion_codigo = :sitioEvaluacion and usuario.id = :idUsuario";
+            hql = "UPDATE CriteriohijoHasSitioevaluacion set puntuacion_escala = :puntuacion, comentario = :comentario, fecha = :fechaActual, frecuencia = :frecuencia where criteriohijo_codigo = :criterioHijo and sitioevaluacion_codigo = :sitioEvaluacion and usuario.id = :idUsuario";
             else
             hql = "UPDATE CriteriohijoHasSitioevaluacion set puntuacion_escala = null, comentario = null where criteriohijo_codigo = :criterioHijo and sitioevaluacion_codigo = :sitioEvaluacion and usuario.id = :idUsuario";                 
             Query query = session.createQuery(hql);
@@ -135,6 +135,7 @@ public class HeuristicaDaoImpl implements HeuristicaDao{
             query.setString("comentario", comentario);
             query.setInteger("idUsuario", idUsuario);
             query.setDate("fechaActual", fechaActual);
+            query.setString("frecuencia", frecuencia);
             query.executeUpdate();
             session.beginTransaction().commit();
             
@@ -290,6 +291,28 @@ public class HeuristicaDaoImpl implements HeuristicaDao{
         
         return flag;
     }
+    
+    @Override
+    public void agregarTotalEvaluadores(Integer codigoSitio, Integer cantidad){
+        
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+       String hql="";
+
+       try {
+           
+           session.beginTransaction();
+           hql = "UPDATE Sitioevaluacion set evaluadoresTotal = :cantidad where codigo = :sitioEvaluacion";          
+           Query query = session.createQuery(hql);
+           query.setInteger("cantidad", cantidad);
+           query.setInteger("sitioEvaluacion", codigoSitio);          
+           query.executeUpdate();
+           session.beginTransaction().commit();
+           
+           } catch (Exception e) {
+           session.beginTransaction().rollback();
+       }
+       
+    }
 
     @Override
     public List<Integer> sitiosPermitidos() {
@@ -376,7 +399,8 @@ public class HeuristicaDaoImpl implements HeuristicaDao{
         strSql.append(" ch.descripcion AS descripcionHijo, ");
         strSql.append(" chs.puntuacion_escala AS puntuacion, ");
         strSql.append(" chs.comentario AS comentario, ");
-        strSql.append(" chs.sitioevaluacion_codigo AS codigoSitio ");
+        strSql.append(" chs.sitioevaluacion_codigo AS codigoSitio, ");
+        strSql.append(" chs.frecuencia AS frecuencia ");
         strSql.append(" FROM criteriohijo_has_sitioevaluacion chs ");
         strSql.append(" INNER JOIN criteriopadre cp ON chs.criteriopadre_codigo = cp.codigo ");
         strSql.append(" INNER JOIN criteriohijo ch ON chs.criteriohijo_codigo = ch.codigo ");
@@ -397,8 +421,72 @@ public class HeuristicaDaoImpl implements HeuristicaDao{
         query.addScalar("puntuacion",StandardBasicTypes.INTEGER);
         query.addScalar("comentario",StandardBasicTypes.STRING);
         query.addScalar("codigoSitio",StandardBasicTypes.INTEGER);
+        query.addScalar("frecuencia",StandardBasicTypes.STRING);
         
         return query.list();
+    }
+
+    @Override
+    public Integer consultarTotalEvaluadores(Integer codigoSitio) {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        
+        StringBuilder strSql = new StringBuilder();
+        strSql.append(" SELECT evaluadoresTotal AS total ");
+        strSql.append(" FROM sitioevaluacion ");
+        strSql.append(" WHERE codigo = :idSitio ");
+        
+        session.beginTransaction();
+        SQLQuery query = session.createSQLQuery(strSql.toString());
+        query.setParameter("idSitio", codigoSitio);
+        query.addScalar("total",StandardBasicTypes.INTEGER);
+        
+        Integer result = (Integer) query.uniqueResult();
+        if ( result == null)
+        result = 0;
+        
+        return result;
+    }
+
+    @Override
+    public Integer consultarEvaluadoresParcial(Integer codigoSitio) {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        
+        StringBuilder strSql = new StringBuilder();
+        strSql.append(" SELECT evaluadoresConfirm AS total ");
+        strSql.append(" FROM sitioevaluacion ");
+        strSql.append(" WHERE codigo = :idSitio ");
+        
+        session.beginTransaction();
+        SQLQuery query = session.createSQLQuery(strSql.toString());
+        query.setParameter("idSitio", codigoSitio);
+        query.addScalar("total",StandardBasicTypes.INTEGER);
+        
+        Integer result = (Integer) query.uniqueResult();
+        if ( result == null)
+        result = 0;
+        
+        return result;
+    }
+
+    @Override
+    public void agregarEvaluadorParcial(Integer codigoSitio, Integer cantidad) {
+       
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+       String hql="";
+
+       try {
+           
+           session.beginTransaction();
+           hql = "UPDATE Sitioevaluacion set evaluadoresConfirm = :cantidad where codigo = :sitioEvaluacion";          
+           Query query = session.createQuery(hql);
+           query.setInteger("cantidad", cantidad);
+           query.setInteger("sitioEvaluacion", codigoSitio);          
+           query.executeUpdate();
+           session.beginTransaction().commit();
+           
+           } catch (Exception e) {
+           session.beginTransaction().rollback();
+       }
     }
     
 }

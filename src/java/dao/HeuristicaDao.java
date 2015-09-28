@@ -27,7 +27,7 @@ public interface HeuristicaDao {
     public boolean create (Sitioevaluacion sitio);
     public boolean update (Sitioevaluacion sitio);
     public boolean delete (Sitioevaluacion sitio);
-    public boolean updateCriterioSitio(Integer puntuacion, Integer criterioHijo, Integer sitioEvaluacion, String comentario,Date fechaActual);
+    public boolean updateCriterioSitio(Integer puntuacion, Integer criterioHijo, Integer sitioEvaluacion, String comentario,Date fechaActual, String frecuencia);
     public List<Criteriopadre> findAllCriteriosPadre();
     public List<Integer> obtenerIdsCriteriosHijos(Integer idCriterioPadre);
     public boolean insertarCriteriosSitio(Integer codigoHijo, Integer codigoSitio, Integer padre);
@@ -38,4 +38,8 @@ public interface HeuristicaDao {
     public List<Integer> sitiosPermitidos();
     public boolean isDueñoSitio(Integer idSitio);
     public boolean cambiarEstadoPrueba(Integer estado, Integer idSitio);
+    public void agregarTotalEvaluadores(Integer codigoSitio, Integer cantidad);
+    public Integer consultarTotalEvaluadores(Integer codigoSitio);
+    public Integer consultarEvaluadoresParcial(Integer codigoSitio);
+    public void agregarEvaluadorParcial(Integer codigoSitio, Integer cantidad);
 }

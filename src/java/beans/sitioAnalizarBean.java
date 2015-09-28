@@ -6,6 +6,7 @@
 
 package beans;
 
+import Report.EvaluacionComentariosCriteriosReport;
 import Report.EvaluacionDetalladaUsuarioReport;
 import Report.PromedioUsuarioReport;
 import com.lowagie.text.BadElementException;
@@ -66,6 +67,8 @@ public class sitioAnalizarBean implements Serializable {
     private Usuario selectedUsuario;
     // Lista de las evaluaciones personalizadas por usuario
     private List<EvaluacionDetalladaUsuarioReport> listaEvalDetalleUsuario;
+    // Lista de los comentarios concatenados por criterios
+    private List<EvaluacionComentariosCriteriosReport> listaComentariosCriterios;
     // Model Linear chart
     private LineChartModel lineModel2;
     // promedio para saber si es un sitio usable o no
@@ -299,6 +302,20 @@ public class sitioAnalizarBean implements Serializable {
         
     }
     
+     public void preProcessPDFComentario(Object document) throws IOException, DocumentException {
+
+        final Document pdf = (Document) document;
+
+        HeaderFooter header = new HeaderFooter(new Phrase("Comentarios por Criterios Heuristicas - Sitio Web"+ this.selectedSitio.getNombre()), false);
+        pdf.setHeader(header);
+        
+        pdf.setPageSize(PageSize.A4);
+        pdf.open();
+        
+        pdf.add(getImage("Uniqlog.PNG"));
+        
+    }
+    
     private Image getImage(String imageName) throws IOException, BadElementException {
         final Image image = Image.getInstance(getAbsolutePath(imageName));
         image.scalePercent(30f);
@@ -338,6 +355,17 @@ public class sitioAnalizarBean implements Serializable {
             cell.setCellStyle(cellStyle);
         }
     }
+
+    public List<EvaluacionComentariosCriteriosReport> getListaComentariosCriterios() {
+       if(this.selectedSitio.getCodigo() != null)
+           this.listaComentariosCriterios = analisisHeuristicaDao.verComentariosConsolidadosSitio(this.selectedSitio.getCodigo());
+        return listaComentariosCriterios;
+    }
+
+    public void setListaComentariosCriterios(List<EvaluacionComentariosCriteriosReport> listaComentariosCriterios) {
+        this.listaComentariosCriterios = listaComentariosCriterios;
+    }
+    
     
      
 }

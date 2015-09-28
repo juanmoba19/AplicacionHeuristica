@@ -36,5 +36,8 @@
         <property name="comentario" type="string">
             <column name="comentario" length="65535" />
         </property>
+        <property name="frecuencia" type="string">
+            <column name="frecuencia"/>
+        </property>
     </class>
 </hibernate-mapping>

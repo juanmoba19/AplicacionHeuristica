@@ -26,6 +26,9 @@ public class Sitioevaluacion  implements java.io.Serializable {
      private String nombreImagen;
      private Integer idUsuarioCreador;
      private Set estadisticaprompuntajes = new HashSet(0);
+     private String descripcion;
+     private Integer evaluadoresTotal;
+     private Integer evaluadoresConfirm;
 
     public Sitioevaluacion() {
         this.codigo = 0;
@@ -36,7 +39,7 @@ public class Sitioevaluacion  implements java.io.Serializable {
     public Sitioevaluacion(Estadoprueba estadoprueba) {
         this.estadoprueba = estadoprueba;
     }
-    public Sitioevaluacion(Estadoprueba estadoprueba, String nombre, String url, String tipo, Date fechaEvaluacion, Set usuarioHasSitioevaluacions, Set criteriohijoHasSitioevaluacions, Integer idUsuarioCreador) {
+    public Sitioevaluacion(Estadoprueba estadoprueba, String nombre, String url, String tipo, Date fechaEvaluacion, Set usuarioHasSitioevaluacions, Set criteriohijoHasSitioevaluacions, Integer idUsuarioCreador, String descripcion) {
        this.estadoprueba = estadoprueba;
        this.nombre = nombre;
        this.url = url;
@@ -46,6 +49,7 @@ public class Sitioevaluacion  implements java.io.Serializable {
        this.criteriohijoHasSitioevaluacions = criteriohijoHasSitioevaluacions;
        this.idUsuarioCreador = idUsuarioCreador;
        this.estadisticaprompuntajes = estadisticaprompuntajes;
+       this.descripcion = descripcion;
     }
    
     public Integer getCodigo() {
@@ -79,10 +83,29 @@ public class Sitioevaluacion  implements java.io.Serializable {
     public String getTipo() {
         return this.tipo;
     }
-    
+       
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
+
+    public Integer getEvaluadoresTotal() {
+        return evaluadoresTotal;
+    }
+
+    public void setEvaluadoresTotal(Integer evaluadoresTotal) {
+        this.evaluadoresTotal = evaluadoresTotal;
+    }
+
+    public Integer getEvaluadoresConfirm() {
+        return evaluadoresConfirm;
+    }
+
+    public void setEvaluadoresConfirm(Integer evaluadoresConfirm) {
+        this.evaluadoresConfirm = evaluadoresConfirm;
+    }
+    
+    
+    
     public Date getFechaEvaluacion() {
         return this.fechaEvaluacion;
     }
@@ -137,7 +160,15 @@ public class Sitioevaluacion  implements java.io.Serializable {
         this.estadisticaprompuntajes = estadisticaprompuntajes;
     }
 
+    public String getDescripcion() {
+        return descripcion;
+    }
 
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    
 
 }
 

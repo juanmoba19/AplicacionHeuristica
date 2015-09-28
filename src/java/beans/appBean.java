@@ -9,6 +9,7 @@ package beans;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.FacesContext;
+import model.Usuario;
 import util.MyUtil;
 
 /**
@@ -45,6 +46,24 @@ public class appBean {
     public String getBasePath(){
         
         return MyUtil.basePath();
+    }
+    
+    public void configurar(){
+     
+         String ruta = MyUtil.basepathlogin()+"views/usuario/contrasena.xhtml";
+         FacesContext contex = FacesContext.getCurrentInstance();
+         try {
+            contex.getExternalContext().redirect(ruta);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+         
+    }
+    
+    public String informacionCabeceraUsuario(){
+        Usuario usuario  = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioObj");
+        
+        return usuario.getUsuario();
     }
             
 }
