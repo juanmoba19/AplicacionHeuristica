@@ -25,9 +25,6 @@
                       <f:facet name="header">
                           Listado de Usuarios
                       </f:facet>
-                      <p:column headerText="Id" width="10%">
-                          <h:outputText value="#{usuario.id}" />
-                      </p:column>
                       <p:column headerText="Usuario" width="20%">
                           <h:outputText value="#{usuario.usuario}" />
                       </p:column>
@@ -37,7 +34,7 @@
                       <p:column headerText="Rol">
                           <h:outputText value="#{usuario.rol.nombre}" />
                       </p:column>
-                      <p:column headerText="Accion" style="width:66px;text-align: center" rendered="#{appBean.rol eq '1'}">
+                      <p:column headerText="Acción" style="width:66px;text-align: center" rendered="#{appBean.rol eq '1'}">
                            <p:commandButton id="btnUpdate" update=":formUpdate" oncomplete="PF('dialogUsuarioUpdate').show()" icon="icon-edit" title="Modificar">
                               <f:setPropertyActionListener value="#{usuario}" target="#{usuarioBean.selectedUsuario}" />
                           </p:commandButton>

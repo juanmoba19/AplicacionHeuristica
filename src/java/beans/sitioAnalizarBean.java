@@ -16,7 +16,6 @@ import com.lowagie.text.HeaderFooter;
 import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Phrase;
-import static com.lowagie.text.pdf.codec.BmpImage.getImage;
 import dao.AnalisisHeuristicaDao;
 import dao.AnalisisHeuristicaDaoImpl;
 import dao.SitioDao;

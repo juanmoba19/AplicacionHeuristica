@@ -5,6 +5,7 @@
       xmlns:h="http://java.sun.com/jsf/html"  
       xmlns:f="http://java.sun.com/jsf/core"  
       xmlns:p="http://primefaces.org/ui" >
+    
 
     <body>
 
@@ -22,6 +23,7 @@
                             <p:ajax event="itemSelect" listener="#{sitioAnalizarBean.itemSelect}" update="growl" />
                         </p:chart>  
                     </h:panelGrid>
+                   
                     
                     <h4>Descripcion de los criterios Heuristicos</h4>
                     <div align="justify">Para saber la definicion de cada uno de los criterios mostrados
@@ -90,8 +92,7 @@
                     </p:dataList>
                     </div>
                     
-                    <p:outputPanel id="userDetail" style="text-align:center; margin-top: 40px;">
-                            <h:form id="formUserDetail">                               
+                    <p:outputPanel id="userDetail" style="text-align:center; margin-top: 40px;">                           
                             <p:dataTable id="tbl" var="evalByUsuario" value="#{sitioAnalizarBean.listaEvalDetalleUsuario}"
                                              paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                                              paginator="true" rows="10" style="margin-bottom:20px">
@@ -126,31 +127,35 @@
                                                         postProcessor="#{sitioAnalizarBean.postProcessXLS}" />
                                     </p:commandButton>
                                     <p:tooltip id="toolTipExportExcel" for="buttonExporExcel" value="Exportar Excel" />
-                                </div>                                
-                                </h:form>
+                                </div>   
                         </p:outputPanel>
                     
-                        <p:outputPanel id="comentarioDetail" style="text-align:center; margin-top: 40px;">
-                            <h:form id="formComentarioDetail">                               
-                                <p:dataTable id="tblcom" var="evalByComentario" value="#{sitioAnalizarBean.listaComentariosCriterios}"
+                    <p:outputPanel id="comentarioDetail" style="text-align:center; margin-top: 40px;">                             
+                            <p:dataTable id="com" var="evalByComentario" value="#{sitioAnalizarBean.listaComentariosCriterios}"
                                              paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                                              paginator="true" rows="10" style="margin-bottom:20px">
 
-                                    <f:facet name="header">
-                                       Lista de Comentarios por Criterios
-                                    </f:facet>   
+                                <f:facet name="header">
+                                    Lista de Comentarios por Criterios
+                                </f:facet>      
                                 <p:column headerText="Criterio">
                                     <h:outputText value="#{evalByComentario.criterio}" />
-                                    </p:column>
+                                </p:column>
 
                                 <p:column headerText="Comentario">
                                     <h:outputText value="#{evalByComentario.comentario}" />
-                                    </p:column>
+                                </p:column>
                                 </p:dataTable>
-                                  
-                               
-                                </h:form>
-                        </p:outputPanel>    
+                                <div class="botonExport" style="margin-top: -16px;margin-bottom: 5px;text-align: right">
+                                    <p:commandButton id="exportComent" ajax="false" icon="icon-exportPDF" style="width: 32px;height: 34px">
+                                        <p:dataExporter  id="otro" type="pdf" target="com" fileName="comentario"
+                                                        preProcessor="#{sitioAnalizarBean.preProcessPDFComentario}"/>                                            
+                                    </p:commandButton>
+                                    <p:tooltip id="toolTipExportCom" for="exportComent" value="Exportar PDF" />
+                                    
+                                </div> 
+                        </p:outputPanel>
+                                              
                     
                     <h:panelGrid columns="2" columnClasses="left,right" style="width:100%;margin-top: 10px;margin-bottom: 15px;">
                         <p:chart type="line" model="#{sitioAnalizarBean.lineModel2}" style="height:300px;"/>

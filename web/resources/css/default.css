@@ -43,6 +43,31 @@ a:link:hover, a:visited:hover  {
     width: 50%;
 }
 
+.ui-state-default .icon-planear-prueba{
+    background-image: url(../images/icons/planear.png);
+    width: 50%;
+}
+
+.ui-state-default .icon-ejecutar-prueba{
+    background-image: url(../images/icons/ejecutar.png);
+    width: 50%;
+}
+
+.ui-state-default .icon-analizar-prueba{
+    background-image: url(../images/icons/analizar.png);
+    width: 50%;
+}
+
+.ui-state-default .icon-analizar-prueba{
+    background-image: url(../images/icons/analizar.png);
+    width: 50%;
+}
+
+.ui-state-default .icon-foro{
+    background-image: url(../images/icons/foro.png);
+    width: 50%;
+}
+
 .ui-state-default .icon-new-foro{
     background-image: url(../images/icons/agregarForo.png);
     width: 50%;

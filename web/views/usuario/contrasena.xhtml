@@ -11,8 +11,15 @@
 
             <ui:define name="content">
                 <h:form id="formLogin">
+                    <script type="text/javascript">
+                    function limpiarForm()
+                    {                        
+                        document.getElementById("formLogin").reset();
+                    }
+                    </script>    
+                <p:fieldset legend="Cambiar Contraseña Usuario">                
                 <p:growl id="growl" showDetail="true" />    
-                <h:panelGrid columns="2" columnClasses="column" cellpadding="5" style="margin-bottom: 90px; margin-top: 30px">
+                <h:panelGrid columns="2" columnClasses="column" cellpadding="5" style="margin-bottom: 25px; margin-top: 30px">
                 <h:outputLabel value="Contraseña Antigua: " style="font-weight: 
                                        
                                        bold" />
@@ -27,10 +34,12 @@
                                        
                                        bold" />
                 <p:password id="conConf" value="#{usuarioBean.contraConfNueva}" required="true" label="password" />
-                
-                <p:commandButton value="Cambiar Contraseña" update="growl" actionListener="#{usuarioBean.cambiarContrasena(event)}" />
+                                
                 </h:panelGrid>
-                </h:form>    
+                
+                </p:fieldset>
+                    <p:commandButton value="Cambiar Contraseña" update="growl" oncomplete="limpiarForm()" actionListener="#{usuarioBean.cambiarContrasena(event)}" style="margin-top: 12px; margin-bottom: 10px" />
+                </h:form> 
             </ui:define>
 
         </ui:composition>

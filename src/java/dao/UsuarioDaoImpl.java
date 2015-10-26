@@ -107,6 +107,7 @@ public class UsuarioDaoImpl implements UsuarioDao{
             usuariodb.setUsuario(usuario.getUsuario());
             usuariodb.setRol(usuario.getRol());
             usuariodb.setEstado(usuario.getEstado());
+            usuariodb.setDescripcion(usuario.getDescripcion());
             session.update(usuariodb);
             session.beginTransaction().commit();
             flag=true;

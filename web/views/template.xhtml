@@ -16,15 +16,15 @@
     <h:body>
         <div id="conteiner">
         <div id="top" class="ui-widget-header ui-corner-all">
-            <ui:insert name="top">Aplicacion Para la Evaluacion de Pruebas Heuristicas</ui:insert>
-            <ui:insert name="button">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <ui:insert name="top"><span style="font: oblique bold 194% cursive;">Aplicación para la evaluación de Pruebas Heurísticas</span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                Usuario: #{appBean.informacionCabeceraUsuario()}</ui:insert>
+                <span style="font: bold 126% monospace;float: right;">Usuario: #{appBean.informacionCabeceraUsuario()}</span></ui:insert>
         </div>
-        <div id="menu">
+        <div id="menu" style="margin-top: 10px;">
             <h:form>  
                 <p:growl id="messages"/>
 
@@ -34,49 +34,52 @@
                         <p:menuitem value="Home" url="#{appBean.basePath}inicio.xhtml" />
                     </p:submenu> 
                     
+                    <p:submenu label="Prueba" icon="ui-icon-document">
+                        <p:menuitem value="Heurística" url="#{appBean.basePath}heuristica/index.xhtml" />
+                    </p:submenu>
+
+                    <p:submenu label="Comunicación" icon="ui-icon-document">
+                        <p:menuitem value="Foro" url="#{appBean.basePath}foro/index.xhtml" />
+                        <p:menuitem value="Chat" url="#{appBean.basePath}chat/chat.xhtml" />
+                    </p:submenu>  
+                    
+                    <p:submenu label="Estadística" icon="ui-icon-document">
+                        <p:menuitem value="Generar Reportes" url="#{appBean.basePath}estadistica/index.xhtml" />
+                    </p:submenu>
+                    
                     <p:submenu label="Administrar" icon="ui-icon-document">
                         <p:menuitem value="Usuario" url="#{appBean.basePath}usuario/index.xhtml" />
                     </p:submenu>
 
-                    <p:submenu label="Comunicacion" icon="ui-icon-document">
-                        <p:menuitem value="Foro" url="#{appBean.basePath}foro/index.xhtml" />
-                        <p:menuitem value="Chat" url="#{appBean.basePath}chat/chat.xhtml" />
-                    </p:submenu>
-                    
-                   <p:submenu label="Heuristica" icon="ui-icon-document">
-                        <p:menuitem value="Lista Sitios" url="#{appBean.basePath}heuristica/index.xhtml" />
-                    </p:submenu>
-                    
-                    <p:submenu label="Estadistica" icon="ui-icon-document">
-                        <p:menuitem value="Generar Reportes" url="#{appBean.basePath}estadistica/index.xhtml" />
-                    </p:submenu>
-
-                    <p:menuitem value="Salir" actionListener="#{loginBean.logout}" icon="ui-icon-close" oncomplete="handleLoginRequest(xhr, status, args)" />
+                    <p:menuitem value="Salir" actionListener="#{loginBean.logout}" style="margin-left: 290px" icon="ui-icon-close" oncomplete="handleLoginRequest(xhr, status, args)" />
 
                     <f:facet name="options">
                         <h:commandLink id="settings" action="#{appBean.configurar}">
-                        <p:graphicImage name="/images/icons/settings.png" style="margin-left: -45px" />
+                        <p:graphicImage name="/images/icons/settings.png" style="margin-left: -145px" />
                         </h:commandLink>
-                        <p:tooltip id="toolTipSetting" for="settings" value="Configuración" />
+                        <p:tooltip id="toolTipSetting" for="settings" value="Cambiar Contraseña" />
+                        <h:link outcome="#{appBean.basePath}ayuda.xhtml" style="margin-left: 18px" >
+                                <p:graphicImage id="imageAyuda"   name="/images/icons/ayuda.png"/>                                 
+                            </h:link>
+                        <p:tooltip id="toolTipAyuda" for="imageAyuda" value="Ayuda" />
                     </f:facet>
                 </p:menubar>
             </h:form>
-            <div id="menuAyudA" style="text-align: right">
-                <h:link outcome="#{appBean.basePath}ayuda.xhtml" >
-                <p:graphicImage id="imageAyuda"  height="36" width="36" name="/images/icons/ayuda.jpeg"/> 
-                <p:tooltip id="toolTipAyuda" for="imageAyuda" value="Ayuda" />
-                </h:link>
-            </div>
+            
             </div>
 
-        <div id="content" class="center_content">
+        <div id="content" class="center_content" style="margin-top: 10px;">
+            <p:panel id="basic" style="margin-bottom:20px">
             <ui:insert name="content">Content</ui:insert>
+            </p:panel>
         </div>
 
-        <div id="bottom" class="ui-widget-header ui-corner-all ui-widget-content ui-corner-all">
-            <ui:insert name="bottom"> Universidad del Quindio - Laboratorio de Usabilidad <br></br>
-                   &copy; 2015
-            </ui:insert>
+        <div align="center">
+            <p:graphicImage name="/images/Uniqlog.PNG" style="width: 100px; float: top"/>
+        </div>    
+            <div align="center" style="margin-top: 12px;font-family: inherit;">
+            Universidad del Quindio - Laboratorio de Usabilidad <br></br>
+                   &copy; 2015            
         </div>
               </div>
           <script type="text/javascript">

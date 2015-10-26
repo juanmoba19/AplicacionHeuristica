@@ -41,11 +41,10 @@
 
                         <p:column headerText="Accion">
                             <div class="buttons" align="center" style="margin-top: 6px"> 
-                            <p:commandButton  id="AnalizarSitio" style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; font-size: 80%;"  actionListener="#{sitioAnalizarBean.seguirSitio}"
-                                              value="Analizar" >
-
+                                <p:commandButton  icon="icon-analizar-prueba" id="AnalizarSitio" style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; font-size: 80%;"  action="#{sitioAnalizarBean.seguirSitio(actionEvent)}">
                                 <f:setPropertyActionListener value="#{sitios}" target="#{sitioAnalizarBean.selectedSitio}" />
-                            </p:commandButton> 
+                                </p:commandButton> 
+                            <p:tooltip id="toolTipBtnAnalizar" for="AnalizarSitio" value="Analizar Prueba" trackMouse="true" />
                             </div>    
                         </p:column>
 

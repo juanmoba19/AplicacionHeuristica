@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
@@ -79,5 +80,5 @@ public class MessageBean implements Serializable {
        ctx.addCallbackParam("text", m.getMessage());
  
     }
- 
-}
+    
+    }

@@ -23,7 +23,7 @@
                  <h2 style="margin-top: 0">Sitios Web</h2>
                  </div>
                 
-                <p:commandButton id="btnSitioCreate" icon="icon-new-foro" title="Crear" value="Agregar informacon sitio" rendered="#{appBean.rol eq '1'}" action="#{heuristicaBean.crearNuevoSitio}"/>                      
+                <p:commandButton id="btnSitioCreate" icon="icon-new-foro" title="Crear" value="Agregar información sitio" rendered="#{appBean.rol eq '1'}" action="#{heuristicaBean.crearNuevoSitio}"/>                      
                 
                 <h:form id="formSitios" style="margin-top: 15px">
 
@@ -36,7 +36,7 @@
                                  paginator="true" rows="10" paginatorPosition="bottom"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
                         <f:facet name="header">
-                            Listado Sitios (Evaluacion Heuristica)
+                            Listado Sitios (Evaluación Heurística)
                         </f:facet>
                         <p:column headerText="Nombre">
                             <h:outputText value="#{sitios.nombre}" />
@@ -60,29 +60,34 @@
 
                         <p:column id="action"  headerText="Acción" >
                             <div class="buttons" align="center" style="margin-top: 6px">
-                                <p:commandButton style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; margin-bottom:6px; font-size: 80%" id="btnPlanearHeuristica" update=":formPlanearEval" oncomplete="PF('dialogPlanearEval').show()" title="Planear" value="Planear" rendered="#{sitios.estadoprueba.codigo eq '1'}">
+                                <p:commandButton style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; margin-bottom:6px; font-size: 80%" id="btnPlanearHeuristica" update=":formPlanearEval" oncomplete="PF('dialogPlanearEval').show()"  icon="icon-planear-prueba" rendered="#{sitios.estadoprueba.codigo eq '1'}">
                                     <f:setPropertyActionListener value="#{sitios}" target="#{heuristicaBean.selectedSitioEvaluacion}" />
                                 </p:commandButton>
+                                <p:tooltip id="toolTipBtnPlanear" for="btnPlanearHeuristica" value="Planear Prueba" trackMouse="true" />
 
-                                <p:commandButton style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; margin-bottom:6px; font-size: 80%" id="btnEjecutarHeuristica"  title="Ejecutar" value="Ejecutar" rendered="#{sitios.estadoprueba.codigo eq '2'}"
-                                                 actionListener="#{heuristicaBean.ejecutarHeuristica}">
+                                <p:commandButton style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; margin-bottom:6px; font-size: 80%" id="btnEjecutarHeuristica" rendered="#{sitios.estadoprueba.codigo eq '2'}"
+                                                 actionListener="#{heuristicaBean.ejecutarHeuristica}" icon="icon-ejecutar-prueba">
                                     <f:setPropertyActionListener value="#{sitios}" target="#{heuristicaBean.selectedSitioEvaluacion}" />
                                 </p:commandButton>
+                                <p:tooltip id="toolTipBtnEjecutar" for="btnEjecutarHeuristica" value="Ejecutar Prueba" trackMouse="true" />
                                 
-                                <p:commandButton style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; margin-bottom:6px; font-size: 80%" id="btnAnalizarHeuristica" title="Analizar" value="Analizar" rendered="#{sitios.estadoprueba.codigo eq '3'}"
-                                                 actionListener="#{sitioAnalizarBean.seguirSitio}">                                    
+                                <p:commandButton style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; margin-bottom:6px; font-size: 80%" id="btnAnalizarHeuristica" rendered="#{sitios.estadoprueba.codigo eq '3'}"
+                                                 action="#{sitioAnalizarBean.seguirSitio(actionEvent)}" icon="icon-analizar-prueba">                                    
                                     <f:setPropertyActionListener value="#{sitios}" target="#{sitioAnalizarBean.selectedSitio}" />
                                 </p:commandButton>
+                                <p:tooltip id="toolTipBtnAnalizar" for="btnAnalizarHeuristica" value="Analizar Prueba" trackMouse="true" />
                                 
-                                <p:commandButton  style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; font-size: 80%;"  actionListener="#{sitioModificarBean.seguirSitio(event)}"
-                                                   value="Editar" rendered="#{appBean.rol eq '1'}" >
+                                <p:commandButton id="botonEditarSitio" style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; font-size: 80%;"  action="#{sitioModificarBean.seguirSitio(actionEvent)}"
+                                                  icon="icon-edit"  rendered="#{appBean.rol eq '1'}" >
                                      <f:setPropertyActionListener value="#{sitios}" target="#{sitioModificarBean.selectedSitio}" />
                                  </p:commandButton> 
+                                <p:tooltip id="toolTipBtnEditar" for="botonEditarSitio" value="Editar Sitio" trackMouse="true" />
                                 
-                                <p:commandButton  style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; font-size: 80%;"  actionListener="#{sitioModificarBean.seguirForoBySitio}"
-                                                  value="Foro" rendered="#{sitios.estadoprueba.codigo ne '1'}" >
+                                <p:commandButton  id="botonForo" style="background: #E6E6E6; color: black; font-weight: normal; border: 1px solid #BDBDBD; font-size: 80%;"  action="#{sitioModificarBean.seguirForoBySitio(actionEvent)}"
+                                                  icon="icon-foro" rendered="#{sitios.estadoprueba.codigo ne '1'}" >
                                     <f:setPropertyActionListener value="#{sitios.codigo}" target="#{postBean.codigoBySitio}" />
                                 </p:commandButton>
+                                <p:tooltip id="toolTipBtnForo" for="botonForo" value="Foro" trackMouse="true" />
 
                             </div>
                         </p:column>
@@ -130,7 +135,7 @@
                 </h:form>
 
                 <h:form id="formPlanearEval">                     
-                    <p:dialog header="Sitio: #{heuristicaBean.selectedSitioEvaluacion.nombre} - URL: #{heuristicaBean.selectedSitioEvaluacion.url}" widgetVar="dialogPlanearEval" id="dlgPlanearEval"  showEffect="fade" hideEffect="explode" resizable="false" modal="true">                        
+                    <p:dialog header="Sitio: #{heuristicaBean.selectedSitioEvaluacion.nombre}" widgetVar="dialogPlanearEval" id="dlgPlanearEval"  showEffect="fade" hideEffect="explode" resizable="false" modal="true">                        
                         <p:ajax listener="#{heuristicaBean.inicializarProgress()}" />
                         <h4 style="margin-top:0">Planeacion de la prueba Heuristica</h4>
                         <p:tabView>  
@@ -149,13 +154,14 @@
                                             <p:selectBooleanCheckbox value="#{heuristicaBean.value3}">
                                                 <p:ajax update="msgs" listener="#{heuristicaBean.addMessage1(criterioPadre.codigo)}" />
                                             </p:selectBooleanCheckbox>
-                                        </h:panelGrid>
-                                    </p:dataList>                                    
-                                    <p:progressBar widgetVar="pbAjax" ajax="true" value="#{heuristicaBean.progress}" labelTemplate="{value}%" styleClass="animated" global="false">
-                                        <p:ajax event="complete" listener="#{heuristicaBean.onComplete}" update="growl" />
-                                    </p:progressBar>
-                                    <p:commandButton id="btnAgregarCriterioPadre" style="margin-top: 10px;" update=":formSitios" actionListener="#{heuristicaBean.agregarCriteriosPadres}" icon="ui-icon-check" title="Agregar" value="Agregar" onclick="PF('pbAjax').start();"/>
+                                        </h:panelGrid>                                        
+                                    </p:dataList> 
+                                    
                                 </p:scrollPanel>
+                                <p:progressBar widgetVar="pbAjax" ajax="true" value="#{heuristicaBean.progress}" labelTemplate="{value}%" styleClass="animated" global="false">
+                                    <p:ajax event="complete" listener="#{heuristicaBean.onComplete}" update="growl" />
+                                </p:progressBar>
+                                <p:commandButton id="btnAgregarCriterioPadre" style="margin-top: 10px;" update=":formSitios" actionListener="#{heuristicaBean.agregarCriteriosPadres}" icon="ui-icon-check" title="Agregar" value="Agregar" onclick="PF('pbAjax').start();"/>
                             </p:tab>
                             <p:tab title="Asignar Evaluadores">
                                 <p:growl id="msg" />

@@ -14,11 +14,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import model.Usuario;
+import util.MyUtil;
 
 /**
  *
@@ -144,6 +147,7 @@ public class usuarioBean {
         String msg = "";
         Usuario usuario = new Usuario();
         usuario.setClave(contraActual);
+        FacesContext contex = FacesContext.getCurrentInstance();
         
         if( usuarioDao.findByContrasena(usuario) != null ){
             

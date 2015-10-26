@@ -11,7 +11,13 @@ import dao.SitioDaoImpl;
 import java.awt.Desktop.Action;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeSet;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.faces.application.FacesMessage;
@@ -36,6 +42,7 @@ public class sitioCrearBean implements Serializable{
     private Date dateEvaluacion;
     private String imagenProducto;
     transient SitioDao sitioDao;
+    private Map<String, String> tipoSitio;
 
     /**
      * Creates a new instance of sitioBean
@@ -46,7 +53,43 @@ public class sitioCrearBean implements Serializable{
         this.selectedSitio.setNombre("Click para Ingresar Nombre Sitio");
         this.selectedSitio.setUrl("Click para escribir Url");
         this.selectedSitio.setTipo("Click para seleccionar el tipo");
+        tipoSitio = new HashMap<String, String>();
+        tipoSitio.put("Blog", "Blog");
+        tipoSitio.put("Comercio Electrónico", "Comercio Electrónico");
+        tipoSitio.put("Descargas", "Descargas");
+        tipoSitio.put("Desarrollo","Desarrollo");
+        tipoSitio.put("Instituacional", "Instituacional");
+        tipoSitio.put("Comunidad Virtual", "Comunidad Virtual");
+        tipoSitio.put("Información", "Información");
+        tipoSitio.put("Personal", "Personal");
+        tipoSitio.put("Wiki", "Wiki");
+        tipoSitio.put("Educativo", "Educativo");
+        tipoSitio.put("Portal", "Portal");
+        tipoSitio.put("Subasta", "Subasta");
+        tipoSitio.put("Spam", "Spam");
+         HashMap mapResultado = new LinkedHashMap();
+        List misMapKeys = new ArrayList(tipoSitio.keySet());
+        List misMapValues = new ArrayList(tipoSitio.values());
+        TreeSet conjuntoOrdenado = new TreeSet(misMapValues);
+        Object[] arrayOrdenado = conjuntoOrdenado.toArray();
+        int size = arrayOrdenado.length;
+        for (int i = 0; i < size; i++) {
+            mapResultado.put(misMapKeys.get(
+                    misMapValues.indexOf(
+                            arrayOrdenado[i])
+            ), arrayOrdenado[i]);
+        }
+        this.tipoSitio = mapResultado;
     }
+
+    public Map<String, String> getTipoSitio() {
+        return tipoSitio;
+    }
+
+    public void setTipoSitio(Map<String, String> tipoSitio) {
+        this.tipoSitio = tipoSitio;
+    }
+    
 
     public Sitioevaluacion getSelectedSitio() {
         return selectedSitio;
@@ -111,6 +154,8 @@ public class sitioCrearBean implements Serializable{
         this.selectedSitio.setTipo("Click para seleccionar el tipo");
         this.selectedSitio.setDescripcion("");
         this.imagenProducto=null;
+        this.selectedSitio.setNombreImagen("");
+        this.selectedSitio.setRutaImagen(null);
         ec.redirect(ec.getRequestContextPath() + "/faces/views/heuristica/index.xhtml");
         
     }
