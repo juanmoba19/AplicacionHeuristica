@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 21-dic-2014 8:20:36 by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="model.Sitioevaluacion" table="sitioevaluacion" catalog="evaluacionheuristica">
+        <id name="codigo" type="java.lang.Integer">
+            <column name="codigo" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="estadoprueba" class="model.Estadoprueba" fetch="select">
+            <column name="estadoPrueba_codigo" not-null="true" />
+        </many-to-one>
+        <property name="nombre" type="string">
+            <column name="nombre" length="100" />
+        </property>
+        <property name="url" type="string">
+            <column name="url" length="100" />
+        </property>
+        <property name="tipo" type="string">
+            <column name="tipo" length="45" />
+        </property>
+        <property name="fechaEvaluacion" type="timestamp">
+            <column name="fechaEvaluacion" length="19" />
+        </property>
+        <property name="rutaImagen" type="binary">
+            <column name="rutaImagen" />
+        </property>
+         <property name="nombreImagen" type="string">
+            <column name="nombreImagen" length="45" />
+        </property>
+        <property name="idUsuarioCreador" type="java.lang.Integer">
+            <column name="idUsuarioCreador" />
+        </property>
+        <property name="descripcion" type="string">
+            <column name="descripcion" length="65535" />
+        </property>
+        <property name="evaluadoresTotal" type="java.lang.Integer">
+            <column name="evaluadoresTotal" />
+        </property>
+        <property name="evaluadoresConfirm" type="java.lang.Integer">
+            <column name="evaluadoresConfirm" />
+        </property>
+        <set name="usuarioHasSitioevaluacions" table="usuario_has_sitioevaluacion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="sitioevaluacion_codigo" not-null="true" />
+            </key>
+            <one-to-many class="model.UsuarioHasSitioevaluacion" />
+        </set>
+        <set name="criteriohijoHasSitioevaluacions" table="criteriohijo_has_sitioevaluacion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="sitioevaluacion_codigo" not-null="true" />
+            </key>
+            <one-to-many class="model.CriteriohijoHasSitioevaluacion" />
+        </set>
+        <set name="estadisticaprompuntajes" table="estadisticaprompuntaje" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="sitioevaluacion_codigo" not-null="true" />
+            </key>
+            <one-to-many class="model.Estadisticaprompuntaje" />
+        </set>
+
+    </class>
+</hibernate-mapping>

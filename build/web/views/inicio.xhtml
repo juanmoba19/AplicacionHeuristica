@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./template.xhtml">
+            <ui:define name="content">
+                <p:outputPanel deferred="true" style="margin-bottom: 3%;margin-top: 3%">
+                    <h2 style="text-align: center">Evaluacion Heuristica</h2>
+                    <p style="margin-bottom: 15px;margin-top: 25px;text-align: justify"> La evaluación heurística es un análisis de experto en el cual se hace una inspección 
+                        minuciosa a interfaces o sistemas con el fin de determinar si cada uno de sus elementos 
+                        se adhieren o no a los principios de usabilidad, diseño o arquitectura de información 
+                        comúnmente aceptados en sus respectivas disciplinas.</p>
+                    <h2>¿Para que sirve?</h2>
+                    <p style="margin-bottom: 15px;text-align: justify">
+                        <strong>Un Análisis Heurístico, o Evaluación Heurística, es una de las formas más baratas y 
+                        rápidas de encontrar errores de usabilidad</strong> en un sitio web, aplicación, o cualquier 
+                        sistema que interactúe con un usuario. La mejor forma de encontrar errores graves 
+                        de usabilidad en un sistema es mediante tests con usuarios, pero dada la rapidez y 
+                        efectividad de una evaluación heurística, <strong>hacer tests sin haber realizado antes esta 
+                        técnica normalmente es un desperdicio de tiempo y dinero.</strong> 
+                    </p>
+                    <div align="center" style="margin-top: 4%;" id="logo">
+                        <p:graphicImage name="/images/heuristicaHome.jpg" style="width: 60%;"/>
+                    </div>
+                    <h2>Ventajas y desventajas</h2>
+                    <p style="margin-bottom: 15px;text-align: justify">
+                        Las mejores ventajas al realizar una evaluación heurística son la rapidez y que 
+                        resulta económico, pero no son las únicas. Otra ventaja es que no hay que ser un 
+                        experto en usabilidad para llevarla a cabo. Aunque <a href="http://www.nngroup.com/articles/how-to-conduct-a-heuristic-evaluation/">J.Nielsen</a> demostró que es más 
+                        efectiva al realizarla con expertos, <strong>es posible extraer beneficios aunque no seas 
+                        un experto en usabilidad,</strong> siempre que comprendas bien los principios heurísticos.<br/>
+                        <br/>
+                        Como desventajas, es posible llegar a falsos errores, que realmente no sean problemas 
+                        de usabilidad. Es también recomendable que sea llevado a cabo por más de un evaluador. 
+                        El número aceptado como óptimo es <a href="http://www.nngroup.com/articles/how-to-conduct-a-heuristic-evaluation/">entre tres y cinco evaluadores</a>, que pueden encontrar 
+                        aproximadamente hasta un 75% de los errores de usabilidad. Esto lo convierte en una buena 
+                        técnica para localizar errores, pero no va a dar las soluciones, por lo que cuando se propongan, 
+                        lo ideal es probarlas con usuarios.
+                    </p>
+                    <h2>¿Pero qué es la heurística?</h2>
+                    <p style="margin-bottom: 15px;text-align: justify">
+                        La palabra “heurística” viene de la griega “Eureka”, y en el contexto que nos ocupa, se 
+                        refiere a una serie de principios en los que se basa el evaluador para llevar a cabo 
+                        esta prueba. Estos principios generales se adecúan a la interfaz a evaluar para asegurarnos 
+                        de que se adaptan al contexto. Aunque varios autores han acuñado sus propios principios 
+                        heurísticos, <strong>los más reconocidos son los</strong> 
+                        <a href="http://www.nngroup.com/articles/ten-usability-heuristics/">publicados por Molich y Nielsen en 1990.</a> 
+                        Son estos:
+                    </p>
+                    <div class="et-box et-info">
+                        <div class="et-box-content"><ol>
+                                <li><strong>Visibilidad del estado del sistema:</strong> ¿El usuario sabe qué está haciendo el sistema? Se revisan elementos como:
+                                    <ul>
+                                        <li>¿Donde se encuentra? (ruta desde el inicio)</li>
+                                        <li>¿Qué ha visto? (enlaces visitados)</li>
+                                        <li>¿Hay un proceso en marcha? (estado de progreso)</li>
+                                        <li>¿Cuántos pasos faltan para terminar? (proceso de pago de un comercio electrónico)</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Similitud entre el sistema y el mundo real:</strong> Comprueba si el sitio se expresa de una manera comprensible para el usuario. ¿Sigue las convenciones habituales que permiten comprender el sistema a su público?</li>
+                                <li><strong>Control y libertad del usuario:</strong> Mide si el usuario puede volver atrás y deshacer (o rehacer) acciones.</li>
+                                <li><strong>Consistencia y cumplimiento de estándares:</strong> Comprueba si se cumplen los estándares que se usan para sitios web y aplicaciones online. Para ello se puede validar con las herramientas que ofrecen sitios como <a title="Test de accesibilidad Hera (se abre en ventana/pestaña nueva)" href="http://www.sidar.org/hera/" target="_blank">Hera</a> o <a title="Validador de W3C (se abre en ventana/pestaña nueva)" href="http://validator.w3.org/" target="_blank">W3C</a> para HTML y CSS.</li>
+                                <li><strong>Prevención de errores:</strong> Mide la preparación del sistema para prevenir y gestionar errores, como la validación de los formularios, instrucciones al usuario, ayuda en pantalla, etc.</li>
+                                <li><strong>Preferencia al reconocimiento que a la memorización:</strong> Es relativo a elementos como la navegación por el sistema y ejecución de procesos, de modo que el usuario tenga visible la información o el acceso a esta en vez de tener que memorizarla.</li>
+                                <li><strong>Flexibilidad y eficiencia de uso:</strong> Revisa si se ofrecen diferentes caminos para realizar un proceso o acceder a una información, y opciones adicionales para usuarios expertos. Por ejemplo, puede contar botones para usuarios ocasionales y atajos de teclado para usuarios habituales. También sirve para comprobar la respuesta del sistema, por ejemplo en situaciones de estrés (gran volumen de tráfico o de peticiones, etc.</li>
+                                <li><strong>Estética y diseño minimalista:</strong> Es necesario que los elementos en pantalla tengan motivo para estar presentes. Se verifica la existencia de elementos irrelevantes que no ayudan a que el usuario distinga lo importante de lo superfluo. Para ello se comprueban: Jerarquías visuales: Para determinar lo importante con una sola mirada. Imágenes: que aporten información de contexto, que tengan equivalente accesible, tamaño y peso.</li>
+                                <li><strong>Ayuda ante errores:</strong> ¿El usuario puede resolver problemas en el sistema? Por ejemplo un error 404 personalizado, ofreciendo información y opciones de navegación, o alternativas offline o por otra vía (teléfono, redes sociales) que permitan al usuario realizar su interacción si el servicio no funciona correctamente.</li>
+                                <li><strong>Ayuda y documentación:</strong> Se verifica que el sistema ofrezca ayuda relevante al contexto del usuario; también se revisan las herramientas de búsqueda exstentes (cajas de búsqueda, sección de FAQs, etc).</li>
+                            </ol>
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D.Pierotti añadió tres heurísticas más a este conjunto, además de desarrollar un conjunto de sub-heurísticas:</p>
+                            <ol start="11">
+                                <li><strong>Habilidades:</strong> El sistema debería anticipar las habilidades y conocimientos del usuario para ofrecer información adaptada al usuario.</li>
+                                <li><strong>Interacción con el usuario placentera y respetuosa:</strong> Las interacciones de los usuarios con el sistema deben favorecer la calidad de su vida.</li>
+                                <li><strong>Privacidad:</strong> El sistema debe ayudar a protoger la privacidad del usuario.</li>
+                            </ol></div></div>
+                    
+                </p:outputPanel>
+
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>

@@ -297,7 +297,7 @@ public class sitioAnalizarBean implements Serializable {
         pdf.setPageSize(PageSize.A4);
         pdf.open();
         
-        pdf.add(getImage("Uniqlog.PNG"));
+        pdf.add(getImage("UOClog.PNG"));
         
     }
     
@@ -311,7 +311,7 @@ public class sitioAnalizarBean implements Serializable {
         pdf.setPageSize(PageSize.A4);
         pdf.open();
         
-        pdf.add(getImage("Uniqlog.PNG"));
+        pdf.add(getImage("UOClog.PNG"));
         
     }
     

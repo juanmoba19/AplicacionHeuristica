@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 17-mar-2015 20:14:50 by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="model.SitioevaluacionHasUsuarioPromEval" table="sitioevaluacion_has_usuario_prom_eval" catalog="evaluacionheuristica">
+        <composite-id name="id" class="model.SitioevaluacionHasUsuarioPromEvalId">
+            <key-property name="sitioevaluacionCodigo" type="int">
+                <column name="sitioevaluacion_codigo" />
+            </key-property>
+            <key-property name="usuarioId" type="int">
+                <column name="usuario_id" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="usuario" class="model.Usuario" update="false" insert="false" fetch="select">
+            <column name="usuario_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="sitioevaluacion" class="model.Sitioevaluacion" update="false" insert="false" fetch="select">
+            <column name="sitioevaluacion_codigo" not-null="true" />
+        </many-to-one>
+        <property name="promedio" type="java.lang.Double">
+            <column name="promedio" precision="22" scale="0" />
+        </property>
+    </class>
+</hibernate-mapping>

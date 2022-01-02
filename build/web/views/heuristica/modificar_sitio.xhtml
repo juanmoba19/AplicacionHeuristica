@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../template.xhtml">
+            <ui:define name="content">
+                <p:growl id="msgs" showDetail="true" /> 
+                <h:form id="sitiosHeuristicos"  >
+                    
+                    <h4>Información - Sitio Evaluación Heurística</h4>
+                    <h:panelGrid columns="2" columnClasses="column" cellpadding="5">
+                        <h:outputLabel for="ajaxNombre" value="Nombre Sitio:" style="font-weight: 
+                                       
+                                       bold" />
+                        <p:inplace id="ajaxNombre" editor="true">
+                            <p:inputText value="#{sitioModificarBean.selectedSitio.nombre}" required="true" label="text" style="width: 50%" />
+                        </p:inplace>
+
+                        <h:outputLabel for="ajaxUrl" value="Url:" style="font-weight: bold" />
+                        <p:inplace id="ajaxUrl" editor="true">
+                            <p:inputText value="#{sitioModificarBean.selectedSitio.url}" required="true" label="text" style="width: 50%"/>
+                        </p:inplace>
+                        
+                        <h:outputLabel for="ajaxTipo" value="Tipo Sitio:" style="font-weight: bold" />
+                        <p:selectOneMenu id="tipoSitio" style="width:150px" value="#{sitioModificarBean.selectedSitio.tipo}">
+                            <f:selectItem itemLabel="Seleccionar Tipo" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{sitioModificarBean.tipoSitio}" />
+                        </p:selectOneMenu>
+                        
+                        <h:outputLabel value="Estado Prueba:" style="font-weight: bold" />
+                        <p:selectOneMenu  value="#{sitioModificarBean.selectedSitio.estadoprueba.codigo}">
+                            <f:selectItem itemLabel="- Seleccione -" itemValue="" />
+                            <f:selectItems value="#{estadoPruebaBean.selectOneItemEstadoPrueba}" />
+                        </p:selectOneMenu>
+                        
+                        <h:outputLabel value="Descripción:" style="font-weight: bold" />
+                        <p:inputTextarea id="txtComentarioEditar" rows="5" cols="40" counter="descripcionSitioEditar" maxlength="250" counterTemplate="{0} caracteres restantes." autoResize="true" value="#{sitioModificarBean.selectedSitio.descripcion}">
+                        </p:inputTextarea>    
+                        <h:outputText/>
+                        <h:outputText id="descripcionSitioEditar"/>
+                        
+                        <p:outputLabel for="datetime" value="Fecha Evaluación:" style="font-weight: bold" />
+                        <p:calendar id="datetime" value="#{sitioModificarBean.selectedSitio.fechaEvaluacion}" pattern="MM/dd/yyyy HH:mm:ss" />
+                        
+                        <!--<h:outputLabel for="image" value="Imagen Sitio:" style="font-weight: bold"/>
+                        <p:inplace id="image" label="Show" effect="slide">
+                            <p:graphicImage name="/images/sitios/google.png" style="width:100%;" />
+                        </p:inplace>-->
+                       </h:panelGrid>
+                    <h:form enctype="multipart/form-data">
+                    <h:panelGrid columns="2" columnClasses="column" cellpadding="5">
+                        <h:outputLabel value="Imagen:" style="font-weight: bold" />
+                        <h:panelGroup>
+                            <p:fileUpload fileUploadListener="#{sitioModificarBean.subirImagen}" mode="advanced" dragDropSupport="false"
+                            update="graImageSitio" sizeLimit="400000" label="Seleccionar" uploadLabel="Subir" cancelLabel="Cancelar" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                            <p:graphicImage cache="false" id="graImageSitio" value="#{sitioModificarBean.imagenProducto}" width="450" height="360"/>                       
+                        </h:panelGroup>
+                        
+                        <f:facet name="footer">
+                            <p:commandButton ajax="false" id="btnCreateAceptar" update=":msgs" actionListener="#{sitioModificarBean.btnModificarSitio(actionEvent)}" icon="ui-icon-check" title="Guardar" value="Modificar Información Sitio"/>                            
+                        </f:facet>
+                    </h:panelGrid>
+                        </h:form>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

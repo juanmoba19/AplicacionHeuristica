@@ -1,0 +1,26 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 09-nov-2014, 10:00:50
+    Author     : Juan Diego
+*/
+body{
+    background-color: #ECF3FD;
+}
+.conteiner{
+    width: 425px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10%;
+    font-size: 85%;
+}
+.ui-state-default .icon-login{
+    background-image: url(../images/icons/login.jpg);
+}
+
+.button-login{
+    text-align: right;
+}
