@@ -18,7 +18,7 @@ body{
     font-size: 85%;
 }
 .ui-state-default .icon-login{
-    background-image: url(../images/icons/login.jpg);
+    background-image: url(../images/login.jpg);
 }
 
 .button-login{

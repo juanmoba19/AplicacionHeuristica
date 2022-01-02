@@ -29,47 +29,47 @@ a:link:hover, a:visited:hover  {
 }
 
 .ui-state-default .icon-new{
-    background-image: url(../images/icons/agregarUsuario.png);
+    background-image: url(../images/agregarUsuario.png);
     width: 50%;
 }
 
 .ui-state-default .icon-edit{
-    background-image: url(../images/icons/editarUsuario.png);
+    background-image: url(../images/editarUsuario.png);
     width: 50%;
 }
 
 .ui-state-default .icon-delete{
-    background-image: url(../images/icons/eliminarUsuario.png);
+    background-image: url(../images/eliminarUsuario.png);
     width: 50%;
 }
 
 .ui-state-default .icon-planear-prueba{
-    background-image: url(../images/icons/planear.png);
+    background-image: url(../images/planear.png);
     width: 50%;
 }
 
 .ui-state-default .icon-ejecutar-prueba{
-    background-image: url(../images/icons/ejecutar.png);
+    background-image: url(../images/ejecutar.png);
     width: 50%;
 }
 
 .ui-state-default .icon-analizar-prueba{
-    background-image: url(../images/icons/analizar.png);
+    background-image: url(../images/analizar.png);
     width: 50%;
 }
 
 .ui-state-default .icon-analizar-prueba{
-    background-image: url(../images/icons/analizar.png);
+    background-image: url(../images/analizar.png);
     width: 50%;
 }
 
 .ui-state-default .icon-foro{
-    background-image: url(../images/icons/foro.png);
+    background-image: url(../images/foro.png);
     width: 50%;
 }
 
 .ui-state-default .icon-new-foro{
-    background-image: url(../images/icons/agregarForo.png);
+    background-image: url(../images/agregarForo.png);
     width: 50%;
 }
 
@@ -103,13 +103,13 @@ a:link:hover, a:visited:hover  {
 }
 
 .ui-state-default .icon-exportPDF{
-    background-image: url(../images/icons/exportPDF.png);
+    background-image: url(../images/exportPDF.png);
     width: 75% !important;
     height: 75% !important;  
 }
 
 .ui-state-default .icon-exportExcel{
-    background-image: url(../images/icons/exportExcel.png);
+    background-image: url(../images/exportExcel.png);
     width: 75% !important;
     height: 75% !important;
 }
